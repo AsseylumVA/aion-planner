@@ -1,5 +1,25 @@
-const STORE = "aion-binds-v8";
+const STORE = "aion-binds-v11";
+const STORE_LEGACY = ["aion-binds-v10", "aion-binds-v9", "aion-binds-v8"];
 const STATE_API = "http://127.0.0.1:46462/api/state";
+
+/*
+ * Origin 4.6 HUD is a visual arrangement of keyboard binds, not a second bind table.
+ * Lives on the «Панели» tab (state.view === "hud"). Each cell stores {layer, key}
+ * and live-reads state.binds. Bar III / II sit flush above the main 12-slot bar and
+ * never rotate. Extra I/II sit above that stack; one rotate button cycles
+ * 4 orientations independently (1×N, N×1, 2×N, N×2). Side is a static
+ * vertical 12-slot rail on the right of the whole center group.
+ */
+const QB_SLOT_COUNT = 12;
+const QB_LAYERS = ["combat", "shift", "ctrl"];
+const QB_BARS = {
+  main: { kind: "main", label: "Главная" },
+  bar2: { kind: "stack", label: "Панель II", tag: "II" },
+  bar3: { kind: "stack", label: "Панель III", tag: "III" },
+  extra1: { kind: "extra", label: "Доп. I", mode: "extra1mode", index: 1 },
+  extra2: { kind: "extra", label: "Доп. II", mode: "extra2mode", index: 2 },
+  side: { kind: "side", label: "Боковая" },
+};
 
 const state = {
   view: "binds",
@@ -7,24 +27,181 @@ const state = {
   class: DEFAULT_CLASS,
   race: DEFAULT_RACE,
   multirace: false,
-  stigmas: defaultStigmaBoard(),
-  binds: null,
+  stigmas: emptyStigmas(),
+  binds: emptyBinds(),
+  quickbar: defaultQuickbar(),
   byClass: {},
   pickSkill: null,
   pickKey: null,
   pickSlot: null,
+  pickBind: null,
 };
 
 loadState();
 
+function emptyBarSlots() {
+  return Array(QB_SLOT_COUNT).fill(null);
+}
+
+function extraLayout(mode) {
+  const n = Number(mode);
+  const m = n === 1 || n === 2 || n === 3 ? n : 0;
+  return { mode: m, rot: m % 2 ? 90 : 0, rows: m >= 2 ? 2 : 1 };
+}
+
+function extraModeFromRotRows(rot, rows) {
+  return extraLayout((rows === 1 ? 0 : 2) + (rot === 90 ? 1 : 0)).mode;
+}
+
+function readExtraMode(q, prefix) {
+  if (q && typeof q === "object") {
+    const n = Number(q[prefix + "mode"]);
+    if (n === 0 || n === 1 || n === 2 || n === 3) return n;
+    return extraModeFromRotRows(q[prefix + "rot"], q[prefix + "rows"]);
+  }
+  return extraLayout(2).mode;
+}
+
+function setExtraMode(qb, modeKey, mode) {
+  if (!qb || !modeKey) return extraLayout(mode);
+  const layout = extraLayout(mode);
+  qb[modeKey] = layout.mode;
+  const prefix = modeKey.endsWith("mode") ? modeKey.slice(0, -4) : modeKey;
+  qb[prefix + "rot"] = layout.rot;
+  qb[prefix + "rows"] = layout.rows;
+  return layout;
+}
+
+function defaultQuickbar() {
+  const next = {
+    extra1mode: 2,
+    extra2mode: 2,
+    extra1rot: 0,
+    extra2rot: 0,
+    extra1rows: 2,
+    extra2rows: 2,
+    siderot: 90,
+    siderows: 1,
+    bars: {
+      main: emptyBarSlots(),
+      bar2: emptyBarSlots(),
+      bar3: emptyBarSlots(),
+      extra1: emptyBarSlots(),
+      extra2: emptyBarSlots(),
+      side: emptyBarSlots(),
+    },
+  };
+  setExtraMode(next, "extra1mode", 2);
+  setExtraMode(next, "extra2mode", 2);
+  return next;
+}
+
+function cleanQbRef(ref) {
+  if (!ref || typeof ref !== "object") return null;
+  const layer = ref.layer;
+  const key = ref.key;
+  if (!QB_LAYERS.includes(layer) || typeof key !== "string" || !key || isMove(key)) return null;
+  return { layer, key };
+}
+
+function padBarSlots(arr) {
+  const out = [];
+  for (let i = 0; i < QB_SLOT_COUNT; i += 1) out.push(cleanQbRef(arr && arr[i]));
+  return out;
+}
+
+function padQuickbar(q) {
+  const next = defaultQuickbar();
+  if (!q || typeof q !== "object") return next;
+  setExtraMode(next, "extra1mode", readExtraMode(q, "extra1"));
+  setExtraMode(next, "extra2mode", readExtraMode(q, "extra2"));
+  next.siderot = 90;
+  next.siderows = 1;
+  const src = q.bars && typeof q.bars === "object" ? q.bars : q;
+  for (const id of Object.keys(next.bars)) {
+    next.bars[id] = padBarSlots(src[id]);
+  }
+  return next;
+}
+
+function qbRef(bar, index) {
+  const slots = state.quickbar && state.quickbar.bars && state.quickbar.bars[bar];
+  return (slots && slots[index]) || null;
+}
+
+function setQbRef(bar, index, ref) {
+  if (!QB_BARS[bar] || index < 0 || index >= QB_SLOT_COUNT) return;
+  state.quickbar.bars[bar][index] = cleanQbRef(ref);
+}
+
+function qbSkill(bar, index) {
+  const ref = qbRef(bar, index);
+  return ref ? bindAtLayer(ref.layer, ref.key) : null;
+}
+
+function formatHudKey(layer, key) {
+  const label = prettyKey(key);
+  if (key === "Wheel") return layer === "shift" ? "⇧MW" : layer === "ctrl" ? "Ctrl+MW" : "MW";
+  if (layer === "shift") return `⇧${label}`;
+  if (layer === "ctrl") return `Ctrl+${label}`;
+  return label;
+}
+
+function packQbSlots(slots) {
+  return (slots || []).map((ref) => (ref ? `${ref.layer[0]}:${ref.key}` : ""));
+}
+
+function unpackQbSlots(arr) {
+  if (!Array.isArray(arr)) return emptyBarSlots();
+  const layerOf = { c: "combat", s: "shift", t: "ctrl" };
+  return padBarSlots(
+    arr.map((item) => {
+      if (!item) return null;
+      if (typeof item === "object") return item;
+      if (typeof item !== "string") return null;
+      const i = item.indexOf(":");
+      if (i < 1) return null;
+      return { layer: layerOf[item[0]] || null, key: item.slice(i + 1) };
+    })
+  );
+}
+
+function applyQuickbarShare(q) {
+  const next = defaultQuickbar();
+  if (Array.isArray(q)) {
+    setExtraMode(next, "extra1mode", extraModeFromRotRows(q[0] ? 90 : 0, 2));
+    setExtraMode(next, "extra2mode", extraModeFromRotRows(q[1] ? 90 : 0, 2));
+    return next;
+  }
+  if (!q || typeof q !== "object") return next;
+  const em = Array.isArray(q.em) ? q.em : [];
+  const e = Array.isArray(q.e) ? q.e : [];
+  if (em.length >= 2) {
+    setExtraMode(next, "extra1mode", em[0]);
+    setExtraMode(next, "extra2mode", em[1]);
+  } else {
+    setExtraMode(next, "extra1mode", extraModeFromRotRows(e[0] ? 90 : 0, e[2] === 0 ? 1 : 2));
+    setExtraMode(next, "extra2mode", extraModeFromRotRows(e[1] ? 90 : 0, e[3] === 0 ? 1 : 2));
+  }
+  next.siderot = 90;
+  next.siderows = 1;
+  next.bars.main = unpackQbSlots(q.m);
+  next.bars.bar2 = unpackQbSlots(q.a);
+  next.bars.bar3 = unpackQbSlots(q.b);
+  next.bars.extra1 = unpackQbSlots(q.x);
+  next.bars.extra2 = unpackQbSlots(q.y);
+  next.bars.side = unpackQbSlots(q.z);
+  return next;
+}
+
 function defaultState() {
-  const stigmas = defaultStigmaBoard(DEFAULT_CLASS);
   return {
     class: DEFAULT_CLASS,
     race: DEFAULT_RACE,
     multirace: false,
-    stigmas,
-    binds: buildDefaultBinds(DEFAULT_CLASS, DEFAULT_RACE, stigmas),
+    stigmas: emptyStigmas(),
+    binds: emptyBinds(),
+    quickbar: defaultQuickbar(),
     byClass: {},
   };
 }
@@ -37,7 +214,7 @@ function cleanClass(id) {
 function loadState() {
   const fallback = defaultState();
   try {
-    const raw = localStorage.getItem(STORE);
+    const raw = localStorage.getItem(STORE) || STORE_LEGACY.map((k) => localStorage.getItem(k)).find(Boolean);
     if (!raw) {
       applyCore(fallback);
       return;
@@ -47,13 +224,14 @@ function loadState() {
     state.race = parsed.race === "elyos" ? "elyos" : "asmo";
     state.multirace = Boolean(parsed.multirace);
     state.byClass = parsed.byClass && typeof parsed.byClass === "object" ? parsed.byClass : {};
-    state.stigmas = padStigmas(parsed.stigmas || classLayout(state.class).defaultStigmas);
+    state.quickbar = padQuickbar(parsed.quickbar);
+    state.stigmas = padStigmas(parsed.stigmas);
     pruneStigmas();
-    const base = buildDefaultBinds(state.class, state.race, state.stigmas);
+    const incoming = parsed.binds || {};
     state.binds = {
-      combat: { ...base.combat, ...(parsed.binds && parsed.binds.combat) },
-      shift: { ...base.shift, ...(parsed.binds && parsed.binds.shift) },
-      ctrl: { ...base.ctrl, ...(parsed.binds && parsed.binds.ctrl) },
+      combat: { ...(incoming.combat || {}) },
+      shift: { ...(incoming.shift || {}) },
+      ctrl: { ...(incoming.ctrl || {}) },
     };
     pruneBinds();
   } catch {
@@ -67,6 +245,7 @@ function applyCore(next) {
   state.multirace = Boolean(next.multirace);
   state.stigmas = next.stigmas;
   state.binds = next.binds;
+  state.quickbar = padQuickbar(next.quickbar);
   state.byClass = next.byClass || {};
 }
 
@@ -104,6 +283,7 @@ function snapshot(source) {
       greater: state.stigmas.greater.map(skillName),
     },
     binds: state.binds,
+    quickbar: state.quickbar,
     byClass: state.byClass,
     updatedAt: Date.now(),
     source: source || "ui",
@@ -125,6 +305,12 @@ function applyRemote(data) {
     shift: { ...(incoming.shift || {}) },
     ctrl: { ...(incoming.ctrl || {}) },
   };
+  if (data.quickbar) {
+    const next = padQuickbar(data.quickbar);
+    const incomingHasSlots = data.quickbar.bars && typeof data.quickbar.bars === "object";
+    if (!incomingHasSlots && state.quickbar && state.quickbar.bars) next.bars = state.quickbar.bars;
+    state.quickbar = next;
+  }
   pruneBinds();
   localStorage.setItem(
     STORE,
@@ -161,6 +347,8 @@ async function saveToFile() {
 }
 
 function sharePayload() {
+  const extra1 = extraLayout(state.quickbar.extra1mode);
+  const extra2 = extraLayout(state.quickbar.extra2mode);
   return {
     k: state.class,
     r: state.race === "elyos" ? 1 : 0,
@@ -170,6 +358,23 @@ function sharePayload() {
     c: state.binds.combat,
     s: state.binds.shift,
     t: state.binds.ctrl,
+    q: {
+      em: [extra1.mode, extra2.mode],
+      e: [
+        extra1.rot === 90 ? 1 : 0,
+        extra2.rot === 90 ? 1 : 0,
+        extra1.rows === 2 ? 1 : 0,
+        extra2.rows === 2 ? 1 : 0,
+        state.quickbar.siderot === 90 ? 1 : 0,
+        state.quickbar.siderows === 2 ? 1 : 0,
+      ],
+      m: packQbSlots(state.quickbar.bars.main),
+      a: packQbSlots(state.quickbar.bars.bar2),
+      b: packQbSlots(state.quickbar.bars.bar3),
+      x: packQbSlots(state.quickbar.bars.extra1),
+      y: packQbSlots(state.quickbar.bars.extra2),
+      z: packQbSlots(state.quickbar.bars.side),
+    },
   };
 }
 
@@ -251,9 +456,11 @@ function applyShare(data) {
     shift: cleanBindMap(data.s),
     ctrl: cleanBindMap(data.t),
   };
+  state.quickbar = applyQuickbarShare(data.q);
   pruneBinds();
   state.pickSkill = null;
   state.pickKey = null;
+  state.pickSlot = null;
   lastRemoteAt = Date.now();
 }
 
@@ -358,7 +565,6 @@ function belongsToClass(id) {
 
 function isVisibleSkill(id) {
   if (!SKILLS[id]) return false;
-  if (typeof CHAIN_FOLLOW !== "undefined" && CHAIN_FOLLOW.has(id)) return false;
   if (!belongsToClass(id)) return false;
   const race = skillRace(id);
   const tier = stigmaTier(id);
@@ -373,7 +579,6 @@ function isVisibleSkill(id) {
 
 function bindIsStale(sid) {
   if (!SKILLS[sid]) return true;
-  if (typeof CHAIN_FOLLOW !== "undefined" && CHAIN_FOLLOW.has(sid)) return true;
   if (!belongsToClass(sid)) return true;
   const tier = stigmaTier(sid);
   if (tier) {
@@ -434,6 +639,8 @@ function prettyKey(id) {
     Mouse4: "M4",
     Mouse5: "M5",
     Wheel: "Колесо",
+    Minus: "−",
+    Equal: "=",
     F1: "F1",
     F2: "F2",
     F3: "F3",
@@ -451,7 +658,6 @@ function prettyKey(id) {
 }
 
 function isLocked(key) {
-  if (key === "Digit1" && !isInstalledStigma("ambush")) return false;
   return LOCKED.has(`${state.layer}:${prettyKey(key)}`);
 }
 
@@ -460,7 +666,11 @@ function isMove(key) {
 }
 
 function bindAt(key) {
-  const sid = state.binds[state.layer][key] || null;
+  return bindAtLayer(state.layer, key);
+}
+
+function bindAtLayer(layer, key) {
+  const sid = (state.binds[layer] || {})[key] || null;
   return sid && isVisibleSkill(sid) ? sid : null;
 }
 
@@ -502,28 +712,40 @@ function formatLayerKey(layer, key) {
 }
 
 function assign(key, skillId) {
+  assignOnLayer(state.layer, key, skillId);
+}
+
+function assignOnLayer(layer, key, skillId) {
   if (isMove(key)) return;
   if (skillId && !isVisibleSkill(skillId)) return;
-  const layer = state.binds[state.layer];
-  for (const [k, sid] of Object.entries(layer)) {
-    if (sid === skillId) delete layer[k];
+  const map = state.binds[layer];
+  if (!map) return;
+  for (const [k, sid] of Object.entries(map)) {
+    if (sid === skillId) delete map[k];
   }
-  if (skillId) layer[key] = skillId;
-  else delete layer[key];
+  if (skillId) map[key] = skillId;
+  else delete map[key];
   save();
 }
 
-function swapOrMove(fromKey, toKey) {
-  if (!fromKey || !toKey || fromKey === toKey || isMove(fromKey) || isMove(toKey)) return false;
-  const layer = state.binds[state.layer];
-  const fromSkill = layer[fromKey];
+function swapOnLayers(fromLayer, fromKey, toLayer, toKey) {
+  if (!fromKey || !toKey || isMove(fromKey) || isMove(toKey)) return false;
+  if (fromLayer === toLayer && fromKey === toKey) return false;
+  const a = state.binds[fromLayer];
+  const b = state.binds[toLayer];
+  if (!a || !b) return false;
+  const fromSkill = a[fromKey];
   if (!fromSkill) return false;
-  const toSkill = layer[toKey] || null;
-  if (toSkill) layer[fromKey] = toSkill;
-  else delete layer[fromKey];
-  layer[toKey] = fromSkill;
+  const toSkill = b[toKey] || null;
+  if (toSkill) a[fromKey] = toSkill;
+  else delete a[fromKey];
+  b[toKey] = fromSkill;
   save();
   return true;
+}
+
+function swapOrMove(fromKey, toKey) {
+  return swapOnLayers(state.layer, fromKey, state.layer, toKey);
 }
 
 function placeSkillOnKey(toKey, skillId) {
@@ -543,14 +765,57 @@ function clearBtn(key) {
   return `<span class="key-clear" data-clear-key="${key}" title="Снять" role="button" aria-label="Снять умение">×</span>`;
 }
 
-function emptyBinds() {
-  return { combat: {}, shift: {}, ctrl: {} };
+function qbCaption(bar, index) {
+  const ref = qbRef(bar, index);
+  return ref ? formatHudKey(ref.layer, ref.key) : "";
+}
+
+function qbSlotSelected(bar, index) {
+  const ref = qbRef(bar, index);
+  if (state.pickSlot && state.pickSlot.bar === bar && state.pickSlot.index === index) return true;
+  return Boolean(ref && state.pickKey === ref.key && state.layer === ref.layer);
+}
+
+function clearBtnSlot(bar, index) {
+  const ref = qbRef(bar, index);
+  if (!ref) return "";
+  const sid = qbSkill(bar, index);
+  const onSlot = qbSlotSelected(bar, index);
+  const onSkill = Boolean(state.pickSkill && sid === state.pickSkill);
+  if (!onSlot && !onSkill) return "";
+  return `<span class="key-clear" data-clear-slot="${bar}:${index}" title="Убрать с панели" role="button" aria-label="Убрать с панели">×</span>`;
+}
+
+function refForSkill(skillId) {
+  if (!skillId) return null;
+  const places = bindsBySkill()[skillId];
+  if (!places || !places.length) return null;
+  return places.find((p) => p.layer === state.layer) || places[0];
+}
+
+function placeBindOnSlot(bar, index, layer, key) {
+  if (!QB_BARS[bar] || isMove(key)) return false;
+  setQbRef(bar, index, { layer, key });
+  save();
+  return true;
+}
+
+function clearHudSlot(bar, index) {
+  setQbRef(bar, index, null);
+  state.pickSlot = { bar, index };
+  state.pickKey = null;
+  state.pickSkill = null;
+  state.pickBind = null;
+  showInspect(null);
+  save();
+  render();
 }
 
 function clearAllBinds() {
   state.binds = emptyBinds();
   state.pickSkill = null;
   state.pickKey = null;
+  state.pickBind = null;
   save();
   render();
 }
@@ -561,13 +826,6 @@ function clearAllStigmas() {
   pruneBinds();
   save();
   render();
-}
-
-function applyStigmaDefault(id) {
-  const layout = classLayout(state.class);
-  const slot = (layout.stigma && layout.stigma[id]) || STIGMA_BINDS[id];
-  if (!slot) return;
-  applyBind(state.binds, slot.layer, slot.key, id);
 }
 
 function removeSkillBinds(id) {
@@ -585,9 +843,6 @@ function setRace(race) {
   state.race = race;
   pruneStigmas();
   pruneBinds();
-  for (const row of classLayout(state.class).racial[race] || []) {
-    applyBind(state.binds, row.layer, row.key, row.skill);
-  }
   save();
   render();
 }
@@ -614,8 +869,8 @@ function setClass(cls) {
       ctrl: { ...(snap.binds.ctrl || {}) },
     };
   } else {
-    state.stigmas = defaultStigmaBoard(cls);
-    state.binds = buildDefaultBinds(cls, state.race, state.stigmas);
+    state.stigmas = emptyStigmas();
+    state.binds = emptyBinds();
   }
   pruneStigmas();
   pruneBinds();
@@ -681,7 +936,6 @@ function putStigma(tier, index, id) {
   const prev = state.stigmas[tier][index];
   if (prev && prev !== id) removeSkillBinds(prev);
   state.stigmas[tier][index] = id || null;
-  if (id) applyStigmaDefault(id);
   return true;
 }
 
@@ -795,7 +1049,7 @@ function tagClass(t) {
   return "tag";
 }
 
-function showInspect(skillId, key) {
+function showInspect(skillId, key, layer) {
   const el = document.getElementById("inspect");
   if (!skillId) {
     el.innerHTML = `<p>${isMove(key) ? "W и S — вперёд/назад. A и D под скиллы, камера мышью." : "Пустой слот. Перетащите умение с другой клавиши или из списка справа. Клик по скиллу — крестик, чтобы снять."}</p>`;
@@ -805,9 +1059,10 @@ function showInspect(skillId, key) {
   const tags = skillTags(skillId)
     .map((t) => `<span class="${tagClass(t)}">${t}</span>`)
     .join("");
+  const lay = layer || state.layer;
   const unbind =
     key && !isMove(key)
-      ? `<button type="button" class="unbind" data-unbind="${key}">Снять с ${prettyKey(key)}</button>`
+      ? `<button type="button" class="unbind" data-unbind="${key}" data-unbind-layer="${lay}">Снять с ${formatLayerKey(lay, key)}</button>`
       : "";
   el.innerHTML = `
     <div class="inspect-head">
@@ -866,6 +1121,73 @@ function renderKeyboard() {
       .join("");
     return `<div class="row">${keys}</div>`;
   }).join("");
+}
+
+function renderQbSlot(bar, index) {
+  const ref = qbRef(bar, index);
+  const sid = qbSkill(bar, index);
+  const skill = sid ? SKILLS[sid] : null;
+  const cap = qbCaption(bar, index);
+  const cls = ["qb-slot", skill ? skill.kind : "empty", qbSlotSelected(bar, index) ? "selected" : ""]
+    .filter(Boolean)
+    .join(" ");
+  const title = skill ? `${skill.name} · ${cap}` : cap || "Перетащите клавишу с биндом";
+  return `<button type="button" class="${cls}" data-qb-bar="${bar}" data-qb-index="${index}" draggable="${ref ? "true" : "false"}" title="${title}">
+    ${cap ? `<span class="cap">${cap}</span>` : ""}
+    ${sid ? iconTag(sid, "icon") : ""}
+    ${clearBtnSlot(bar, index)}
+  </button>`;
+}
+
+function renderQbBar(bar) {
+  const spec = QB_BARS[bar];
+  const slots = Array.from({ length: QB_SLOT_COUNT }, (_, i) => renderQbSlot(bar, i)).join("");
+  if (spec.kind === "main") {
+    return `<div class="qb-bar main" aria-label="${spec.label}">
+      <div class="qb-slots">${slots}</div>
+    </div>`;
+  }
+  if (spec.kind === "stack") {
+    return `<div class="qb-bar stack ${bar}" aria-label="${spec.label}">
+      <span class="qb-stack-tag">${spec.tag}</span>
+      <div class="qb-slots">${slots}</div>
+    </div>`;
+  }
+  if (spec.kind === "side") {
+    return `<div class="qb-bar qb-side" aria-label="${spec.label}">
+      <div class="qb-slots">${slots}</div>
+    </div>`;
+  }
+  const layout = extraLayout(state.quickbar[spec.mode]);
+  const badge = `<img class="qb-index" src="img/ui/${spec.index === 2 ? "bar-index-2.png" : "bar-index-1.png"}" alt="${spec.label}" />`;
+  return `<div class="qb-bar extra ${bar} rot${layout.rot} rows${layout.rows}" aria-label="${spec.label}">
+    <div class="qb-slots">${slots}</div>
+    <div class="qb-grip">
+      ${badge}
+      <button type="button" class="qb-rotate" data-qb-rotate="${bar}" title="Повернуть панель" aria-label="Повернуть ${spec.label}"></button>
+    </div>
+  </div>`;
+}
+
+function renderQuickbar() {
+  const root = document.getElementById("quickbar-hud");
+  if (!root) return;
+  root.innerHTML = `
+    <p class="qb-legend">Доп. I и II — над стопкой III / II / главная (кнопка поворота — четыре ориентации). Боковая — справа от всей группы. Перетащите умение с клавиши на ячейку. Крестик убирает ячейку, бинд на клавиатуре остаётся.</p>
+    <div class="qb-stage">
+      <div class="qb-center">
+        <div class="qb-extras">
+          ${renderQbBar("extra1")}
+          ${renderQbBar("extra2")}
+        </div>
+        <div class="qb-stack">
+          ${renderQbBar("bar3")}
+          ${renderQbBar("bar2")}
+          ${renderQbBar("main")}
+        </div>
+      </div>
+      <div class="qb-dock">${renderQbBar("side")}</div>
+    </div>`;
 }
 
 function paintMouse() {
@@ -927,7 +1249,57 @@ function skillButton(id, used, allBinds) {
   </button>`;
 }
 
+function boundHudBinds() {
+  const q = (document.getElementById("filter")?.value || "").trim().toLowerCase();
+  const out = [];
+  for (const layer of QB_LAYERS) {
+    for (const [key, sid] of Object.entries(state.binds[layer] || {})) {
+      if (isMove(key) || !isVisibleSkill(sid) || !SKILLS[sid]) continue;
+      const s = SKILLS[sid];
+      const cap = formatHudKey(layer, key);
+      if (q) {
+        const hay = [s.name, s.desc, ...(s.tags || []), cap, prettyKey(key)].join(" ").toLowerCase();
+        if (!hay.includes(q)) continue;
+      }
+      out.push({ layer, key, skill: sid, cap });
+    }
+  }
+  out.sort((a, b) => {
+    const li = QB_LAYERS.indexOf(a.layer) - QB_LAYERS.indexOf(b.layer);
+    if (li) return li;
+    return a.cap.localeCompare(b.cap, "ru");
+  });
+  return out;
+}
+
+function renderHudPalette() {
+  const root = document.getElementById("skills");
+  root.classList.add("hud-palette");
+  const items = boundHudBinds();
+  root.innerHTML = items.length
+    ? items
+        .map((b) => {
+          const picked = Boolean(
+            state.pickBind && state.pickBind.layer === b.layer && state.pickBind.key === b.key
+          );
+          const name = SKILLS[b.skill].name;
+          const cls = ["hud-bind", picked ? "picked" : ""].filter(Boolean).join(" ");
+          return `<button type="button" class="${cls}" data-skill="${b.skill}" data-layer="${b.layer}" data-key="${b.key}" draggable="true" title="${name} · ${b.cap}">
+            ${iconTag(b.skill, "icon")}
+            <span class="hud-bind-cap">${b.cap}</span>
+          </button>`;
+        })
+        .join("")
+    : `<p class="empty-list">Нет умений на клавишах. Назначьте их на «Раскладке».</p>`;
+}
+
 function renderSkills() {
+  const root = document.getElementById("skills");
+  if (state.view === "hud") {
+    renderHudPalette();
+    return;
+  }
+  root.classList.remove("hud-palette");
   const used = usedMap();
   const allBinds = bindsBySkill();
   const ids = visibleSkillIds();
@@ -939,7 +1311,7 @@ function renderSkills() {
     list.length
       ? `<h3 class="list-h">${title}</h3>${list.map((id) => skillButton(id, used, allBinds)).join("")}`
       : "";
-  document.getElementById("skills").innerHTML =
+  root.innerHTML =
     block("Базовые", basic) +
       block("Умения", learned) +
       block("Банки", potions) +
@@ -1058,16 +1430,22 @@ function renderChrome() {
     b.classList.toggle("active", b.dataset.layer === state.layer);
   });
   document.getElementById("binds-view").hidden = state.view !== "binds";
+  document.getElementById("hud-view").hidden = state.view !== "hud";
   document.getElementById("stigma-view").hidden = state.view !== "stigmas";
   document.getElementById("reset-binds").hidden = state.view !== "binds";
   document.getElementById("reset-stigmas").hidden = state.view !== "stigmas";
   document.querySelector(".app").classList.toggle("is-stigmas", state.view === "stigmas");
-  document.getElementById("combos").hidden = state.view === "stigmas" || !classCombos(state.class).length;
+  document.querySelector(".app").classList.toggle("is-hud", state.view === "hud");
+  document.getElementById("combos").hidden = state.view === "binds" ? !classCombos(state.class).length : true;
   const sideTitle = document.getElementById("side-title");
   const filter = document.getElementById("filter");
   if (state.view === "stigmas") {
     sideTitle.textContent = "Стигмы";
     filter.placeholder = "Поиск стигмы…";
+  } else if (state.view === "hud") {
+    sideTitle.textContent = "На клавишах";
+    filter.placeholder = "Поиск по умениям и клавишам…";
+    document.getElementById("skills").classList.remove("is-stigma-pool");
   } else {
     sideTitle.textContent = "Умения и стигмы";
     filter.placeholder = "Поиск умения…";
@@ -1075,66 +1453,181 @@ function renderChrome() {
   }
   const mouseHint = document.getElementById("mouse-hint");
   const boardHint = document.getElementById("board-hint");
-  if (state.class === "assassin") {
-    if (mouseHint) mouseHint.textContent = "Мышь — в движении. M4 клятва уклонения, M5 маскировка, колесо просветление.";
-    if (boardHint) {
-      boardHint.textContent =
-        "До боя только F1–F5: скорость, чувства, готовность, штурмовая, точность (КТ последней). В бою Q ритуал, E ТР. Контроль: F клеймо, C вспышка-стан, B кинжал в воздух, V спина, X убийство, ⇧C клинок, ⇧B смертельные яды. Перетащите скилл на другую клавишу, чтобы поменять местами. Клик по скиллу — крестик справа сверху, чтобы снять. ПКМ тоже снимает.";
-    }
-  } else {
-    if (mouseHint) mouseHint.textContent = "Мышь — в движении. W/S ход, A и D — скиллы. Автоатака и смена оружия не на M4/M5.";
-    if (boardHint) {
-      boardHint.textContent =
-        "F1–F5 — баффы до боя. Боевые умения на 1–5 и Q E R A D F. Клавиши 6+ и F7–F12 далеко для боя. Перетащите скилл на клавишу. Клик по скиллу — крестик, чтобы снять. ПКМ тоже снимает.";
-    }
+  if (mouseHint) mouseHint.textContent = "Мышь — в движении. W/S ход, A и D можно назначить умения. Перетащите умение на клавишу.";
+  if (boardHint) {
+    boardHint.textContent =
+      "Перетащите умение на клавишу. Клик по скиллу — крестик справа сверху, чтобы снять. ПКМ тоже снимает.";
   }
 }
 
 function render() {
   renderChrome();
-  if (state.view === "binds") {
-    renderKeyboard();
-    renderSkills();
-    paintMouse();
-  } else {
+  if (state.view === "stigmas") {
     renderStigmaBoard();
     renderStigmaPool();
     renderStigmaTrees();
+    return;
   }
+  renderSkills();
+  if (state.view === "hud") {
+    renderQuickbar();
+    return;
+  }
+  renderKeyboard();
+  paintMouse();
 }
 
 function onKey(key) {
   if (isMove(key)) {
     state.pickKey = key;
+    state.pickSlot = null;
     showInspect(null, key);
+    render();
+    return;
+  }
+  if (state.pickSlot) {
+    if (state.pickSkill) assign(key, state.pickSkill);
+    placeBindOnSlot(state.pickSlot.bar, state.pickSlot.index, state.layer, key);
+    state.pickKey = key;
+    showInspect(bindAt(key) || state.pickSkill, key);
+    state.pickSkill = null;
     render();
     return;
   }
   if (state.pickSkill) {
     assign(key, state.pickSkill);
     state.pickKey = key;
+    state.pickSlot = null;
     showInspect(state.pickSkill, key);
     state.pickSkill = null;
     render();
     return;
   }
   state.pickKey = key;
+  state.pickSlot = null;
   showInspect(bindAt(key), key);
   render();
 }
 
-function unbindKey(key) {
+function tryPlaceSkillOnSlot(bar, index, skillId) {
+  let ref = refForSkill(skillId);
+  if (!ref && state.pickKey && !isMove(state.pickKey)) {
+    assign(state.pickKey, skillId);
+    ref = { layer: state.layer, key: state.pickKey };
+  }
+  if (!ref) {
+    toast("Сначала повесьте умение на клавишу, затем перетащите клавишу на панель.");
+    return false;
+  }
+  placeBindOnSlot(bar, index, ref.layer, ref.key);
+  return true;
+}
+
+function placePickedBindOnSlot(bar, index) {
+  const bind = state.pickBind;
+  if (!bind) return false;
+  placeBindOnSlot(bar, index, bind.layer, bind.key);
+  state.pickSlot = { bar, index };
+  state.pickKey = null;
+  state.pickSkill = null;
+  state.pickBind = null;
+  const ref = qbRef(bar, index);
+  showInspect(qbSkill(bar, index), ref && ref.key, ref && ref.layer);
+  render();
+  return true;
+}
+
+function onHudBindPick(skillId, layer, key) {
+  if (!skillId || !layer || !key || isMove(key)) return;
+  if (state.pickSlot) {
+    placeBindOnSlot(state.pickSlot.bar, state.pickSlot.index, layer, key);
+    const slot = state.pickSlot;
+    state.pickSkill = null;
+    state.pickBind = null;
+    state.pickKey = null;
+    const ref = qbRef(slot.bar, slot.index);
+    showInspect(qbSkill(slot.bar, slot.index), ref && ref.key, ref && ref.layer);
+    render();
+    return;
+  }
+  const same =
+    state.pickBind && state.pickBind.layer === layer && state.pickBind.key === key;
+  state.pickBind = same ? null : { layer, key };
+  state.pickSkill = state.pickBind ? skillId : null;
+  state.pickKey = null;
+  showInspect(skillId, key, layer);
+  render();
+}
+
+function onSlot(bar, index) {
+  if (!QB_BARS[bar]) return;
+  if (state.pickBind) {
+    placePickedBindOnSlot(bar, index);
+    return;
+  }
+  if (state.pickSkill) {
+    if (!tryPlaceSkillOnSlot(bar, index, state.pickSkill)) {
+      state.pickSlot = { bar, index };
+      render();
+      return;
+    }
+    state.pickSlot = { bar, index };
+    state.pickKey = null;
+    state.pickSkill = null;
+    const ref = qbRef(bar, index);
+    showInspect(qbSkill(bar, index), ref && ref.key, ref && ref.layer);
+    render();
+    return;
+  }
+  if (state.pickKey && !isMove(state.pickKey)) {
+    placeBindOnSlot(bar, index, state.layer, state.pickKey);
+    state.pickSlot = { bar, index };
+    showInspect(bindAt(state.pickKey), state.pickKey);
+    render();
+    return;
+  }
+  const ref = qbRef(bar, index);
+  state.pickSlot = { bar, index };
+  state.pickKey = null;
+  showInspect(qbSkill(bar, index), ref && ref.key, ref && ref.layer);
+  render();
+}
+
+function cycleExtraBar(bar) {
+  const spec = QB_BARS[bar];
+  if (!spec || spec.kind !== "extra" || !spec.mode) return;
+  const next = (extraLayout(state.quickbar[spec.mode]).mode + 1) % 4;
+  setExtraMode(state.quickbar, spec.mode, next);
+  save();
+  render();
+}
+
+function unbindKey(key, layer) {
   if (!key || isMove(key)) return;
-  assign(key, null);
+  const lay = layer || state.layer;
+  assignOnLayer(lay, key, null);
   state.pickSkill = null;
   state.pickKey = key;
-  showInspect(null, key);
+  showInspect(null, key, lay);
   render();
 }
 
 function onSkill(id) {
   if (state.view === "stigmas") {
     onStigmaPick(id, false);
+    return;
+  }
+  if (state.pickSlot) {
+    if (tryPlaceSkillOnSlot(state.pickSlot.bar, state.pickSlot.index, id)) {
+      const ref = qbRef(state.pickSlot.bar, state.pickSlot.index);
+      showInspect(id, ref && ref.key, ref && ref.layer);
+      state.pickSkill = null;
+      render();
+      return;
+    }
+    state.pickSkill = id;
+    showInspect(id, usedMap()[id]);
+    render();
     return;
   }
   if (state.pickKey && !isMove(state.pickKey)) {
@@ -1207,6 +1700,15 @@ function dropKeyFromEvent(e) {
   return btn.dataset.key;
 }
 
+function dropSlotFromEvent(e) {
+  const btn = e.target.closest("[data-qb-bar]");
+  if (!btn) return null;
+  const bar = btn.dataset.qbBar;
+  const index = Number(btn.dataset.qbIndex);
+  if (!QB_BARS[bar] || !Number.isInteger(index) || index < 0 || index >= QB_SLOT_COUNT) return null;
+  return { bar, index };
+}
+
 function setDropTarget(el) {
   document.querySelectorAll(".drop-ok").forEach((n) => {
     if (n !== el) n.classList.remove("drop-ok");
@@ -1221,53 +1723,112 @@ function clearDndMarks() {
 }
 
 function onBindDragStart(e) {
-  if (e.target.closest("[data-clear-key]")) {
+  if (e.target.closest("[data-clear-key], [data-clear-slot]")) {
     e.preventDefault();
     return;
   }
-  const keyBtn = e.target.closest("[data-key]");
-  const skillBtn = e.target.closest("[data-skill]");
-  if (keyBtn && bindAt(keyBtn.dataset.key) && !isMove(keyBtn.dataset.key)) {
-    dnd = { from: "key", key: keyBtn.dataset.key, skill: bindAt(keyBtn.dataset.key) };
-    keyBtn.classList.add("dragging");
-  } else if (skillBtn && state.view === "binds" && skillBtn.dataset.skill) {
-    dnd = { from: "skill", skill: skillBtn.dataset.skill };
-    skillBtn.classList.add("dragging");
+  const src = e.target.closest("[data-skill], [data-qb-bar], [data-key]");
+  if (!src) {
+    dnd = null;
+    return;
+  }
+  if (src.hasAttribute("data-qb-bar")) {
+    const bar = src.dataset.qbBar;
+    const index = Number(src.dataset.qbIndex);
+    const ref = qbRef(bar, index);
+    if (!ref) {
+      dnd = null;
+      return;
+    }
+    dnd = { from: "slot", bar, index, ref, skill: qbSkill(bar, index) };
+    src.classList.add("dragging");
+  } else if (src.dataset.skill && state.view !== "stigmas") {
+    if (src.dataset.layer && src.dataset.key) {
+      dnd = {
+        from: "key",
+        key: src.dataset.key,
+        layer: src.dataset.layer,
+        skill: src.dataset.skill,
+      };
+    } else {
+      dnd = { from: "skill", skill: src.dataset.skill };
+    }
+    src.classList.add("dragging");
+  } else if (src.dataset.key && bindAt(src.dataset.key) && !isMove(src.dataset.key)) {
+    dnd = { from: "key", key: src.dataset.key, layer: state.layer, skill: bindAt(src.dataset.key) };
+    src.classList.add("dragging");
   } else {
     dnd = null;
     return;
   }
   e.dataTransfer.effectAllowed = "move";
-  e.dataTransfer.setData("text/plain", dnd.skill);
+  e.dataTransfer.setData("text/plain", dnd.skill || `${(dnd.ref && dnd.ref.layer) || dnd.layer}:${dnd.key || (dnd.ref && dnd.ref.key) || ""}`);
 }
 
 function onBindDragOver(e) {
   if (!dnd) return;
   const key = dropKeyFromEvent(e);
-  if (!key) return;
+  const slot = dropSlotFromEvent(e);
+  if (!key && !slot) return;
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
-  setDropTarget(e.target.closest("[data-key]"));
+  setDropTarget(e.target.closest("[data-key], [data-qb-bar]"));
 }
 
 function onBindDragLeave(e) {
-  const btn = e.target.closest("[data-key]");
+  const btn = e.target.closest("[data-key], [data-qb-bar]");
   if (!btn) return;
   if (e.relatedTarget && btn.contains(e.relatedTarget)) return;
   btn.classList.remove("drop-ok");
 }
 
+function applySlotDrop(to, dndSrc) {
+  if (dndSrc.from === "key") {
+    return placeBindOnSlot(to.bar, to.index, dndSrc.layer || state.layer, dndSrc.key);
+  }
+  if (dndSrc.from === "slot") {
+    if (dndSrc.bar === to.bar && dndSrc.index === to.index) return false;
+    const fromRef = qbRef(dndSrc.bar, dndSrc.index);
+    const toRef = qbRef(to.bar, to.index);
+    setQbRef(to.bar, to.index, fromRef);
+    setQbRef(dndSrc.bar, dndSrc.index, toRef);
+    save();
+    return true;
+  }
+  return tryPlaceSkillOnSlot(to.bar, to.index, dndSrc.skill);
+}
+
 function onBindDrop(e) {
   const toKey = dropKeyFromEvent(e);
-  if (!dnd || !toKey) return;
+  const toSlot = dropSlotFromEvent(e);
+  if (!dnd || (!toKey && !toSlot)) return;
   e.preventDefault();
-  const ok = dnd.from === "key" ? swapOrMove(dnd.key, toKey) : placeSkillOnKey(toKey, dnd.skill);
-  if (ok) {
-    ignoreClick = true;
-    state.pickSkill = null;
-    state.pickKey = toKey;
-    showInspect(bindAt(toKey), toKey);
-    render();
+  let ok = false;
+  if (toSlot) {
+    ok = applySlotDrop(toSlot, dnd);
+    if (ok) {
+      ignoreClick = true;
+      state.pickSkill = null;
+      state.pickKey = null;
+      state.pickSlot = toSlot;
+      const ref = qbRef(toSlot.bar, toSlot.index);
+      showInspect(qbSkill(toSlot.bar, toSlot.index), ref && ref.key, ref && ref.layer);
+      render();
+    }
+  } else {
+    if (dnd.from === "key") ok = swapOrMove(dnd.key, toKey);
+    else if (dnd.from === "slot") {
+      const sid = dnd.skill || qbSkill(dnd.bar, dnd.index);
+      ok = sid ? placeSkillOnKey(toKey, sid) : false;
+    } else ok = placeSkillOnKey(toKey, dnd.skill);
+    if (ok) {
+      ignoreClick = true;
+      state.pickSkill = null;
+      state.pickSlot = null;
+      state.pickKey = toKey;
+      showInspect(bindAt(toKey), toKey);
+      render();
+    }
   }
   dnd = null;
   clearDndMarks();
@@ -1311,6 +1872,43 @@ for (const id of ["keyboard", "mouse"]) {
   el.addEventListener("drop", onBindDrop);
   el.addEventListener("dragend", onBindDragEnd);
 }
+(function bindQuickbarHud() {
+  const el = document.getElementById("quickbar-hud");
+  if (!el) return;
+  el.addEventListener("click", (e) => {
+    if (ignoreClick) {
+      ignoreClick = false;
+      return;
+    }
+    const rot = e.target.closest("[data-qb-rotate]");
+    if (rot) {
+      e.preventDefault();
+      cycleExtraBar(rot.dataset.qbRotate);
+      return;
+    }
+    const clear = e.target.closest("[data-clear-slot]");
+    if (clear) {
+      e.preventDefault();
+      e.stopPropagation();
+      const [bar, idx] = clear.dataset.clearSlot.split(":");
+      if (QB_BARS[bar]) clearHudSlot(bar, Number(idx));
+      return;
+    }
+    const slot = e.target.closest("[data-qb-bar]");
+    if (slot) onSlot(slot.dataset.qbBar, Number(slot.dataset.qbIndex));
+  });
+  el.addEventListener("contextmenu", (e) => {
+    const slot = e.target.closest("[data-qb-bar]");
+    if (!slot) return;
+    e.preventDefault();
+    clearHudSlot(slot.dataset.qbBar, Number(slot.dataset.qbIndex));
+  });
+  el.addEventListener("dragstart", onBindDragStart);
+  el.addEventListener("dragover", onBindDragOver);
+  el.addEventListener("dragleave", onBindDragLeave);
+  el.addEventListener("drop", onBindDrop);
+  el.addEventListener("dragend", onBindDragEnd);
+})();
 document.getElementById("skills").addEventListener("dragstart", onBindDragStart);
 document.getElementById("skills").addEventListener("dragend", onBindDragEnd);
 document.getElementById("skills").addEventListener("click", (e) => {
@@ -1319,7 +1917,12 @@ document.getElementById("skills").addEventListener("click", (e) => {
     return;
   }
   const btn = e.target.closest("[data-skill]");
-  if (btn) onSkill(btn.dataset.skill);
+  if (!btn) return;
+  if (state.view === "hud" && btn.dataset.layer && btn.dataset.key) {
+    onHudBindPick(btn.dataset.skill, btn.dataset.layer, btn.dataset.key);
+    return;
+  }
+  onSkill(btn.dataset.skill);
 });
 document.getElementById("stigma-view").addEventListener("pointerover", (e) => {
   const host = e.target.closest(".slot, .stigma-row, .tree-flow-node");
@@ -1349,10 +1952,15 @@ document.querySelector(".layers").addEventListener("click", (e) => {
 document.querySelector(".view-tabs").addEventListener("click", (e) => {
   const btn = e.target.closest("[data-view]");
   if (!btn) return;
+  const prev = state.view;
   state.view = btn.dataset.view;
-  state.pickSkill = null;
-  state.pickSlot = null;
-  state.pickKey = null;
+  if (state.view === "stigmas" || prev === "stigmas") {
+    state.pickSkill = null;
+    state.pickSlot = null;
+    state.pickKey = null;
+    state.pickBind = null;
+  }
+  if (state.view !== "hud") state.pickBind = null;
   render();
 });
 document.querySelector(".race-switch").addEventListener("click", (e) => {
@@ -1374,7 +1982,7 @@ document.getElementById("reset-binds").addEventListener("click", clearAllBinds);
 document.getElementById("reset-stigmas").addEventListener("click", clearAllStigmas);
 document.getElementById("inspect").addEventListener("click", (e) => {
   const btn = e.target.closest("[data-unbind]");
-  if (btn) unbindKey(btn.dataset.unbind);
+  if (btn) unbindKey(btn.dataset.unbind, btn.dataset.unbindLayer);
 });
 document.getElementById("filter").addEventListener("input", () => {
   if (state.view !== "stigmas") renderSkills();

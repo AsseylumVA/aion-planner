@@ -66,6 +66,97 @@ CLASSES = {
 }
 
 
+def empty_bar_slots():
+    return [None] * 12
+
+
+def clean_qb_ref(ref):
+    if not isinstance(ref, dict):
+        return None
+    layer = ref.get("layer")
+    key = ref.get("key")
+    if layer not in ("combat", "shift", "ctrl"):
+        return None
+    if not isinstance(key, str) or not key or key in ("KeyW", "KeyS"):
+        return None
+    return {"layer": layer, "key": key}
+
+
+def pad_bar_slots(arr):
+    src = list(arr or [])
+    out = []
+    for i in range(12):
+        out.append(clean_qb_ref(src[i] if i < len(src) else None))
+    return out
+
+
+def extra_layout(mode):
+    try:
+        n = int(mode)
+    except (TypeError, ValueError):
+        n = 0
+    m = n if n in (1, 2, 3) else 0
+    return m, (90 if m % 2 else 0), (2 if m >= 2 else 1)
+
+
+def extra_mode_from_rot_rows(rot, rows):
+    return extra_layout((0 if rows == 1 else 2) + (1 if rot == 90 else 0))[0]
+
+
+def read_extra_mode(q, prefix):
+    if not isinstance(q, dict):
+        return extra_layout(2)[0]
+    raw = q.get(prefix + "mode")
+    if raw is not None:
+        try:
+            n = int(raw)
+        except (TypeError, ValueError):
+            n = None
+        if n in (0, 1, 2, 3):
+            return n
+    rot = 90 if q.get(prefix + "rot") == 90 else 0
+    rows = 1 if q.get(prefix + "rows") == 1 else 2
+    return extra_mode_from_rot_rows(rot, rows)
+
+
+def pad_quickbar(q) -> dict:
+    extra1mode = 2
+    extra2mode = 2
+    siderot = 90
+    siderows = 1
+    bars_src = {}
+    if isinstance(q, dict):
+        extra1mode = read_extra_mode(q, "extra1")
+        extra2mode = read_extra_mode(q, "extra2")
+        siderot = 90
+        siderows = 1
+        if isinstance(q.get("bars"), dict):
+            bars_src = q["bars"]
+        else:
+            bars_src = q
+    extra1mode, extra1rot, extra1rows = extra_layout(extra1mode)
+    extra2mode, extra2rot, extra2rows = extra_layout(extra2mode)
+    bars = {
+        "main": pad_bar_slots(bars_src.get("main")),
+        "bar2": pad_bar_slots(bars_src.get("bar2")),
+        "bar3": pad_bar_slots(bars_src.get("bar3")),
+        "extra1": pad_bar_slots(bars_src.get("extra1")),
+        "extra2": pad_bar_slots(bars_src.get("extra2")),
+        "side": pad_bar_slots(bars_src.get("side")),
+    }
+    return {
+        "extra1mode": extra1mode,
+        "extra2mode": extra2mode,
+        "extra1rot": extra1rot,
+        "extra2rot": extra2rot,
+        "extra1rows": extra1rows,
+        "extra2rows": extra2rows,
+        "siderot": siderot,
+        "siderows": siderows,
+        "bars": bars,
+    }
+
+
 def normalize(data: dict) -> dict:
     names = skill_names()
     stigmas = data.get("stigmas") or {}
@@ -89,6 +180,7 @@ def normalize(data: dict) -> dict:
             "shift": dict(binds.get("shift") or {}),
             "ctrl": dict(binds.get("ctrl") or {}),
         },
+        "quickbar": pad_quickbar(data.get("quickbar")),
         "byClass": by_class,
         "updatedAt": int(data.get("updatedAt") or now_ms()),
         "source": data.get("source") or "api",
@@ -145,6 +237,8 @@ def apply_patch(cur: dict, patch: dict) -> dict:
                     layer_map[key] = sid
                 else:
                     layer_map.pop(key, None)
+    if "quickbar" in patch:
+        data["quickbar"] = pad_quickbar(patch["quickbar"])
     slot = patch.get("slot")
     if slot:
         tier = slot.get("tier")

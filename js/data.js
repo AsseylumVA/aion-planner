@@ -1,47 +1,6 @@
-const COMBOS = [
-  {
-    title: "Засада-клык",
-    keys: "F6 · 1 → 5",
-    text: "В поле всё на внезапность: из инвиза засада и сразу клык. До подхода — слабые места ⇧R, клятвы F1–F5, в бою ритуал Q и ТР E. Если цель в барьере и стан не прошёл — не сливать засаду в уворот.",
-  },
-  {
-    title: "Клеймо III+, потом вспышка",
-    keys: "2 / F → C · ⇧F",
-    text: "Вспышка C и оковы ⇧F имеют смысл только с клейма III. Клеймо F и серия рева на 2 дают +1. В оковы лучше в V: свиток поглощения съест урон с III, и цель не повиснет.",
-  },
-  {
-    title: "Истребление — не в открытие",
-    keys: "⇧E",
-    text: "Не сливать в начале боя. Даёт +2 к текущему клейму: на цели II и она в антишоке убегает — станет IV, можно вспышку или оковы. Каст с места, рвётся с 16 м. Не для осады.",
-  },
-  {
-    title: "Режущая → опрокид",
-    keys: "A → ⇧A",
-    text: "Режущая и подлый набег — почти всегда полсекунды стана. Сразу падение в тень: развод на антишок, засада цела. На пинге можно не успеть. Клык, рев и истребление привязывают к месту.",
-  },
-  {
-    title: "После уворота, ~2 с",
-    keys: "Z → D / ⇧D · R",
-    text: "Контра и ураган — триггеры после любого уклона, окно около 2 с. Стан контры не 100%. Цепь уклонений R, пока висит уклон. Обострялка F2. Клятва уклонения ⇧Z — дольше по анимации, на наживку лучше Z.",
-  },
-  {
-    title: "Снять уклон",
-    keys: "G · H · ⇧G",
-    text: "Против сина, лука и сорка побеждает кто быстрее жмёт вспышки. Тьма ⇧G на 20 м — как засада; иссушающее G и особое H ближе. Подлый удар V (−800 уклона) — не дебаф, банкой не снимается, толк только vs син/лук.",
-  },
-  {
-    title: "Второй антишок",
-    keys: "Ctrl+F · Ctrl+E · Ё",
-    text: "Спасение 7 с +500, усмирение 30 с +500. Вместе как второй антишок: после своего АШ или в начале, чтобы сорк слил падение и ураган. Снятие шока Ё. Со стойкой налетчика обострялка и цепь бессмысленны.",
-  },
-  {
-    title: "Что-то пошло не так",
-    keys: "⇧2 · T · Ctrl+D · Ctrl+F",
-    text: "Прыжок на 15 м, теневая иллюзия, покров сумрака. Иллюзия в полёте не жмётся: сложить крылья, снять корень, сбросить цель, снова открыть. В воздухе в корне — спасение, без возни с крыльями.",
-  },
-];
+const COMBOS = [];
 
-const LOCKED = new Set(["combat:1", "combat:2", "combat:3", "combat:4", "combat:5"]);
+const LOCKED = new Set();
 const MOVE = new Set(["KeyW", "KeyS"]);
 
 const DEFAULT_CLASS = "assassin";
@@ -63,11 +22,6 @@ const STIGMA_BOARD = [
   { tier: "greater", index: 4, level: 53 },
   { tier: "greater", index: 5, level: 59 },
 ];
-
-const DEFAULT_STIGMAS = {
-  normal: ["ambush", "complex", "fog", "crush", "oathDodge", "oathSpeed"],
-  greater: ["lightning", "senses"],
-};
 
 const STIGMA_EN_TO_ID = {
   Flurry: "oathSpeed",
@@ -480,106 +434,23 @@ const STIGMA_REQS = (() => {
   return map;
 })();
 
-const STIGMA_BINDS = {
-  ambush: { layer: "combat", key: "Digit1" },
-  oathSpeed: { layer: "combat", key: "F1" },
-  senses: { layer: "combat", key: "F2" },
-  deadlyAbandon: { layer: "combat", key: "F3" },
-  oathAcc: { layer: "combat", key: "F5" },
-  oathDodge: { layer: "shift", key: "KeyZ" },
-  flashSpeed: { layer: "combat", key: "KeyT" },
-  shadowfall: { layer: "shift", key: "KeyA" },
-  slayerAsmo: { layer: "ctrl", key: "KeyZ" },
-  slayerElyos: { layer: "ctrl", key: "KeyZ" },
-  fog: { layer: "shift", key: "KeyQ" },
-  deadlyPoison: { layer: "shift", key: "KeyB" },
-  escape: { layer: "ctrl", key: "KeyF" },
-  complex: { layer: "shift", key: "KeyG" },
-  crush: { layer: "shift", key: "KeyG" },
-  lightning: { layer: "shift", key: "KeyB" },
-  shadowStep: { layer: "combat", key: "F11" },
-  runeKnife: { layer: "shift", key: "KeyA" },
-  eyeWrath: { layer: "combat", key: "F12" },
-  throwShuriken: { layer: "combat", key: "Digit7" },
-  poisonHit: { layer: "shift", key: "KeyB" },
-  searchStrike: { layer: "shift", key: "KeyV" },
-  runeSwipe: { layer: "shift", key: "KeyG" },
-  divineRune: { layer: "shift", key: "KeyG" },
-  beastScar: { layer: "shift", key: "KeyD" },
-  agonySlash: { layer: "shift", key: "KeyN" },
-  lethalVenom: { layer: "shift", key: "KeyC" },
-  agonyRune: { layer: "combat", key: "KeyH" },
-  dashSlash: { layer: "combat", key: "Digit8" },
-  silenceRune: { layer: "shift", key: "KeyX" },
-  explosiveBurst: { layer: "shift", key: "KeyG" },
-  quickDoom: { layer: "combat", key: "Digit9" },
-  needle: { layer: "combat", key: "KeyH" },
-};
-
-const RACIAL_BINDS = {
-  elyos: [
-    { layer: "shift", key: "KeyX", skill: "divineStrike" },
-    { layer: "ctrl", key: "KeyC", skill: "spelldodge" },
-  ],
-  asmo: [
-    { layer: "shift", key: "KeyX", skill: "darkStrike" },
-    { layer: "ctrl", key: "KeyQ", skill: "stance" },
-    { layer: "shift", key: "KeyG", skill: "darknessRune" },
-  ],
-};
-
-const LEARNED_BINDS = {
-  combat: {
-    Digit2: "roar",
-    Digit3: "sudden",
-    Digit4: "swift",
-    Digit5: "fang",
-    KeyA: "dash",
-    KeyE: "calc",
-    KeyD: "counter",
-    KeyR: "evasiveBoost",
-    KeyF: "stigma",
-    KeyG: "bloodRune",
-    KeyH: "needle",
-    KeyQ: "ritual",
-    KeyC: "flash",
-    KeyV: "weaken",
-    KeyX: "assassination",
-    KeyZ: "focusedEvasion",
-    Backquote: "unshock",
-    CapsLock: "illusion",
-    F4: "deadlyFocus",
-    F6: "stealth",
-    F7: "dagger",
-    Mouse4: "weaponSwap",
-    Mouse5: "autoAttack",
-    Wheel: "seeing",
-  },
-  shift: {
-    Digit2: "beastLeap",
-    Digit3: "killingSpree",
-    KeyD: "whirl",
-    KeyE: "massacre",
-    KeyF: "bindingRune",
-    KeyR: "weakspot",
-    KeyC: "poisonBlade",
-  },
-  ctrl: {
-    KeyA: "searchingEye",
-    KeyE: "calm",
-    KeyD: "windWalk",
-    KeyR: "powder",
-    Digit1: "lifeSerum",
-    Digit2: "manaSerum",
-    Digit3: "recoverySerum",
-    Digit4: "curePotion",
-  },
-};
+function emptyBinds() {
+  return { combat: {}, shift: {}, ctrl: {} };
+}
 
 function emptyStigmas() {
   return {
     normal: Array(STIGMA_SLOTS.normal).fill(null),
     greater: Array(STIGMA_SLOTS.greater).fill(null),
+  };
+}
+
+function emptyLayout() {
+  return {
+    learned: emptyBinds(),
+    racial: { elyos: [], asmo: [] },
+    stigma: {},
+    defaultStigmas: { normal: [], greater: [] },
   };
 }
 
@@ -593,26 +464,7 @@ function padStigmas(src) {
 }
 
 function classLayout(cls) {
-  if (!cls || cls === "assassin") {
-    return {
-      learned: LEARNED_BINDS,
-      racial: RACIAL_BINDS,
-      stigma: STIGMA_BINDS,
-      defaultStigmas: DEFAULT_STIGMAS,
-    };
-  }
-  return (
-    (typeof CLASS_DEFAULTS !== "undefined" && CLASS_DEFAULTS[cls]) || {
-      learned: {
-        combat: {},
-        shift: {},
-        ctrl: { Digit1: "lifeSerum", Digit2: "manaSerum", Digit3: "recoverySerum", Digit4: "curePotion" },
-      },
-      racial: { elyos: [], asmo: [] },
-      stigma: {},
-      defaultStigmas: { normal: [], greater: [] },
-    }
-  );
+  return (typeof CLASS_DEFAULTS !== "undefined" && CLASS_DEFAULTS[cls]) || emptyLayout();
 }
 
 function classNameOf(cls) {
@@ -621,11 +473,11 @@ function classNameOf(cls) {
 }
 
 function classCombos(cls) {
-  return !cls || cls === "assassin" ? COMBOS : [];
+  return COMBOS;
 }
 
 function defaultStigmaBoard(cls) {
-  return padStigmas(classLayout(cls || DEFAULT_CLASS).defaultStigmas);
+  return emptyStigmas();
 }
 
 function installedStigmaSet(board) {
@@ -645,24 +497,10 @@ function applyBind(binds, layer, key, skillId) {
 }
 
 function buildDefaultBinds(cls, race, board) {
-  const layout = classLayout(cls);
-  const binds = {
-    combat: { ...(layout.learned.combat || {}) },
-    shift: { ...(layout.learned.shift || {}) },
-    ctrl: { ...(layout.learned.ctrl || {}) },
-  };
-  for (const row of layout.racial[race] || []) {
-    applyBind(binds, row.layer, row.key, row.skill);
-  }
-  const stigmaMap = layout.stigma && Object.keys(layout.stigma).length ? layout.stigma : STIGMA_BINDS;
-  for (const id of installedStigmaSet(board)) {
-    const slot = stigmaMap[id];
-    if (slot) applyBind(binds, slot.layer, slot.key, id);
-  }
-  return binds;
+  return emptyBinds();
 }
 
-const DEFAULT_BINDS = buildDefaultBinds(DEFAULT_CLASS, DEFAULT_RACE, defaultStigmaBoard());
+const DEFAULT_BINDS = emptyBinds();
 
 const KEYBOARD = [
   [

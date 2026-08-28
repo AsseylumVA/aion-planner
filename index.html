@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=42" />
+  <link rel="stylesheet" href="css/style.css?v=51" />
 </head>
 <body>
   <div class="app">
@@ -49,6 +49,7 @@
       <div class="board card">
         <div class="view-tabs">
           <button type="button" data-view="binds" class="active">Раскладка</button>
+          <button type="button" data-view="hud">Панели</button>
           <button type="button" data-view="stigmas">Стигмы</button>
           <span class="spacer"></span>
           <button type="button" class="copy" id="save-state">Сохранить</button>
@@ -75,13 +76,15 @@
             <button type="button" class="side m4" data-key="Mouse4">M4</button>
             <button type="button" class="side m5" data-key="Mouse5">M5</button>
           </div>
-          <p class="mouse-hint" id="mouse-hint">Мышь — в движении. M4 клятва уклонения, M5 маскировка, колесо просветление.</p>
+          <p class="mouse-hint" id="mouse-hint">Мышь — в движении. W/S ход, A и D можно назначить умения. Перетащите умение на клавишу.</p>
         </div>
         <p class="hint" id="board-hint">
-          До боя только F1–F5: скорость, чувства, готовность, штурмовая, точность (КТ последней).
-          В бою Q ритуал, E ТР. Контроль: F клеймо, C вспышка-стан, B кинжал в воздух, V спина, X убийство, ⇧C клинок, ⇧B смертельные яды.
-          Перетащите скилл на другую клавишу, чтобы поменять местами. Клик по скиллу — крестик справа сверху, чтобы снять. ПКМ тоже снимает.
+          Перетащите умение на клавишу. Клик по скиллу — крестик справа сверху, чтобы снять. ПКМ тоже снимает.
         </p>
+        </div>
+        <div id="hud-view" hidden>
+          <p class="hint" id="hud-hint">Перетащите умение с клавиши из сетки справа на ячейку панели. Клик по иконке, затем по слоту — тоже ставит. На «Раскладке» — полный список умений.</p>
+          <section class="quickbar-hud" id="quickbar-hud" aria-label="Панели умений"></section>
         </div>
         <div id="stigma-view" hidden>
           <div class="workspace">
@@ -106,9 +109,9 @@
     </div>
   </div>
   <div class="toast" id="toast">Скопировано</div>
-  <script src="js/skills.js?v=38"></script>
-  <script src="js/class-defaults.js?v=37"></script>
-  <script src="js/data.js?v=37"></script>
-  <script src="js/app.js?v=38"></script>
+  <script src="js/skills.js?v=40"></script>
+  <script src="js/class-defaults.js?v=39"></script>
+  <script src="js/data.js?v=38"></script>
+  <script src="js/app.js?v=53"></script>
 </body>
 </html>

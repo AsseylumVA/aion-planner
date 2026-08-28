@@ -16,6 +16,7 @@ from pathlib import Path
 from client_skill_stats import (
     MAG_STATUS_TAG,
     SKILLS_ZIP,
+    STATS_PATH,
     STRINGS_PATH,
     client_xml_text,
     fill_client_desc,
@@ -143,46 +144,6 @@ EXTRA = {
 
 POTION_IDS = ("curePotion", "recoverySerum", "manaSerum", "lifeSerum")
 BASIC_IDS = ("autoAttack", "weaponSwap")
-
-BUFF_KEYS = ["F1", "F2", "F3", "F4", "F5"]
-COMBAT_KEYS = [
-    "Digit2",
-    "Digit3",
-    "Digit4",
-    "Digit5",
-    "KeyQ",
-    "KeyE",
-    "KeyR",
-    "KeyF",
-    "KeyA",
-    "KeyD",
-    "KeyC",
-    "KeyV",
-    "KeyX",
-    "KeyZ",
-    "KeyG",
-    "KeyH",
-]
-SHIFT_KEYS = [
-    "KeyQ",
-    "KeyE",
-    "KeyR",
-    "KeyF",
-    "KeyA",
-    "KeyD",
-    "KeyC",
-    "KeyV",
-    "KeyX",
-    "KeyZ",
-    "KeyG",
-    "KeyB",
-]
-CTRL_POTIONS = {
-    "Digit1": "lifeSerum",
-    "Digit2": "manaSerum",
-    "Digit3": "recoverySerum",
-    "Digit4": "curePotion",
-}
 
 
 def js_str(s: str) -> str:
@@ -404,7 +365,7 @@ def skill_desc(
     stats: dict | None,
 ) -> str:
     filled = fill_client_desc(body, strings, by_name)
-    if filled and "?" not in filled:
+    if filled:
         return with_stats(filled, stats)
     key = fields.get("desc_long") or fields.get("desc") or ""
     raw = strings.get(key) or ""
@@ -433,6 +394,120 @@ def is_chain_follow(
     if (fields.get("sub_type") or "").lower() != "attack":
         return False
     return "2-е умение" in desc or "2-e умение" in desc
+
+
+def parse_chain_prob(fields: dict[str, str]) -> int | None:
+    """Client chain-window percent, or None if the field is absent.
+
+    Prefer chain_skill_prob2 (the slot this pack actually uses). Fall back to
+    chain_skill_prob1 only when prob2 is missing. Missing is unknown — not 0.
+    """
+    raw = fields.get("chain_skill_prob2")
+    if raw is None:
+        raw = fields.get("chain_skill_prob1")
+    if raw is None or raw == "":
+        return None
+    try:
+        return int(raw)
+    except ValueError:
+        return None
+
+
+def _share_class(a, b) -> bool:
+    return bool(set(a or ()) & set(b or ()))
+
+
+def apply_chain_chance_descs(
+    skills: dict,
+    assigned: dict[str, dict],
+    skill_class: dict[str, list[str]],
+) -> int:
+    """Append Russian chain-window percents from client XML onto planner descs."""
+    by_cat: dict[str, list[str]] = defaultdict(list)
+    by_pre: dict[str, list[str]] = defaultdict(list)
+    by_client_name: dict[str, str] = {}
+    for sid, rec in assigned.items():
+        fields = rec["fields"]
+        cat = (fields.get("chain_category_name") or "").strip()
+        pre = (fields.get("prechain_category_name") or "").strip()
+        if cat:
+            by_cat[cat].append(sid)
+        if pre:
+            by_pre[pre].append(sid)
+        by_client_name[rec["name"]] = sid
+        by_client_name[G_TAIL.sub("", rec["name"])] = sid
+
+    n = 0
+    for sid, rec in assigned.items():
+        if sid not in skills:
+            continue
+        fields = rec["fields"]
+        my_classes = skill_class.get(sid) or sorted(rec["classes"])
+        bits: list[str] = []
+
+        p = parse_chain_prob(fields)
+        cat = (fields.get("chain_category_name") or "").strip()
+        if p is not None and p > 0 and cat:
+            next_names: list[str] = []
+            for nid in by_pre.get(cat, []):
+                if nid == sid or nid not in skills:
+                    continue
+                their = skill_class.get(nid) or sorted(assigned[nid]["classes"])
+                if not _share_class(my_classes, their):
+                    continue
+                name = skills[nid]["name"]
+                if name not in next_names:
+                    next_names.append(name)
+            if next_names:
+                names = ", ".join(sorted(next_names, key=str.lower))
+                bits.append(f"Шанс открыть следующее умение серии ({names}): {p}%.")
+
+        prev_pairs: list[tuple[str, int]] = []
+        seen_pair: set[tuple[str, int]] = set()
+        prev_ids: list[str] = []
+        pre_cat = (fields.get("prechain_category_name") or "").strip()
+        if pre_cat:
+            prev_ids.extend(by_cat.get(pre_cat, []))
+        pre_skill = (fields.get("prechain_skillname") or "").strip()
+        if pre_skill:
+            oid = by_client_name.get(pre_skill) or by_client_name.get(G_TAIL.sub("", pre_skill))
+            if oid:
+                prev_ids.append(oid)
+        for oid in prev_ids:
+            if oid == sid or oid not in assigned or oid not in skills:
+                continue
+            their = skill_class.get(oid) or sorted(assigned[oid]["classes"])
+            if not _share_class(my_classes, their):
+                continue
+            op = parse_chain_prob(assigned[oid]["fields"])
+            if op is None or op <= 0:
+                continue
+            name = skills[oid]["name"]
+            key = (name, op)
+            if key in seen_pair:
+                continue
+            seen_pair.add(key)
+            prev_pairs.append((name, op))
+        if prev_pairs:
+            by_p: dict[int, list[str]] = defaultdict(list)
+            for name, op in prev_pairs:
+                if name not in by_p[op]:
+                    by_p[op].append(name)
+            for op in sorted(by_p, reverse=True):
+                quoted = ", ".join(f"«{n}»" for n in sorted(by_p[op], key=str.lower))
+                bits.append(f"Шанс появления этого умения после {quoted}: {op}%.")
+
+        if not bits:
+            continue
+        desc = skills[sid]["desc"]
+        extra = " ".join(bits)
+        if extra in (desc or ""):
+            continue
+        if desc and desc[-1] not in ".!?":
+            desc += "."
+        skills[sid]["desc"] = f"{desc} {extra}".strip()
+        n += 1
+    return n
 
 
 def parse_skills_xml(xml: str) -> dict[str, tuple[int, str, dict[str, str]]]:
@@ -714,6 +789,8 @@ def build_skill_objects(
             "activation": fields.get("activation_attribute"),
             "icon": fields.get("skillicon_name"),
         }
+    n_chain = apply_chain_chance_descs(skills, assigned, skill_class)
+    print("chain-chance descs", n_chain)
     return skills, stigma_tier, skill_race, skill_class, chain_follow, catalog
 
 
@@ -766,107 +843,17 @@ def write_skills_js(
     OUT_JS.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def delay_ms(fields: dict[str, str]) -> int:
-    try:
-        return int(fields.get("delay_time") or 0)
-    except ValueError:
-        return 0
-
-
-def is_self_buff(fields: dict[str, str], kind: str) -> bool:
-    if kind != "buff":
-        return False
-    first = (fields.get("first_target") or "").lower()
-    return first in ("me", "")
-
-
-def generate_class_defaults(assigned: dict[str, dict], skills: dict, chain_follow: set[str]) -> dict:
-    """Heuristic layouts for non-assassin classes. Assassin stays hand-authored."""
-    by_class: dict[str, list[str]] = defaultdict(list)
-    for sid, rec in assigned.items():
-        if sid in chain_follow:
-            continue
-        for cid in rec["classes"]:
-            by_class[cid].append(sid)
-
-    out = {}
-    for cid in CLASS_IDS:
-        if cid == "assassin":
-            continue
-        ids = by_class[cid]
-        # stable: name then id
-        ids.sort(key=lambda s: (skills[s]["name"], s))
-        combat: dict[str, str] = {}
-        shift: dict[str, str] = {}
-        ctrl = dict(CTRL_POTIONS)
-        racial = {"elyos": [], "asmo": []}
-
-        buffs = []
-        attacks = []
-        utils = []
-        racial_skills = {"elyos": [], "asmo": []}
-        for sid in ids:
-            rec = assigned[sid]
-            if rec["stigma_display"] in ("1", "2"):
-                continue
-            race = rec["race"]
-            fields = rec["fields"]
-            kind = skills[sid]["kind"]
-            name = skills[sid]["name"]
-            if race:
-                racial_skills[race].append(sid)
-                continue
-            if "возвращен" in name.lower() or delay_ms(fields) >= 1_200_000:
-                utils.append(sid)
-                continue
-            if is_self_buff(fields, kind) and delay_ms(fields) >= 20_000:
-                buffs.append(sid)
-            elif kind in ("combat", "stigma") or (fields.get("sub_type") or "").lower() in (
-                "attack",
-                "debuff",
-            ):
-                attacks.append(sid)
-            else:
-                utils.append(sid)
-
-        for key, sid in zip(BUFF_KEYS, buffs):
-            combat[key] = sid
-        leftover_buffs = buffs[len(BUFF_KEYS) :]
-        for key, sid in zip(COMBAT_KEYS, attacks):
-            combat[key] = sid
-        leftover_atk = attacks[len(COMBAT_KEYS) :]
-        shift_i = 0
-        for sid in leftover_atk + leftover_buffs:
-            if shift_i >= len(SHIFT_KEYS):
-                break
-            shift[SHIFT_KEYS[shift_i]] = sid
-            shift_i += 1
-        if utils:
-            combat.setdefault("F8", utils[0])
-
-        def place_racial(race: str) -> list[dict]:
-            rows = []
-            keys_left = [k for k in COMBAT_KEYS if k not in combat]
-            keys_left += [k for k in ("KeyX", "KeyC", "KeyQ") if k not in combat]
-            for i, sid in enumerate(racial_skills[race][:3]):
-                if i >= len(keys_left):
-                    break
-                key = keys_left[i]
-                layer = "shift" if key in shift or key not in COMBAT_KEYS else "combat"
-                if key in combat and layer == "combat":
-                    layer = "shift"
-                rows.append({"layer": layer, "key": key, "skill": sid})
-            return rows
-
-        racial["elyos"] = place_racial("elyos")
-        racial["asmo"] = place_racial("asmo")
-        out[cid] = {
-            "learned": {"combat": combat, "shift": shift, "ctrl": ctrl},
-            "racial": racial,
+def generate_class_defaults(_assigned=None, _skills=None, _chain_follow=None) -> dict:
+    """Empty layouts only — do not ship invented binds or stigma loadouts."""
+    return {
+        cid: {
+            "learned": {"combat": {}, "shift": {}, "ctrl": {}},
+            "racial": {"elyos": [], "asmo": []},
             "stigma": {},
             "defaultStigmas": {"normal": [], "greater": []},
         }
-    return out
+        for cid in CLASS_IDS
+    }
 
 
 def write_class_defaults(defaults: dict) -> None:
@@ -1001,25 +988,29 @@ def main() -> None:
         )
         for sid, item in EXTRA.items():
             skills.setdefault(sid, dict(item))
-        print("writing icons…")
-        ICON_DIR.mkdir(parents=True, exist_ok=True)
-        ok = 0
-        miss = 0
-        for sid, rec in assigned.items():
-            icon = rec["fields"].get("skillicon_name") or ""
-            if not icon:
-                miss += 1
-                continue
-            if copy_icon(icon, ICON_DIR / f"{sid}.png", zip_names, z):
-                ok += 1
-            else:
-                miss += 1
-                print("NO ICON", sid, icon)
-        print("icons ok", ok, "miss", miss)
+        if "--no-icons" not in sys.argv:
+            print("writing icons…")
+            ICON_DIR.mkdir(parents=True, exist_ok=True)
+            ok = 0
+            miss = 0
+            for sid, rec in assigned.items():
+                icon = rec["fields"].get("skillicon_name") or ""
+                if not icon:
+                    miss += 1
+                    continue
+                if copy_icon(icon, ICON_DIR / f"{sid}.png", zip_names, z):
+                    ok += 1
+                else:
+                    miss += 1
+                    print("NO ICON", sid, icon)
+            print("icons ok", ok, "miss", miss)
 
     write_skills_js(skills, stigma_tier, skill_race, skill_class, chain_follow)
-    defaults = generate_class_defaults(assigned, skills, chain_follow)
-    write_class_defaults(defaults)
+    if "--no-defaults" not in sys.argv:
+        defaults = generate_class_defaults(assigned, skills, chain_follow)
+        write_class_defaults(defaults)
+    else:
+        defaults = {}
     CATALOG_PATH.write_text(
         json.dumps(
             {
@@ -1033,6 +1024,20 @@ def main() -> None:
         + "\n",
         encoding="utf-8",
     )
+    stats_out: dict[str, dict] = {}
+    for sid, rec in assigned.items():
+        st = parse_block(rec["body"])
+        if st:
+            st["skill_id"] = rec["client_id"]
+            stats_out[sid] = st
+    STATS_PATH.write_text(json.dumps(stats_out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    hole_re = re.compile(r"наносит(?: цели)? -? ед\.|Время действия:\s*(?:Требуется|$)|восстанавливает HP(?! )")
+    print("coverage (desc has numbers vs hole):")
+    for cid in CLASS_IDS:
+        ids = [s for s, rec in assigned.items() if cid in rec["classes"]]
+        with_stats_n = sum(1 for s in ids if s in stats_out)
+        holes = sum(1 for s in ids if hole_re.search(skills[s]["desc"]))
+        print(f"  {cid:14s} skills={len(ids):3d}  parsed_stats={with_stats_n:3d}  desc_holes~={holes:3d}")
     print(
         "wrote",
         OUT_JS,
@@ -1044,6 +1049,8 @@ def main() -> None:
         len(chain_follow),
         "defaults",
         list(defaults),
+        "stats",
+        len(stats_out),
     )
 
 

@@ -22,11 +22,6 @@ BLOCK_RE = re.compile(
 )
 FIELD_RE = re.compile(r"<([^>]+)>([^<]*)</")
 EFFECT_RE = re.compile(r"^effect(\d+)_(.+)$")
-STAT_TAIL_RE = re.compile(
-    r"(?: Базовая точность(?: магии)? \+\d+\.| Урон в PvP \d+%\.| Шанс [^.]+\."
-    r"| (?:Стан|Опрокидывание|Ошеломление|Вращение|Немота|Оковы|Воздушные оковы"
-    r"|Притягивание|Замедление|Ослепление|Сон|Паралич|Страх)(?:, [^.]*)?\.)+$"
-)
 
 CC_TYPES = {
     "stun": ("стан", "стана"),
@@ -45,6 +40,21 @@ CC_TYPES = {
     "paralyze": ("паралич", "паралича"),
     "fear": ("страх", "страха"),
 }
+_CC_CHANCE_NAMES = "|".join(
+    sorted({genitive for _nom, genitive in CC_TYPES.values()}, key=len, reverse=True)
+)
+# Do not match chain-window sentences («Шанс открыть…» / «Шанс появления…»).
+STAT_TAIL_RE = re.compile(
+    r"(?: Базовая точность(?: магии)? \+\d+\.| Урон в PvP \d+%\.|"
+    rf" Шанс (?:{_CC_CHANCE_NAMES}) \d+%(?:, [^.]*)?\."
+    r"| Урон \d+(?:-\d+)?\.| Восстанавливает \d+ HP\."
+    r"| (?:Стан|Опрокидывание|Ошеломление|Вращение|Немота|Оковы|Воздушные оковы"
+    r"|Притягивание|Замедление|Ослепление|Сон|Паралич|Страх)(?:, [^.]*)?\.)+$"
+)
+CHAIN_CHANCE_RE = re.compile(
+    r"(?: Шанс открыть следующее умение серии \([^)]+\): \d+%\."
+    r"| Шанс появления этого умения после [^.]+: \d+%\.)+$"
+)
 
 # EffectTemplate.isMagicalEffectTemp(): these always roll mag acc / mag resist,
 # even when the skill <type> is Physical (sin/ranger/chanter stuns, poisons…).
@@ -74,6 +84,61 @@ STAT_RU = {
     "ElementalDefendAll": "Защ. от стихий",
     "Dodge": "Уклонение",
     "Speed": "Скорость",
+    "PhyAttack": "Физ. атака",
+    "phyAttack": "Физ. атака",
+    "phyattack": "Физ. атака",
+    "MaxHP": "Макс. HP",
+    "maxHp": "Макс. HP",
+    "maxhp": "Макс. HP",
+    "MagicalSkillBoost": "Сила магии",
+    "MagicalSkillBoostResist": "Сопр. магии",
+    "magicalskillboostresist": "Сопр. магии",
+    "physicaldefend": "Физ. защита",
+    "PhysicalDefend": "Физ. защита",
+    "AttackDelay": "Скор. атаки",
+    "attackRange": "Дальность",
+    "ElementalDefendWater": "Защ. от воды",
+    "ElementalDefendFire": "Защ. от огня",
+    "ElementalDefendAir": "Защ. от воздуха",
+    "ElementalDefendEarth": "Защ. от земли",
+}
+CONDITION_RU = {
+    "EveryHit": "каждый удар",
+    "Nmlatk": "обычная атака",
+    "MagicalAtk": "маг. атака",
+    "SkillAtk": "умение",
+}
+WEAPON_RU = {
+    "bow": "лук",
+    "dagger": "кинжал",
+    "sword": "меч",
+    "mace": "булава",
+    "staff": "посох",
+    "orb": "сфера",
+    "spellbook": "книга",
+    "polearm": "пика",
+    "1h_sword": "меч",
+    "2hsword": "двуручный меч",
+}
+PERIODIC_DAMAGE_TYPES = {"spellatk", "poison", "bleed", "fpatk", "mpatk"}
+PHYS_DAMAGE_TYPES = {
+    "skillatk_instant",
+    "dashatk",
+    "movebehindatk",
+    "carvesignet",
+    "skillatkdrain_instant",
+    "backdashatk",
+    "closeaerialatk",
+    "delayedskillatk_instant",
+    "proc_atk_instant",
+    "procatk_instant",
+}
+MAG_DAMAGE_TYPES = {
+    "spellatk_instant",
+    "signetburst",
+    "delayedspellatk_instant",
+    "spellatkdrain_instant",
+    "mpattack_instant",
 }
 KNOWN_ATTRS = {
     "MinDamage",
@@ -81,13 +146,53 @@ KNOWN_ATTRS = {
     "RemainTime",
     "AddDamage",
     "AddEffect",
+    "AddEffectCondition",
     "SignetGrade",
+    "ChangeSignetGrade",
     "StatName",
+    "StatName2",
+    "StatName3",
     "Value",
+    "Value2",
+    "Value3",
     "FixDamage",
+    "FixedDamage",
     "ConditionProb",
+    "Condition",
     "Damage",
     "OtherSkill",
+    "Heal",
+    "HealPoint",
+    "CheckTime",
+    "CheckTimeHeal",
+    "SummonTime",
+    "CoverValue",
+    "ShieldValue",
+    "Range",
+    "UnitNumber",
+    "HPHeal",
+    "MPHeal",
+    "DelayedTime",
+    "CastingBonus",
+    "FixValue",
+    "RateValue",
+    "RandomTime",
+    "WeaponCategory",
+    "Count",
+    "MaxRange",
+    "DispelCount",
+    "Distance",
+    "Speed",
+    "AttackType",
+    "BonusRate",
+    "BoostCount",
+    "CurrentHPMP",
+    "EffectArea",
+    "SubType",
+    "BonusValue",
+    "DeBoostPenalty",
+    "AttackCount",
+    "RateDamage",
 }
 
 
@@ -167,10 +272,24 @@ def effect_acc(e: dict[str, str]) -> int:
     return int(e.get("acc_mod2") or 0) + int(e.get("acc_mod1") or 0)
 
 
+def _int_field(val: str | None) -> int | None:
+    if not val:
+        return None
+    try:
+        n = int(float(val))
+    except ValueError:
+        return None
+    return n if n else None
+
+
 def parse_block(body: str) -> dict:
     skill_type = None
     pvp = None
     dist = None
+    cost_end = None
+    cost_param = None
+    cost_dp = None
+    cast_ms = None
     for name, val in FIELD_RE.findall(body):
         if name == "type" and skill_type is None:
             skill_type = val
@@ -178,23 +297,51 @@ def parse_block(body: str) -> dict:
             pvp = int(val)
         elif name == "first_target_valid_distance" and val:
             dist = int(val)
+        elif name == "cost_end" and cost_end is None:
+            cost_end = _int_field(val)
+        elif name == "cost_parameter" and cost_param is None:
+            cost_param = val
+        elif name == "cost_dp" and cost_dp is None:
+            cost_dp = _int_field(val)
+        elif name == "casting_delay" and cast_ms is None:
+            cast_ms = _int_field(val)
     skill_is_magic = (skill_type or "").lower() == "magical"
     acc_phys = 0
     acc_magic = 0
     has_mag_status = False
+    duration_ms = 0
+    interval_ms = 0
+    dmg = None
+    heal = None
     for e in parse_effects(body).values():
-        et = e.get("type") or ""
+        et = (e.get("type") or "").lower()
         if effect_uses_magic_acc(et):
             has_mag_status = True
         acc = effect_acc(e)
-        if not acc:
-            continue
-        # acc_mod lives on the effect. Stun/poison/… always vs mag resist;
-        # damage on a Magical skill too; otherwise physical dodge.
-        if skill_is_magic or effect_uses_magic_acc(et):
-            acc_magic = max(acc_magic, acc)
-        else:
-            acc_phys = max(acc_phys, acc)
+        if acc:
+            # acc_mod lives on the effect. Stun/poison/… always vs mag resist;
+            # damage on a Magical skill too; otherwise physical dodge.
+            if skill_is_magic or effect_uses_magic_acc(et):
+                acc_magic = max(acc_magic, acc)
+            else:
+                acc_phys = max(acc_phys, acc)
+        remain = int(e.get("remain2") or 0) + int(e.get("remain1") or 0)
+        if remain > duration_ms:
+            duration_ms = remain
+        check = int(e.get("checktime") or 0)
+        if check > interval_ms:
+            interval_ms = check
+        if dmg is None and et in MAG_DAMAGE_TYPES:
+            n = _int_field(e.get("reserved2"))
+            if n:
+                dmg = n
+        if dmg is None and et in PHYS_DAMAGE_TYPES and e.get("reserved4") not in (None, "", "0"):
+            lo, hi = phys_damage(e)
+            dmg = [lo, hi]
+        if heal is None and et == "heal_instant":
+            n = _int_field(e.get("reserved2"))
+            if n:
+                heal = n
     out = {}
     if acc_phys:
         out["acc_phys"] = acc_phys
@@ -210,6 +357,28 @@ def parse_block(body: str) -> dict:
         out["pvp"] = pvp
     if dist and dist > 1:
         out["range_m"] = dist
+    if duration_ms:
+        out["duration_ms"] = duration_ms
+    if interval_ms:
+        out["interval_ms"] = interval_ms
+    if dmg is not None:
+        out["dmg"] = dmg
+    if heal is not None:
+        out["heal"] = heal
+    if cast_ms:
+        out["cast_ms"] = cast_ms
+    param = (cost_param or "").upper()
+    if cost_end:
+        if param == "HP":
+            out["hp_cost"] = cost_end
+        elif param == "MP_RATIO":
+            out["mp_ratio"] = cost_end
+        elif param == "HP_RATIO":
+            out["hp_ratio"] = cost_end
+        else:
+            out["mp"] = cost_end
+    if cost_dp:
+        out["dp"] = cost_dp
     cc = parse_cc(body)
     if cc:
         out["cc"] = cc
@@ -252,6 +421,23 @@ def collect(xml: str | None = None) -> dict[str, dict]:
     return out
 
 
+def format_core_numbers(desc: str, stats: dict) -> str:
+    """When the L10N string has no placeholders, still surface XML damage/heal/duration."""
+    if re.search(r"\d", desc or ""):
+        return ""
+    parts = []
+    dmg = stats.get("dmg")
+    if isinstance(dmg, list) and len(dmg) == 2:
+        parts.append(f"Урон {dmg[0]}-{dmg[1]}.")
+    elif isinstance(dmg, int):
+        parts.append(f"Урон {dmg}.")
+    if stats.get("heal"):
+        parts.append(f"Восстанавливает {stats['heal']} HP.")
+    if stats.get("duration_ms"):
+        parts.append(f"Время действия: {fmt_remain(stats['duration_ms'])}")
+    return " ".join(parts)
+
+
 def format_stats(stats: dict) -> str:
     parts = []
     if stats.get("acc_phys"):
@@ -269,23 +455,69 @@ def format_stats(stats: dict) -> str:
 
 
 def with_stats(desc: str, stats: dict | None) -> str:
-    desc = STAT_TAIL_RE.sub("", (desc or "").rstrip())
-    extra = format_stats(stats or {})
+    desc = (desc or "").rstrip()
+    chain = ""
+    m = CHAIN_CHANCE_RE.search(desc)
+    if m:
+        chain = m.group(0)
+        desc = desc[: m.start()].rstrip()
+    desc = STAT_TAIL_RE.sub("", desc).rstrip()
+    extra = " ".join(
+        p for p in (format_core_numbers(desc, stats or {}), format_stats(stats or {})) if p
+    )
+    if extra:
+        if desc and desc[-1] not in ".!?":
+            desc += "."
+        desc = f"{desc} {extra}".strip()
+    if chain:
+        if desc and desc[-1] not in ".!?":
+            desc += "."
+        desc = f"{desc}{chain}".strip()
+    return desc
+
+
+def _insert_after_cd(tags: list[str], extra: list[str]) -> list[str]:
     if not extra:
-        return desc
-    if desc and desc[-1] not in ".!?":
-        desc += "."
-    return f"{desc} {extra}".strip()
+        return tags
+    out = list(tags)
+    idx = next((i for i, t in enumerate(out) if t.startswith("КД ")), None)
+    at = (idx + 1) if idx is not None else min(1, len(out))
+    for item in reversed(extra):
+        if item not in out:
+            out.insert(at, item)
+    return out
 
 
 def with_mag_status_tag(tags: list[str], stats: dict | None) -> list[str]:
     tags = [t for t in tags if t != MAG_STATUS_TAG]
+    tags = [
+        t
+        for t in tags
+        if not t.startswith(("MP ", "HP ", "DP ", "каст "))
+        and not re.fullmatch(r"\d+% MP", t)
+        and not re.fullmatch(r"\d+% HP", t)
+    ]
     if stats and stats.get("range_m"):
         rng = f"{stats['range_m']} м"
         if tags and (tags[0] == "ближний" or re.fullmatch(r"\d+ м", tags[0])):
             tags = [rng, *tags[1:]]
         elif rng not in tags:
             tags = [rng, *tags]
+    extra = []
+    if stats:
+        if stats.get("mp"):
+            extra.append(f"MP {stats['mp']}")
+        elif stats.get("hp_cost"):
+            extra.append(f"HP {stats['hp_cost']}")
+        elif stats.get("mp_ratio"):
+            extra.append(f"{stats['mp_ratio']}% MP")
+        elif stats.get("hp_ratio"):
+            extra.append(f"{stats['hp_ratio']}% HP")
+        if stats.get("dp"):
+            extra.append(f"DP {stats['dp']}")
+        if stats.get("cast_ms"):
+            extra.append(f"каст {fmt_sec(stats['cast_ms'])}")
+    tags = _insert_after_cd(tags, extra)
     if stats and stats.get("mag_status"):
         tags.append(MAG_STATUS_TAG)
     return tags
@@ -333,31 +565,135 @@ def fmt_remain(ms: int | str) -> str:
     return f"{s:g} сек.".replace(".", ",")
 
 
+def stat_ru(raw: str | None) -> str:
+    if not raw:
+        return "?"
+    return STAT_RU.get(raw) or STAT_RU.get(raw.lower()) or STAT_RU.get(raw[:1].upper() + raw[1:]) or raw
+
+
+def remain_ms(e: dict[str, str]) -> int:
+    return int(e.get("remain2") or 0) + int(e.get("remain1") or 0)
+
+
 def format_attr(attr: str, e: dict[str, str]) -> str:
+    et = (e.get("type") or "").lower()
     if attr in ("MinDamage", "MaxDamage"):
         lo, hi = phys_damage(e)
         return str(lo if attr == "MinDamage" else hi)
     if attr == "RemainTime":
-        return fmt_remain(int(e.get("remain2") or 0))
+        ms = remain_ms(e)
+        return fmt_remain(ms) if ms else "?"
+    if attr == "RandomTime":
+        ms = int(e.get("randomtime") or 0) or remain_ms(e)
+        return fmt_remain(ms) if ms else "?"
+    if attr == "CheckTime":
+        ms = int(e.get("checktime") or 0)
+        return fmt_remain(ms) if ms else "?"
+    if attr == "SummonTime":
+        sec = e.get("reserved4") or ""
+        return f"{sec} сек." if sec else "?"
+    if attr == "DelayedTime":
+        ms = int(e.get("reserved9") or 0)
+        return fmt_remain(ms) if ms else "?"
     if attr == "AddDamage":
         return e.get("reserved10") or "?"
     if attr == "AddEffect":
         return e.get("reserved14") or "?"
+    if attr == "AddEffectCondition":
+        return e.get("reserved18") or e.get("reserved15") or "?"
     if attr == "SignetGrade":
-        et = (e.get("type") or "").lower()
         if et == "signetburst":
             return e.get("reserved8") or "?"
         return e.get("reserved14") or e.get("reserved8") or "?"
+    if attr == "ChangeSignetGrade":
+        return e.get("reserved10") or "?"
     if attr == "StatName":
-        raw = e.get("reserved13") or ""
-        return STAT_RU.get(raw, raw or "?")
+        return stat_ru(e.get("reserved13"))
+    if attr == "StatName2":
+        return stat_ru(e.get("reserved14"))
+    if attr == "StatName3":
+        return stat_ru(e.get("reserved18"))
     if attr == "Value":
         return e.get("reserved2") or "?"
-    if attr in ("FixDamage", "Damage"):
+    if attr == "Value2":
+        return e.get("reserved4") or "?"
+    if attr == "Value3":
+        return e.get("reserved16") or "?"
+    if attr == "FixValue":
         return e.get("reserved2") or "?"
+    if attr == "RateValue":
+        return e.get("reserved4") or "?"
+    if attr in ("FixDamage", "FixedDamage", "RateDamage"):
+        return e.get("reserved2") or "?"
+    if attr in ("Heal", "HealPoint"):
+        return e.get("reserved2") or "?"
+    if attr == "CheckTimeHeal":
+        return e.get("reserved9") or "?"
+    if attr == "Damage":
+        if et in PERIODIC_DAMAGE_TYPES or e.get("checktime"):
+            return e.get("reserved9") or e.get("reserved2") or "?"
+        return e.get("reserved2") or e.get("reserved9") or "?"
     if attr == "ConditionProb":
         return e.get("reserved_cond1_prob2") or "?"
+    if attr == "Condition":
+        raw = e.get("reserved_cond1") or ""
+        return CONDITION_RU.get(raw, raw) or "?"
+    if attr == "CoverValue":
+        return e.get("reserved2") or "?"
+    if attr == "ShieldValue":
+        return e.get("reserved8") or "?"
+    if attr == "Range":
+        if et == "protect":
+            return e.get("reserved5") or "?"
+        return e.get("reserved3") or e.get("reserved5") or "?"
+    if attr == "UnitNumber":
+        return e.get("reserved4") or "?"
+    if attr == "HPHeal":
+        if et == "spellatkdrain_instant":
+            return e.get("reserved15") or "?"
+        return e.get("reserved10") or "?"
+    if attr == "MPHeal":
+        return e.get("reserved17") or "?"
+    if attr == "CastingBonus":
+        return e.get("reserved2") or "?"
+    if attr == "WeaponCategory":
+        raw = (e.get("reserved5") or "").lower()
+        return WEAPON_RU.get(raw, e.get("reserved5") or "?")
+    if attr == "Count":
+        return e.get("reserved9") or "?"
+    if attr == "MaxRange":
+        return e.get("reserved5") or "?"
+    if attr == "Distance":
+        return e.get("reserved2") or "?"
+    if attr == "Speed":
+        return e.get("reserved2") or "?"
+    if attr == "AttackType":
+        return e.get("reserved5") or "?"
+    if attr == "BonusRate":
+        return e.get("reserved2") or "?"
+    if attr in ("BoostCount", "AttackCount"):
+        return e.get("reserved7") or "?"
+    if attr == "DispelCount":
+        return e.get("reserved2") or "?"
+    if attr == "CurrentHPMP":
+        return e.get("reserved2") or "?"
+    if attr == "EffectArea":
+        return e.get("reserved4") or "?"
+    if attr == "SubType":
+        return e.get("reserved3") or "?"
+    if attr == "BonusValue":
+        return e.get("reserved4") or e.get("reserved2") or "?"
+    if attr == "DeBoostPenalty":
+        return e.get("reserved2") or "?"
     return "?"
+
+
+def otherskill_name(e: dict[str, str]) -> str | None:
+    for key in ("reserved17", "reserved1", "reserved9", "reserved6"):
+        v = (e.get(key) or "").strip()
+        if v and re.search(r"[A-Za-z]", v) and "_" in v:
+            return v
+    return None
 
 
 def resolve_placeholder(
@@ -376,13 +712,30 @@ def resolve_placeholder(
         if p.startswith("e") and p[1:].isdigit():
             e = ctx.get(int(p[1:])) or {}
             i += 1
-            if i < len(parts) and parts[i] not in KNOWN_ATTRS:
+            if i >= len(parts):
+                return "?"
+            nxt = parts[i]
+            if nxt not in KNOWN_ATTRS and nxt in by_name:
+                _, ctx = parse_skill_meta(by_name[nxt])
+                i += 1
+                continue
+            if nxt == "OtherSkill":
+                proc = by_name.get(otherskill_name(e) or "")
+                if not proc:
+                    return "?"
+                _, ctx = parse_skill_meta(proc)
+                i += 1
+                continue
+            if nxt not in KNOWN_ATTRS:
+                i += 1
+            elif i + 1 < len(parts) and parts[i + 1] in KNOWN_ATTRS:
+                # Effect type Heal/MPHeal collides with attribute names.
                 i += 1
             if i >= len(parts):
                 return "?"
             attr = parts[i]
             if attr == "OtherSkill":
-                proc = by_name.get(e.get("reserved17") or "")
+                proc = by_name.get(otherskill_name(e) or "")
                 if not proc:
                     return "?"
                 _, ctx = parse_skill_meta(proc)
@@ -401,7 +754,8 @@ def fill_client_desc(body: str, strings: dict[str, str], by_name: dict[str, str]
         return None
 
     def repl(m: re.Match) -> str:
-        return resolve_placeholder(m.group(1), fields, effects, by_name)
+        val = resolve_placeholder(m.group(1), fields, effects, by_name)
+        return "" if val == "?" else val
 
     text = PLACEHOLDER_RE.sub(repl, tpl).replace("%%", "%")
     text = re.sub(r" +", " ", text).strip()

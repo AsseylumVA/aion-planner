@@ -1,7 +1,108 @@
 {
+  "unshock": {
+    "duration_ms": 7000,
+    "mp": 81,
+    "skill_id": 1968
+  },
+  "darkStrike": {
+    "dmg": [
+      1561,
+      1565
+    ],
+    "dp": 2000,
+    "skill_id": 2517
+  },
+  "spelldodge": {
+    "duration_ms": 10000,
+    "mp": 42,
+    "skill_id": 926
+  },
+  "dashSlash": {
+    "range_m": 20,
+    "dmg": [
+      1410,
+      1414
+    ],
+    "mp": 230,
+    "skill_id": 2938
+  },
+  "stance": {
+    "duration_ms": 10000,
+    "mp": 42,
+    "skill_id": 927
+  },
+  "weaken": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "duration_ms": 10000,
+    "mp": 106,
+    "skill_id": 2524
+  },
+  "searchStrike": {
+    "acc_magic": 500,
+    "type": "Physical",
+    "mag_status": true,
+    "duration_ms": 1500,
+    "dmg": [
+      1516,
+      1520
+    ],
+    "mp": 202,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 1500
+      }
+    ],
+    "skill_id": 2736
+  },
+  "sideStrike": {
+    "dmg": [
+      16,
+      20
+    ],
+    "mp": 82,
+    "skill_id": 2732
+  },
+  "encirclingStrike": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "dmg": [
+      189,
+      193
+    ],
+    "mp": 112,
+    "skill_id": 2733
+  },
+  "blindSide": {
+    "acc_magic": 500,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 20,
+    "duration_ms": 500,
+    "dmg": [
+      111,
+      115
+    ],
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 500
+      }
+    ],
+    "skill_id": 2737
+  },
   "fog": {
     "acc_magic": 500,
     "type": "Magical",
+    "duration_ms": 25000,
+    "mp": 79,
     "cc": [
       {
         "name": "ослепление",
@@ -11,66 +112,17 @@
     ],
     "skill_id": 802
   },
-  "darknessRune": {
+  "ambush": {
     "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 20,
-    "skill_id": 941
-  },
-  "runeSwipe": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 20,
-    "skill_id": 947
-  },
-  "divineRune": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 20,
-    "skill_id": 946
-  },
-  "radiantRune": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 20,
-    "skill_id": 940
-  },
-  "calm": {
-    "range_m": 25,
-    "skill_id": 2117
-  },
-  "beastLeap": {
+    "type": "Physical",
     "mag_status": true,
-    "type": "Physical",
-    "range_m": 7,
-    "cc": [
-      {
-        "name": "стан",
-        "name_of": "стана",
-        "chance": 50,
-        "duration_ms": 3000
-      }
+    "range_m": 20,
+    "duration_ms": 3000,
+    "dmg": [
+      255,
+      259
     ],
-    "skill_id": 2363
-  },
-  "throwShuriken": {
-    "range_m": 20,
-    "skill_id": 2512
-  },
-  "dash": {
-    "acc_phys": 3000,
-    "type": "Physical",
-    "range_m": 20,
-    "skill_id": 2515
-  },
-  "explosiveBurst": {
-    "acc_magic": 200,
-    "type": "Magical",
-    "range_m": 10,
+    "mp": 136,
     "cc": [
       {
         "name": "стан",
@@ -79,12 +131,145 @@
         "duration_ms": 3000
       }
     ],
-    "skill_id": 2528
+    "skill_id": 3213
+  },
+  "calm": {
+    "range_m": 25,
+    "mp": 100,
+    "skill_id": 2117
+  },
+  "stigma": {
+    "dmg": [
+      78,
+      82
+    ],
+    "skill_id": 2531
+  },
+  "complex": {
+    "dmg": [
+      93,
+      97
+    ],
+    "skill_id": 2937
+  },
+  "asChainFlyingDagger": {
+    "range_m": 20,
+    "dmg": [
+      224,
+      228
+    ],
+    "mp": 144,
+    "skill_id": 3584
+  },
+  "agonyRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "range_m": 10,
+    "dmg": 1733,
+    "mp": 144,
+    "skill_id": 2939
+  },
+  "weakspot": {
+    "duration_ms": 60000,
+    "mp": 61,
+    "skill_id": 813
+  },
+  "assassination": {
+    "dmg": [
+      16,
+      20
+    ],
+    "mp": 51,
+    "skill_id": 2125
+  },
+  "dash": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "range_m": 20,
+    "dmg": [
+      122,
+      126
+    ],
+    "mp": 78,
+    "skill_id": 2515
+  },
+  "trinielDirk": {
+    "dmg": [
+      1158,
+      1162
+    ],
+    "dp": 4000,
+    "skill_id": 2540
+  },
+  "slayerAsmo": {
+    "duration_ms": 60000,
+    "interval_ms": 3000,
+    "mp": 109,
+    "skill_id": 2368
+  },
+  "slayerElyos": {
+    "duration_ms": 60000,
+    "interval_ms": 3000,
+    "mp": 109,
+    "skill_id": 2367
+  },
+  "darknessRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "dmg": 502,
+    "mp": 165,
+    "skill_id": 941
+  },
+  "divineStrike": {
+    "dmg": [
+      1335,
+      1339
+    ],
+    "dp": 2000,
+    "skill_id": 2516
+  },
+  "bloodRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "dmg": 886,
+    "mp": 132,
+    "skill_id": 2523
+  },
+  "lethalVenom": {
+    "duration_ms": 30000,
+    "mp": 280,
+    "skill_id": 2927
+  },
+  "lightning": {
+    "duration_ms": 30000,
+    "dmg": [
+      491,
+      495
+    ],
+    "mp": 112,
+    "skill_id": 2925
+  },
+  "whirl": {
+    "dmg": [
+      508,
+      512
+    ],
+    "mp": 109,
+    "skill_id": 2537
   },
   "dagger": {
     "mag_status": true,
     "type": "Physical",
     "range_m": 20,
+    "duration_ms": 2000,
+    "dmg": [
+      519,
+      523
+    ],
     "cc": [
       {
         "name": "стан",
@@ -95,45 +280,22 @@
     ],
     "skill_id": 2525
   },
-  "bloodRune": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 10,
-    "skill_id": 2523
-  },
-  "silenceRune": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 10,
-    "skill_id": 2529
-  },
-  "shadowfall": {
-    "range_m": 3,
-    "skill_id": 2364
-  },
-  "weaken": {
-    "acc_phys": 3000,
-    "type": "Physical",
-    "skill_id": 2524
-  },
-  "flash": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 10,
-    "skill_id": 2532
-  },
-  "poisonHit": {
-    "mag_status": true,
-    "type": "Physical",
-    "skill_id": 2545
+  "asGaleMove": {
+    "mp_ratio": 4,
+    "skill_id": 912
   },
   "massacre": {
     "mag_status": true,
     "type": "Physical",
     "range_m": 15,
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "dmg": [
+      1032,
+      1036
+    ],
+    "cast_ms": 800,
+    "mp": 272,
     "cc": [
       {
         "name": "замедление",
@@ -148,66 +310,186 @@
     "acc_magic": 500,
     "type": "Magical",
     "range_m": 10,
+    "dmg": 734,
+    "mp": 136,
     "skill_id": 2536
   },
-  "ambush": {
-    "acc_magic": 500,
-    "type": "Physical",
-    "mag_status": true,
+  "crash": {
+    "dmg": [
+      796,
+      800
+    ],
+    "mp": 109,
+    "skill_id": 854
+  },
+  "oathAcc": {
+    "duration_ms": 20000,
+    "mp": 73,
+    "skill_id": 836
+  },
+  "throwShuriken": {
     "range_m": 20,
-    "cc": [
-      {
-        "name": "стан",
-        "name_of": "стана",
-        "chance": 100,
-        "duration_ms": 3000
-      }
+    "dmg": [
+      867,
+      871
     ],
-    "skill_id": 3213
+    "mp": 77,
+    "skill_id": 2512
   },
-  "counter": {
-    "mag_status": true,
-    "type": "Physical",
-    "cc": [
-      {
-        "name": "стан",
-        "name_of": "стана",
-        "chance": 80,
-        "duration_ms": 2000
-      }
+  "radiantRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "dmg": 1500,
+    "mp": 144,
+    "skill_id": 940
+  },
+  "poisonBlade": {
+    "duration_ms": 300000,
+    "mp": 84,
+    "skill_id": 2921
+  },
+  "killingSpree": {
+    "dmg": [
+      16,
+      20
     ],
-    "skill_id": 2891
+    "mp": 108,
+    "skill_id": 2365
   },
-  "encirclingStrike": {
-    "mag_status": true,
-    "type": "Physical",
-    "skill_id": 2733
+  "oathSpeed": {
+    "duration_ms": 30000,
+    "mp": 115,
+    "skill_id": 913
+  },
+  "deadlyFocus": {
+    "duration_ms": 10000,
+    "mp": 606,
+    "skill_id": 1988
+  },
+  "runeReflect": {
+    "dmg": [
+      144,
+      148
+    ],
+    "mp": 55,
+    "skill_id": 2538
+  },
+  "evasiveBoost": {
+    "duration_ms": 20000,
+    "mp": 112,
+    "skill_id": 3585
+  },
+  "escape": {
+    "duration_ms": 7000,
+    "mp": 227,
+    "skill_id": 2734
+  },
+  "senses": {
+    "duration_ms": 12000,
+    "mp": 144,
+    "skill_id": 1984
+  },
+  "flashSpeed": {
+    "mp": 203,
+    "skill_id": 2278
+  },
+  "shadowfall": {
+    "range_m": 3,
+    "dmg": [
+      938,
+      942
+    ],
+    "mp": 212,
+    "skill_id": 2364
+  },
+  "illusion": {
+    "duration_ms": 3000,
+    "mp": 259,
+    "skill_id": 2735
+  },
+  "ancient": {
+    "dmg": [
+      608,
+      612
+    ],
+    "skill_id": 2518
   },
   "needle": {
     "acc_magic": 1000,
     "type": "Magical",
     "pvp": 120,
     "range_m": 10,
+    "dmg": 1822,
+    "mp": 142,
     "skill_id": 2930
   },
-  "quickDoom": {
-    "mag_status": true,
-    "type": "Physical",
-    "cc": [
-      {
-        "name": "стан",
-        "name_of": "стана",
-        "chance": 100,
-        "duration_ms": 3000
-      }
+  "flash": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "dmg": 1526,
+    "mp": 161,
+    "skill_id": 2532
+  },
+  "crush": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "dmg": 1932,
+    "mp": 114,
+    "skill_id": 2932
+  },
+  "runeKnife": {
+    "range_m": 10,
+    "dmg": [
+      91,
+      95
     ],
-    "skill_id": 2935
+    "mp": 57,
+    "skill_id": 2931
+  },
+  "silenceRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "dmg": 2674,
+    "mp": 212,
+    "skill_id": 2529
+  },
+  "seeing": {
+    "duration_ms": 30000,
+    "mp": 81,
+    "skill_id": 918
+  },
+  "searchingEye": {
+    "duration_ms": 60000,
+    "mp": 69,
+    "skill_id": 917
+  },
+  "vaizelDirk": {
+    "dmg": [
+      1158,
+      1162
+    ],
+    "dp": 4000,
+    "skill_id": 2539
   },
   "spiralSlash": {
     "acc_phys": 3000,
     "type": "Physical",
     "mag_status": true,
     "range_m": 25,
+    "duration_ms": 3000,
+    "dmg": [
+      1716,
+      1720
+    ],
+    "dp": 4000,
     "cc": [
       {
         "name": "стан",
@@ -218,15 +500,99 @@
     ],
     "skill_id": 2928
   },
-  "runeKnife": {
-    "range_m": 10,
-    "skill_id": 2931
+  "deadlyAbandon": {
+    "duration_ms": 180000,
+    "mp": 100,
+    "skill_id": 949
   },
-  "blindSide": {
+  "asStigmaDemonicBurstAsmo": {
     "acc_magic": 500,
-    "type": "Physical",
-    "mag_status": true,
+    "type": "Magical",
+    "pvp": 120,
     "range_m": 20,
+    "dmg": 502,
+    "mp": 144,
+    "skill_id": 945
+  },
+  "runeSwipe": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "dmg": 571,
+    "mp": 165,
+    "skill_id": 947
+  },
+  "asStigmaNovaBurstElyos": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "dmg": 1500,
+    "mp": 144,
+    "skill_id": 944
+  },
+  "shadowStep": {
+    "duration_ms": 300000,
+    "mp": 124,
+    "skill_id": 948
+  },
+  "divineRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "dmg": 1713,
+    "mp": 165,
+    "skill_id": 946
+  },
+  "storm": {
+    "dmg": [
+      1101,
+      1105
+    ],
+    "mp": 173,
+    "skill_id": 2936
+  },
+  "crossSlash": {
+    "dmg": [
+      376,
+      380
+    ],
+    "mp": 156,
+    "skill_id": 2366
+  },
+  "calc": {
+    "duration_ms": 15000,
+    "mp": 40,
+    "skill_id": 839
+  },
+  "explosiveBurst": {
+    "acc_magic": 200,
+    "type": "Magical",
+    "range_m": 10,
+    "duration_ms": 3000,
+    "dmg": 1076,
+    "cast_ms": 1200,
+    "mp": 159,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2528
+  },
+  "asStunBurst": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 10,
+    "duration_ms": 500,
+    "dmg": 621,
+    "cast_ms": 1200,
+    "mp": 170,
     "cc": [
       {
         "name": "стан",
@@ -235,37 +601,4740 @@
         "duration_ms": 500
       }
     ],
-    "skill_id": 2737
+    "skill_id": 2933
   },
-  "crush": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "pvp": 120,
-    "range_m": 10,
-    "skill_id": 2932
+  "deadlyPoison": {
+    "duration_ms": 300000,
+    "mp": 52,
+    "skill_id": 919
   },
-  "dashSlash": {
-    "range_m": 20,
-    "skill_id": 2938
+  "beastScar": {
+    "dmg": [
+      572,
+      576
+    ],
+    "mp": 168,
+    "skill_id": 2924
   },
-  "agonyRune": {
-    "acc_magic": 500,
-    "type": "Magical",
-    "range_m": 10,
-    "skill_id": 2939
+  "fang": {
+    "dmg": [
+      461,
+      465
+    ],
+    "mp": 202,
+    "skill_id": 2280
   },
-  "searchStrike": {
-    "acc_magic": 500,
-    "type": "Physical",
+  "roar": {
+    "dmg": [
+      192,
+      196
+    ],
+    "mp": 70,
+    "skill_id": 2923
+  },
+  "beastKick": {
+    "dmg": [
+      218,
+      222
+    ],
+    "mp": 70,
+    "skill_id": 2922
+  },
+  "beastSwipe": {
+    "dmg": [
+      248,
+      252
+    ],
+    "mp": 70,
+    "skill_id": 2929
+  },
+  "beastLeap": {
     "mag_status": true,
+    "type": "Physical",
+    "range_m": 7,
+    "duration_ms": 3000,
+    "dmg": [
+      253,
+      257
+    ],
+    "mp": 256,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 50,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2363
+  },
+  "quickDoom": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 3000,
+    "dmg": [
+      829,
+      833
+    ],
+    "mp": 170,
     "cc": [
       {
         "name": "стан",
         "name_of": "стана",
         "chance": 100,
-        "duration_ms": 1500
+        "duration_ms": 3000
       }
     ],
-    "skill_id": 2736
+    "skill_id": 2935
+  },
+  "poisonHit": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "dmg": [
+      135,
+      139
+    ],
+    "mp": 136,
+    "skill_id": 2545
+  },
+  "eyeWrath": {
+    "duration_ms": 15000,
+    "mp": 59,
+    "skill_id": 850
+  },
+  "oathDodge": {
+    "duration_ms": 8000,
+    "skill_id": 920
+  },
+  "agonySlash": {
+    "duration_ms": 15000,
+    "dmg": [
+      491,
+      495
+    ],
+    "mp": 112,
+    "skill_id": 2926
+  },
+  "shadowHide": {
+    "duration_ms": 10000,
+    "dp": 2000,
+    "skill_id": 2731
+  },
+  "windWalk": {
+    "duration_ms": 20000,
+    "dp": 2000,
+    "skill_id": 851
+  },
+  "angelRADPDeathBlowElyos": {
+    "dmg": [
+      1101,
+      1105
+    ],
+    "dp": 4000,
+    "skill_id": 2505
+  },
+  "mpHerb": {
+    "duration_ms": 10000,
+    "interval_ms": 3000,
+    "cast_ms": 4000,
+    "skill_id": 2673
+  },
+  "chAbyssGloriaAsmo": {
+    "duration_ms": 30000,
+    "dp": 2000,
+    "skill_id": 1305
+  },
+  "chAngelicWish": {
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "mp": 500,
+    "skill_id": 1344
+  },
+  "chBlessProtect": {
+    "range_m": 25,
+    "duration_ms": 1800000,
+    "mp": 103,
+    "skill_id": 1230
+  },
+  "chBlessofHealth": {
+    "range_m": 15,
+    "duration_ms": 3600000,
+    "mp": 82,
+    "skill_id": 952
+  },
+  "chBrutalStrikeAsmo": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 25,
+    "duration_ms": 4000,
+    "dmg": [
+      480,
+      484
+    ],
+    "mp": 100,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 50,
+        "duration_ms": 4000
+      }
+    ],
+    "skill_id": 2174
+  },
+  "chChakra": {
+    "heal": 4064,
+    "mp": 288,
+    "skill_id": 2955
+  },
+  "chChantImprovedFly": {
+    "duration_ms": 30000,
+    "mp": 300,
+    "skill_id": 1338
+  },
+  "chCrossParry": {
+    "duration_ms": 10000,
+    "mp": 165,
+    "skill_id": 2288
+  },
+  "chDemonicWish": {
+    "duration_ms": 15000,
+    "mp": 500,
+    "skill_id": 1345
+  },
+  "chEncourageRun": {
+    "range_m": 25,
+    "duration_ms": 7000,
+    "hp_cost": 2500,
+    "skill_id": 3242
+  },
+  "chEternalSeal": {
+    "duration_ms": 15000,
+    "dp": 4000,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 15000
+      }
+    ],
+    "skill_id": 1343
+  },
+  "chFrontalAttack": {
+    "duration_ms": 30000,
+    "mp": 312,
+    "skill_id": 2378
+  },
+  "chHarshThrust": {
+    "dmg": [
+      668,
+      672
+    ],
+    "cast_ms": 1200,
+    "mp": 290,
+    "skill_id": 2755
+  },
+  "chHealingTank": {
+    "duration_ms": 10000,
+    "mp": 150,
+    "skill_id": 2943
+  },
+  "chHeroicStrike": {
+    "dmg": [
+      743,
+      747
+    ],
+    "mp": 218,
+    "skill_id": 2605
+  },
+  "chHolyGloriaElyos": {
+    "duration_ms": 30000,
+    "dp": 2000,
+    "skill_id": 1304
+  },
+  "chImbueEarth": {
+    "duration_ms": 1800000,
+    "mp": 188,
+    "skill_id": 1267
+  },
+  "chImbuePower": {
+    "duration_ms": 30000,
+    "mp": 517,
+    "skill_id": 2957
+  },
+  "chImprovedAllAttack": {
+    "duration_ms": 15000,
+    "mp": 300,
+    "skill_id": 1223
+  },
+  "chImprovedAllDefend": {
+    "duration_ms": 15000,
+    "mp": 300,
+    "skill_id": 1224
+  },
+  "chImprovedBody": {
+    "duration_ms": 30000,
+    "mp": 334,
+    "skill_id": 2962
+  },
+  "chImprovedLifeStream": {
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "mp": 421,
+    "skill_id": 2960
+  },
+  "chImprovedPowerAttack": {
+    "duration_ms": 120000,
+    "mp": 136,
+    "skill_id": 2381
+  },
+  "chLightningStrike": {
+    "range_m": 25,
+    "dmg": [
+      288,
+      292
+    ],
+    "mp": 154,
+    "skill_id": 2377
+  },
+  "chMPHeal": {
+    "range_m": 25,
+    "cast_ms": 1000,
+    "mp": 259,
+    "skill_id": 2956
+  },
+  "chMortalStrikeElyos": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 25,
+    "duration_ms": 4000,
+    "dmg": [
+      480,
+      484
+    ],
+    "mp": 100,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 40,
+        "duration_ms": 4000
+      }
+    ],
+    "skill_id": 2173
+  },
+  "chMountainCrash": {
+    "acc_phys": 500,
+    "type": "Physical",
+    "range_m": 25,
+    "duration_ms": 12000,
+    "interval_ms": 3000,
+    "dmg": [
+      1812,
+      1816
+    ],
+    "mp": 234,
+    "skill_id": 2968
+  },
+  "chNightWish": {
+    "duration_ms": 1800000,
+    "mp": 379,
+    "skill_id": 1315
+  },
+  "chParryFocus": {
+    "duration_ms": 30000,
+    "mp": 58,
+    "skill_id": 1225
+  },
+  "chParryingStrike": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 3000,
+    "dmg": [
+      459,
+      463
+    ],
+    "mp": 110,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2941
+  },
+  "chPentacleShock": {
+    "dmg": [
+      698,
+      702
+    ],
+    "mp": 140,
+    "skill_id": 2953
+  },
+  "chPhoenixStep": {
+    "duration_ms": 7000,
+    "mp": 212,
+    "skill_id": 2376
+  },
+  "chPowerAttack": {
+    "range_m": 15,
+    "dmg": [
+      850,
+      854
+    ],
+    "mp": 82,
+    "skill_id": 2601
+  },
+  "chPressSmash": {
+    "dmg": [
+      953,
+      957
+    ],
+    "mp": 152,
+    "skill_id": 2000
+  },
+  "chProtectSelf": {
+    "duration_ms": 10000,
+    "mp": 245,
+    "skill_id": 2959
+  },
+  "chProvidence": {
+    "duration_ms": 300000,
+    "dp": 2000,
+    "skill_id": 1328
+  },
+  "chRapidThrust": {
+    "dmg": [
+      220,
+      224
+    ],
+    "mp": 138,
+    "skill_id": 2751
+  },
+  "chRejuvenation": {
+    "range_m": 23,
+    "duration_ms": 38000,
+    "interval_ms": 2000,
+    "heal": 88,
+    "mp": 150,
+    "skill_id": 2598
+  },
+  "chRenewedVitality": {
+    "mp": 268,
+    "skill_id": 2375
+  },
+  "chShockAttack": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 3000,
+    "dmg": [
+      937,
+      941
+    ],
+    "mp": 175,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2967
+  },
+  "chShockWave": {
+    "dmg": [
+      299,
+      303
+    ],
+    "mp": 202,
+    "skill_id": 2965
+  },
+  "chSlowCrash": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 7000,
+    "dmg": [
+      698,
+      702
+    ],
+    "mp": 202,
+    "skill_id": 2963
+  },
+  "chSoaredRock": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 25,
+    "duration_ms": 3000,
+    "dmg": [
+      609,
+      613
+    ],
+    "mp": 152,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2287
+  },
+  "chSonicAssault": {
+    "dmg": [
+      803,
+      807
+    ],
+    "mp": 177,
+    "skill_id": 1255
+  },
+  "chSonicGenoside": {
+    "dmg": [
+      760,
+      764
+    ],
+    "mp": 185,
+    "skill_id": 2589
+  },
+  "chSonicRush": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 8000,
+    "dmg": [
+      201,
+      205
+    ],
+    "mp": 80,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 1266
+  },
+  "chSonicSwing": {
+    "duration_ms": 8000,
+    "dmg": [
+      214,
+      218
+    ],
+    "mp": 66,
+    "skill_id": 2600
+  },
+  "chSpaceEscape": {
+    "duration_ms": 15000,
+    "mp": 486,
+    "skill_id": 2753
+  },
+  "chSplashSwing": {
+    "dmg": [
+      1497,
+      1501
+    ],
+    "mp": 130,
+    "skill_id": 2961
+  },
+  "chSteelStance": {
+    "duration_ms": 15000,
+    "mp": 165,
+    "skill_id": 1992
+  },
+  "chStigmaAngelicWallElyos": {
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "mp": 712,
+    "skill_id": 2949
+  },
+  "chStigmaAngelicWishElyos": {
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "mp": 500,
+    "skill_id": 1199
+  },
+  "chStigmaDemonicWallAsmo": {
+    "duration_ms": 15000,
+    "mp": 712,
+    "skill_id": 2950
+  },
+  "chStigmaDemonicWishAsmo": {
+    "duration_ms": 15000,
+    "mp": 500,
+    "skill_id": 1200
+  },
+  "chStigmaRecoverWord": {
+    "range_m": 25,
+    "duration_ms": 6000,
+    "interval_ms": 2000,
+    "heal": 1035,
+    "cast_ms": 1000,
+    "mp": 376,
+    "skill_id": 2954
+  },
+  "chSurperiorHeal": {
+    "range_m": 23,
+    "heal": 4008,
+    "cast_ms": 3000,
+    "mp": 379,
+    "skill_id": 2964
+  },
+  "chSwordBind": {
+    "acc_magic": 300,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 5000,
+    "mp": 251,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 5000
+      },
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 5000
+      }
+    ],
+    "skill_id": 1321
+  },
+  "chTearingCrash": {
+    "dmg": [
+      503,
+      507
+    ],
+    "mp": 88,
+    "skill_id": 3593
+  },
+  "chTearingStrike": {
+    "dmg": [
+      315,
+      319
+    ],
+    "mp": 114,
+    "skill_id": 2752
+  },
+  "chThrustStrike": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 5,
+    "duration_ms": 2000,
+    "dmg": [
+      602,
+      606
+    ],
+    "mp": 245,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2380
+  },
+  "chTremor": {
+    "dmg": [
+      722,
+      726
+    ],
+    "dp": 4000,
+    "skill_id": 2958
+  },
+  "chTriangleShock": {
+    "duration_ms": 8000,
+    "dmg": [
+      355,
+      359
+    ],
+    "mp": 60,
+    "skill_id": 1276
+  },
+  "chTripleThrust": {
+    "range_m": 5,
+    "dmg": [
+      212,
+      216
+    ],
+    "mp": 98,
+    "skill_id": 2379
+  },
+  "chViolentSwing": {
+    "duration_ms": 4000,
+    "dmg": [
+      357,
+      361
+    ],
+    "mp": 42,
+    "skill_id": 2583
+  },
+  "chZest": {
+    "duration_ms": 30000,
+    "mp": 300,
+    "skill_id": 1326
+  },
+  "clBlessofHealth": {
+    "range_m": 15,
+    "duration_ms": 3600000,
+    "mp": 30,
+    "skill_id": 951
+  },
+  "clBlessofRock": {
+    "range_m": 15,
+    "duration_ms": 3600000,
+    "mp": 41,
+    "skill_id": 955
+  },
+  "clConversionEnergy": {
+    "range_m": 23,
+    "duration_ms": 8000,
+    "interval_ms": 2000,
+    "heal": 11,
+    "mp": 16,
+    "skill_id": 958
+  },
+  "clHallowSwing": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 10000,
+    "dmg": [
+      342,
+      346
+    ],
+    "mp": 88,
+    "skill_id": 2966
+  },
+  "clHeal": {
+    "range_m": 23,
+    "heal": 1211,
+    "cast_ms": 2000,
+    "mp": 131,
+    "skill_id": 2546
+  },
+  "clImbueMana": {
+    "duration_ms": 1800000,
+    "mp": 122,
+    "skill_id": 2944
+  },
+  "clImbueWind": {
+    "duration_ms": 1800000,
+    "mp": 120,
+    "skill_id": 2181
+  },
+  "clRevive": {
+    "range_m": 15,
+    "cast_ms": 6000,
+    "mp_ratio": 10,
+    "skill_id": 972
+  },
+  "clSmite": {
+    "range_m": 25,
+    "dmg": 518,
+    "cast_ms": 1500,
+    "mp": 118,
+    "skill_id": 2547
+  },
+  "clSonicEruption": {
+    "range_m": 25,
+    "duration_ms": 3000,
+    "dmg": 518,
+    "mp": 157,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 50,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 993
+  },
+  "devilRADPDeathBlowAsmo": {
+    "dmg": [
+      1101,
+      1105
+    ],
+    "dp": 4000,
+    "skill_id": 2506
+  },
+  "elAccelerateElemental": {
+    "range_m": 15,
+    "duration_ms": 300000,
+    "mp": 205,
+    "skill_id": 3215
+  },
+  "elAreaCage": {
+    "range_m": 25,
+    "duration_ms": 30000,
+    "interval_ms": 3000,
+    "dmg": 169,
+    "cast_ms": 1500,
+    "mp": 360,
+    "skill_id": 2863
+  },
+  "elBind": {
+    "range_m": 25,
+    "duration_ms": 8000,
+    "cast_ms": 500,
+    "mp": 108,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 1746
+  },
+  "elCountHPMPDrain": {
+    "range_m": 25,
+    "dmg": 889,
+    "cast_ms": 2000,
+    "mp": 249,
+    "skill_id": 3592
+  },
+  "elCursedBreath": {
+    "range_m": 25,
+    "dmg": 617,
+    "cast_ms": 1100,
+    "mp": 265,
+    "skill_id": 3589
+  },
+  "elDecayingWing": {
+    "range_m": 40,
+    "duration_ms": 30000,
+    "interval_ms": 3000,
+    "cast_ms": 1000,
+    "mp": 182,
+    "skill_id": 1789
+  },
+  "elDespairCurse": {
+    "range_m": 10,
+    "duration_ms": 5000,
+    "mp": 369,
+    "cc": [
+      {
+        "name": "страх",
+        "name_of": "страха",
+        "duration_ms": 5000
+      },
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 5000
+      }
+    ],
+    "skill_id": 2008
+  },
+  "elDimissPolymorph": {
+    "range_m": 25,
+    "dmg": 1330,
+    "cast_ms": 2000,
+    "mp": 370,
+    "skill_id": 2878
+  },
+  "elDisenchantment": {
+    "range_m": 25,
+    "cast_ms": 500,
+    "dp": 2000,
+    "skill_id": 1627
+  },
+  "elDispel": {
+    "range_m": 25,
+    "cast_ms": 500,
+    "mp": 114,
+    "skill_id": 1628
+  },
+  "elDispelExplosion": {
+    "range_m": 25,
+    "duration_ms": 12000,
+    "interval_ms": 3000,
+    "mp": 257,
+    "skill_id": 2404
+  },
+  "elDrainEnergy": {
+    "range_m": 25,
+    "dmg": 661,
+    "cast_ms": 2000,
+    "mp": 380,
+    "skill_id": 2882
+  },
+  "elEarthGrab": {
+    "range_m": 25,
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "dmg": 70,
+    "mp": 211,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 15000
+      }
+    ],
+    "skill_id": 2647
+  },
+  "elEarthGuardiance": {
+    "duration_ms": 10000,
+    "mp": 312,
+    "skill_id": 2765
+  },
+  "elElementTransfer": {
+    "range_m": 25,
+    "cast_ms": 1000,
+    "hp_ratio": 10,
+    "skill_id": 2645
+  },
+  "elElementalBoost": {
+    "range_m": 25,
+    "duration_ms": 120000,
+    "mp": 398,
+    "skill_id": 2403
+  },
+  "elElementalCall": {
+    "duration_ms": 10000,
+    "skill_id": 1778
+  },
+  "elElementalCharge": {
+    "range_m": 15,
+    "heal": 100,
+    "mp": 326,
+    "skill_id": 2004
+  },
+  "elElementalShield": {
+    "range_m": 25,
+    "duration_ms": 60000,
+    "interval_ms": 3000,
+    "heal": 25,
+    "mp": 660,
+    "skill_id": 2412
+  },
+  "elElementalStrike": {
+    "range_m": 25,
+    "dmg": 973,
+    "cast_ms": 2500,
+    "mp": 348,
+    "skill_id": 2760
+  },
+  "elEnchantArmor": {
+    "range_m": 25,
+    "duration_ms": 300000,
+    "cast_ms": 1000,
+    "mp": 393,
+    "skill_id": 1662
+  },
+  "elEnchantmentBurst": {
+    "range_m": 25,
+    "mp": 264,
+    "skill_id": 2655
+  },
+  "elEnervationCurse": {
+    "range_m": 25,
+    "duration_ms": 60000,
+    "cast_ms": 2000,
+    "mp": 330,
+    "skill_id": 2661
+  },
+  "elEnfeeblement": {
+    "acc_magic": 1000,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 60000,
+    "cast_ms": 1000,
+    "mp": 97,
+    "skill_id": 1663
+  },
+  "elEscape": {
+    "duration_ms": 30000,
+    "cast_ms": 500,
+    "mp": 420,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 30000
+      }
+    ],
+    "skill_id": 1607
+  },
+  "elEternalShield": {
+    "range_m": 15,
+    "mp": 293,
+    "skill_id": 2010
+  },
+  "elEtherCharge": {
+    "range_m": 25,
+    "heal": 100,
+    "mp": 169,
+    "skill_id": 1785
+  },
+  "elEtherInfusionElyos": {
+    "range_m": 25,
+    "duration_ms": 600000,
+    "interval_ms": 6000,
+    "cast_ms": 1000,
+    "dp": 2000,
+    "skill_id": 2635
+  },
+  "elFear": {
+    "range_m": 25,
+    "duration_ms": 15000,
+    "cast_ms": 2500,
+    "mp": 327,
+    "cc": [
+      {
+        "name": "страх",
+        "name_of": "страха",
+        "duration_ms": 15000
+      }
+    ],
+    "skill_id": 1636
+  },
+  "elFireAid": {
+    "duration_ms": 60000,
+    "cast_ms": 2000,
+    "mp": 325,
+    "skill_id": 2866
+  },
+  "elFireFear": {
+    "range_m": 25,
+    "duration_ms": 8000,
+    "mp": 180,
+    "cc": [
+      {
+        "name": "страх",
+        "name_of": "страха",
+        "chance": 100,
+        "duration_ms": 8000
+      },
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 1781
+  },
+  "elGaiaGrab": {
+    "range_m": 25,
+    "duration_ms": 12000,
+    "cast_ms": 1000,
+    "mp": 205,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "duration_ms": 12000
+      }
+    ],
+    "skill_id": 1763
+  },
+  "elHellCurse": {
+    "acc_magic": 300,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 60000,
+    "cast_ms": 1000,
+    "mp": 694,
+    "skill_id": 2879
+  },
+  "elHellPain": {
+    "pvp": 80,
+    "range_m": 25,
+    "duration_ms": 12000,
+    "interval_ms": 3000,
+    "dmg": 640,
+    "cast_ms": 1500,
+    "mp": 683,
+    "skill_id": 2883
+  },
+  "elMagicalBreakdown": {
+    "range_m": 25,
+    "duration_ms": 15000,
+    "cast_ms": 1500,
+    "mp": 264,
+    "skill_id": 2761
+  },
+  "elManaReverse": {
+    "range_m": 25,
+    "mp": 388,
+    "skill_id": 2874
+  },
+  "elNightmareRoot": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 10000,
+    "mp": 208,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2405
+  },
+  "elOrderAssail": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 103,
+    "skill_id": 1659
+  },
+  "elOrderDecaying": {
+    "range_m": 25,
+    "cast_ms": 600,
+    "mp": 37,
+    "skill_id": 1764
+  },
+  "elOrderElementalField": {
+    "range_m": 25,
+    "cast_ms": 800,
+    "mp": 220,
+    "skill_id": 1661
+  },
+  "elOrderEtherEmissionElyos": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 440,
+    "skill_id": 1798
+  },
+  "elOrderEtherImpactAsmo": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 440,
+    "skill_id": 1799
+  },
+  "elOrderExplode": {
+    "range_m": 25,
+    "cast_ms": 1000,
+    "mp": 599,
+    "skill_id": 2762
+  },
+  "elOrderOmen": {
+    "range_m": 15,
+    "cast_ms": 1000,
+    "skill_id": 2011
+  },
+  "elOrderProtect": {
+    "range_m": 25,
+    "skill_id": 2763
+  },
+  "elOrderSacrifice": {
+    "range_m": 25,
+    "skill_id": 1794
+  },
+  "elPetElementalShock": {
+    "range_m": 25,
+    "cast_ms": 600,
+    "mp": 32,
+    "skill_id": 1668
+  },
+  "elPetElementalTaunt": {
+    "range_m": 25,
+    "cast_ms": 600,
+    "mp": 20,
+    "skill_id": 1671
+  },
+  "elPetElementalWraith": {
+    "range_m": 25,
+    "cast_ms": 600,
+    "mp": 36,
+    "skill_id": 1674
+  },
+  "elPetInterupt": {
+    "range_m": 25,
+    "cast_ms": 800,
+    "mp": 62,
+    "skill_id": 1765
+  },
+  "elPetRecoverHealth": {
+    "range_m": 22,
+    "heal": 3376,
+    "hp_cost": 1688,
+    "skill_id": 2870
+  },
+  "elPetWideTaunt": {
+    "range_m": 25,
+    "mp": 127,
+    "skill_id": 2406
+  },
+  "elPlagueSwam": {
+    "range_m": 25,
+    "duration_ms": 54000,
+    "interval_ms": 6000,
+    "dmg": 886,
+    "cast_ms": 1500,
+    "dp": 4000,
+    "skill_id": 2877
+  },
+  "elQuickHPMPDrain": {
+    "range_m": 25,
+    "dmg": 1253,
+    "mp": 220,
+    "skill_id": 2654
+  },
+  "elResistMagic": {
+    "duration_ms": 30000,
+    "mp": 190,
+    "skill_id": 1800
+  },
+  "elShadowInfusionAsmo": {
+    "range_m": 25,
+    "duration_ms": 600000,
+    "interval_ms": 6000,
+    "cast_ms": 1000,
+    "dp": 2000,
+    "skill_id": 2636
+  },
+  "elSilence": {
+    "range_m": 25,
+    "duration_ms": 8000,
+    "cast_ms": 1000,
+    "mp": 131,
+    "cc": [
+      {
+        "name": "немота",
+        "name_of": "немоты",
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 1769
+  },
+  "elSlaveFireServentAsmo": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 304,
+    "skill_id": 2653
+  },
+  "elSlaveFireServentElyos": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 304,
+    "skill_id": 2652
+  },
+  "elSlaveServentAsmo": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 64,
+    "skill_id": 2759
+  },
+  "elSlaveServentElyos": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 64,
+    "skill_id": 2758
+  },
+  "elSlaveStoneServentAsmo": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 314,
+    "skill_id": 2865
+  },
+  "elSlaveStoneServentElyos": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 314,
+    "skill_id": 2864
+  },
+  "elSlaveStormServentAsmo": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 438,
+    "skill_id": 2876
+  },
+  "elSlaveStormServentElyos": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 438,
+    "skill_id": 2875
+  },
+  "elSlaveWaterServentAsmo": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 263,
+    "skill_id": 2240
+  },
+  "elSlaveWaterServentElyos": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 263,
+    "skill_id": 2239
+  },
+  "elSlaveWindServentAsmo": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 258,
+    "skill_id": 1707
+  },
+  "elSlaveWindServentElyos": {
+    "range_m": 25,
+    "cast_ms": 1500,
+    "mp": 258,
+    "skill_id": 1706
+  },
+  "elSleepingSpirit": {
+    "range_m": 25,
+    "duration_ms": 20000,
+    "cast_ms": 2500,
+    "mp": 326,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 2006
+  },
+  "elSlow": {
+    "range_m": 25,
+    "duration_ms": 35000,
+    "cast_ms": 1000,
+    "mp": 240,
+    "skill_id": 1770
+  },
+  "elSoulSteal": {
+    "range_m": 25,
+    "dmg": 380,
+    "mp": 193,
+    "skill_id": 2407
+  },
+  "elStigmaOrderDestructImpact": {
+    "range_m": 15,
+    "cast_ms": 800,
+    "mp": 200,
+    "skill_id": 1665
+  },
+  "elStigmaOrderEtherEmissionElyos": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 440,
+    "skill_id": 1601
+  },
+  "elStigmaOrderEtherEruptionElyos": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 500,
+    "skill_id": 1604
+  },
+  "elStigmaOrderEtherImpactAsmo": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 440,
+    "skill_id": 1602
+  },
+  "elStigmaOrderShadowEruptionAsmo": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 500,
+    "skill_id": 1605
+  },
+  "elStigmaStormBlade": {
+    "range_m": 25,
+    "duration_ms": 8000,
+    "interval_ms": 2000,
+    "dmg": 456,
+    "cast_ms": 2000,
+    "mp": 388,
+    "skill_id": 2873
+  },
+  "elStoneShock": {
+    "range_m": 25,
+    "dmg": 344,
+    "mp": 309,
+    "skill_id": 2637
+  },
+  "elSummonAid": {
+    "cast_ms": 4500,
+    "skill_id": 1606
+  },
+  "elSummonEarthElementalAsmo": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2872
+  },
+  "elSummonEarthElementalElyos": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2871
+  },
+  "elSummonFireElementalAsmo": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2633
+  },
+  "elSummonFireElementalElyos": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2632
+  },
+  "elSummonMagmaElementalAsmo": {
+    "cast_ms": 4500,
+    "dp": 2000,
+    "skill_id": 2657
+  },
+  "elSummonMagmaElementalElyos": {
+    "cast_ms": 4500,
+    "dp": 2000,
+    "skill_id": 2669
+  },
+  "elSummonTempestElementalElyos": {
+    "cast_ms": 4500,
+    "dp": 2000,
+    "skill_id": 2656
+  },
+  "elSummonTempestElementalAsmo": {
+    "cast_ms": 4500,
+    "dp": 2000,
+    "skill_id": 2668
+  },
+  "elSummonWaterElementalAsmo": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2881
+  },
+  "elSummonWaterElementalElyos": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2880
+  },
+  "elSummonWindElementalAsmo": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2649
+  },
+  "elSummonWindElementalElyos": {
+    "cast_ms": 4500,
+    "mp": 610,
+    "skill_id": 2648
+  },
+  "elSympatheticSwitch": {
+    "range_m": 15,
+    "mp": 37,
+    "skill_id": 1683
+  },
+  "elTerrorSpirit": {
+    "duration_ms": 18000,
+    "cast_ms": 1500,
+    "mp": 520,
+    "cc": [
+      {
+        "name": "страх",
+        "name_of": "страха",
+        "duration_ms": 18000
+      },
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 18000
+      }
+    ],
+    "skill_id": 1685
+  },
+  "elUnsummon": {
+    "range_m": 25,
+    "heal": -10,
+    "cast_ms": 2000,
+    "skill_id": 2642
+  },
+  "elVacuumExplosion": {
+    "range_m": 25,
+    "dmg": 839,
+    "cast_ms": 2000,
+    "mp": 255,
+    "skill_id": 2643
+  },
+  "elWaterFear": {
+    "range_m": 25,
+    "duration_ms": 8000,
+    "mp": 180,
+    "cc": [
+      {
+        "name": "страх",
+        "name_of": "страха",
+        "chance": 100,
+        "duration_ms": 8000
+      },
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 1782
+  },
+  "fiAbysalRageAsmo": {
+    "dmg": [
+      829,
+      833
+    ],
+    "dp": 2000,
+    "skill_id": 2429
+  },
+  "fiAnkleGrab": {
+    "acc_magic": 150,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 10000,
+    "mp": 69,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 322
+  },
+  "fiAnkleSnatcher": {
+    "acc_magic": 300,
+    "type": "Magical",
+    "range_m": 15,
+    "duration_ms": 10000,
+    "mp": 69,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2706
+  },
+  "fiBerserk": {
+    "duration_ms": 30000,
+    "dp": 4000,
+    "skill_id": 391
+  },
+  "fiBerserkStance": {
+    "duration_ms": 30000,
+    "mp": 247,
+    "skill_id": 245
+  },
+  "fiBodySmash": {
+    "dmg": [
+      89,
+      93
+    ],
+    "mp": 41,
+    "skill_id": 2702
+  },
+  "fiBurserkLance": {
+    "pvp": 120,
+    "dmg": [
+      2457,
+      2461
+    ],
+    "cast_ms": 2100,
+    "mp": 423,
+    "skill_id": 2432
+  },
+  "fiBurserkLance2": {
+    "pvp": 120,
+    "dmg": [
+      570,
+      574
+    ],
+    "cast_ms": 1700,
+    "mp": 454,
+    "skill_id": 2815
+  },
+  "fiChargingHit": {
+    "pvp": 130,
+    "dmg": [
+      2051,
+      2055
+    ],
+    "cast_ms": 1700,
+    "mp": 381,
+    "skill_id": 2446
+  },
+  "fiChargingHit2": {
+    "pvp": 130,
+    "dmg": [
+      647,
+      651
+    ],
+    "cast_ms": 1400,
+    "mp": 392,
+    "skill_id": 2692
+  },
+  "fiChargingShock": {
+    "pvp": 130,
+    "dmg": [
+      1863,
+      1867
+    ],
+    "cast_ms": 2000,
+    "mp": 429,
+    "skill_id": 2441
+  },
+  "fiChargingShock2": {
+    "pvp": 130,
+    "dmg": [
+      533,
+      537
+    ],
+    "cast_ms": 1700,
+    "mp": 461,
+    "skill_id": 2823
+  },
+  "fiConsecutiveHit": {
+    "range_m": 5,
+    "dmg": [
+      388,
+      392
+    ],
+    "mp": 268,
+    "skill_id": 2344
+  },
+  "fiCountBuff": {
+    "duration_ms": 10000,
+    "mp": 55,
+    "skill_id": 2703
+  },
+  "fiCounterDrain": {
+    "dmg": [
+      436,
+      440
+    ],
+    "mp": 327,
+    "skill_id": 2347
+  },
+  "fiCripplingCut": {
+    "dmg": [
+      920,
+      924
+    ],
+    "mp": 114,
+    "skill_id": 2801
+  },
+  "fiCruelBlow": {
+    "dmg": [
+      1514,
+      1518
+    ],
+    "mp": 168,
+    "skill_id": 2819
+  },
+  "fiCrusade": {
+    "duration_ms": 30000,
+    "dp": 4000,
+    "skill_id": 390
+  },
+  "fiDestructBlow": {
+    "dmg": [
+      410,
+      414
+    ],
+    "mp": 252,
+    "skill_id": 233
+  },
+  "fiDivineRageElyos": {
+    "dmg": [
+      829,
+      833
+    ],
+    "dp": 2000,
+    "skill_id": 2428
+  },
+  "fiDragonSlash": {
+    "dmg": [
+      289,
+      293
+    ],
+    "mp": 227,
+    "skill_id": 2704
+  },
+  "fiDrainSword": {
+    "dmg": [
+      827,
+      831
+    ],
+    "mp": 170,
+    "skill_id": 2832
+  },
+  "fiDrainWave": {
+    "dmg": [
+      75,
+      79
+    ],
+    "mp": 72,
+    "skill_id": 2701
+  },
+  "fiDropImpact": {
+    "dmg": [
+      777,
+      781
+    ],
+    "mp": 55,
+    "skill_id": 2445
+  },
+  "fiEnergyWing": {
+    "duration_ms": 60000,
+    "mp": 83,
+    "skill_id": 383
+  },
+  "fiEnfeebleHit": {
+    "duration_ms": 10000,
+    "dmg": [
+      235,
+      239
+    ],
+    "mp": 136,
+    "skill_id": 2811
+  },
+  "fiFighterRage": {
+    "duration_ms": 8000,
+    "mp": 83,
+    "skill_id": 225
+  },
+  "fiFlyingSlash": {
+    "range_m": 15,
+    "dmg": [
+      320,
+      324
+    ],
+    "mp": 227,
+    "skill_id": 2705
+  },
+  "fiForceBladeElyos": {
+    "acc_magic": 200,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 15,
+    "duration_ms": 10000,
+    "dmg": [
+      345,
+      349
+    ],
+    "mp": 100,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 50,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2033
+  },
+  "fiForceBlast": {
+    "range_m": 15,
+    "duration_ms": 30000,
+    "dmg": [
+      286,
+      290
+    ],
+    "mp": 124,
+    "skill_id": 320
+  },
+  "fiFortitude": {
+    "duration_ms": 20000,
+    "mp": 423,
+    "skill_id": 2345
+  },
+  "fiGustBlade": {
+    "range_m": 15,
+    "dmg": [
+      203,
+      207
+    ],
+    "mp": 28,
+    "skill_id": 2821
+  },
+  "fiHeavyImpact": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 10000,
+    "dmg": [
+      344,
+      348
+    ],
+    "mp": 110,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2818
+  },
+  "fiHeavySwingAsmo": {
+    "acc_magic": 200,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 15,
+    "duration_ms": 10000,
+    "dmg": [
+      345,
+      349
+    ],
+    "mp": 100,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 50,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2034
+  },
+  "fiHowling": {
+    "duration_ms": 15000,
+    "mp": 159,
+    "skill_id": 305
+  },
+  "fiJumpAttack": {
+    "range_m": 15,
+    "dmg": [
+      953,
+      957
+    ],
+    "mp": 85,
+    "skill_id": 2828
+  },
+  "fiJumpingCut": {
+    "acc_phys": 1000,
+    "type": "Physical",
+    "range_m": 15,
+    "duration_ms": 6000,
+    "dmg": [
+      442,
+      446
+    ],
+    "mp": 170,
+    "skill_id": 2803
+  },
+  "fiKneeCrash": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 8000,
+    "dmg": [
+      804,
+      808
+    ],
+    "mp": 227,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 2805
+  },
+  "fiLockdownImpact": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 3000,
+    "dmg": [
+      94,
+      98
+    ],
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2797
+  },
+  "fiMagicalBarrier": {
+    "duration_ms": 15000,
+    "mp": 110,
+    "skill_id": 2767
+  },
+  "fiParryFocus": {
+    "duration_ms": 30000,
+    "mp": 79,
+    "skill_id": 250
+  },
+  "fiPotentialHealth": {
+    "duration_ms": 120000,
+    "heal": 20,
+    "mp": 72,
+    "skill_id": 269
+  },
+  "fiPowerSlash": {
+    "dmg": [
+      322,
+      326
+    ],
+    "skill_id": 2437
+  },
+  "fiRageBurst": {
+    "dmg": [
+      918,
+      922
+    ],
+    "mp": 244,
+    "skill_id": 231
+  },
+  "fiRagespirit": {
+    "duration_ms": 10000,
+    "mp": 144,
+    "skill_id": 2799
+  },
+  "fiRaisingImpact": {
+    "dmg": [
+      224,
+      228
+    ],
+    "mp": 80,
+    "skill_id": 2436
+  },
+  "fiRevengeSlash": {
+    "dmg": [
+      953,
+      957
+    ],
+    "mp": 29,
+    "skill_id": 2807
+  },
+  "fiRobustCrash": {
+    "dmg": [
+      448,
+      452
+    ],
+    "mp": 108,
+    "skill_id": 2444
+  },
+  "fiRobustImpulse": {
+    "dmg": [
+      661,
+      665
+    ],
+    "skill_id": 2251
+  },
+  "fiRobustSmash": {
+    "dmg": [
+      289,
+      293
+    ],
+    "skill_id": 2826
+  },
+  "fiSeismicBillow": {
+    "dmg": [
+      602,
+      606
+    ],
+    "mp": 112,
+    "skill_id": 2798
+  },
+  "fiSeismicDrain": {
+    "dmg": [
+      370,
+      374
+    ],
+    "mp": 227,
+    "skill_id": 2830
+  },
+  "fiSeismicImpact": {
+    "dmg": [
+      630,
+      634
+    ],
+    "mp": 82,
+    "skill_id": 2812
+  },
+  "fiSeismicShock": {
+    "dmg": [
+      289,
+      293
+    ],
+    "skill_id": 2820
+  },
+  "fiSeismicWave": {
+    "dmg": [
+      200,
+      204
+    ],
+    "mp": 26,
+    "skill_id": 2426
+  },
+  "fiSharpnessHit": {
+    "dmg": [
+      438,
+      442
+    ],
+    "mp": 168,
+    "skill_id": 2814
+  },
+  "fiShockImpulse": {
+    "duration_ms": 30000,
+    "dmg": [
+      691,
+      695
+    ],
+    "mp": 124,
+    "skill_id": 321
+  },
+  "fiSlashigForce": {
+    "range_m": 15,
+    "dmg": [
+      29,
+      33
+    ],
+    "mp": 45,
+    "skill_id": 3582
+  },
+  "fiSpinningParry": {
+    "duration_ms": 30000,
+    "mp": 156,
+    "skill_id": 2346
+  },
+  "fiStigmaDrainCut": {
+    "dmg": [
+      564,
+      568
+    ],
+    "mp": 168,
+    "skill_id": 2829
+  },
+  "fiStigmaForceBlastElyos": {
+    "range_m": 15,
+    "duration_ms": 30000,
+    "dmg": [
+      286,
+      290
+    ],
+    "mp": 124,
+    "skill_id": 396
+  },
+  "fiStigmaForceBurst": {
+    "range_m": 15,
+    "duration_ms": 30000,
+    "dmg": [
+      671,
+      675
+    ],
+    "mp": 221,
+    "skill_id": 3580
+  },
+  "fiStigmaShockBurst": {
+    "duration_ms": 30000,
+    "dmg": [
+      1453,
+      1457
+    ],
+    "mp": 221,
+    "skill_id": 2809
+  },
+  "fiStigmaShockImpulseAsmo": {
+    "duration_ms": 30000,
+    "dmg": [
+      691,
+      695
+    ],
+    "mp": 124,
+    "skill_id": 397
+  },
+  "fiStormBlade": {
+    "range_m": 15,
+    "dmg": [
+      491,
+      495
+    ],
+    "mp": 114,
+    "skill_id": 2822
+  },
+  "fiSurvivorStance": {
+    "duration_ms": 60000,
+    "heal": 35,
+    "mp": 298,
+    "skill_id": 232
+  },
+  "fiTechnicalCounter": {
+    "dmg": [
+      535,
+      539
+    ],
+    "mp": 336,
+    "skill_id": 2802
+  },
+  "fiTripleSlash": {
+    "dmg": [
+      207,
+      211
+    ],
+    "mp": 77,
+    "skill_id": 2348
+  },
+  "fiVigorBody": {
+    "duration_ms": 60000,
+    "interval_ms": 6000,
+    "mp": 114,
+    "skill_id": 290
+  },
+  "fiVorpalHit": {
+    "dmg": [
+      650,
+      654
+    ],
+    "mp": 215,
+    "skill_id": 2442
+  },
+  "fiWhirlDrain": {
+    "dmg": [
+      66,
+      70
+    ],
+    "mp": 109,
+    "skill_id": 2349
+  },
+  "fiWhirlTornado": {
+    "dmg": [
+      811,
+      815
+    ],
+    "mp": 327,
+    "skill_id": 2350
+  },
+  "fiWhirlwind": {
+    "dmg": [
+      1328,
+      1332
+    ],
+    "dp": 4000,
+    "skill_id": 2808
+  },
+  "fiWingBlade": {
+    "range_m": 15,
+    "dmg": [
+      189,
+      193
+    ],
+    "mp": 50,
+    "skill_id": 2032
+  },
+  "knAbsoluteScare": {
+    "duration_ms": 4000,
+    "mp": 124,
+    "cc": [
+      {
+        "name": "страх",
+        "name_of": "страха",
+        "chance": 100,
+        "duration_ms": 4000
+      },
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 4000
+      }
+    ],
+    "skill_id": 540
+  },
+  "knAbysalJudgement": {
+    "dmg": [
+      731,
+      735
+    ],
+    "dp": 2000,
+    "skill_id": 2454
+  },
+  "knAvataAdventElyos": {
+    "duration_ms": 30000,
+    "dp": 4000,
+    "skill_id": 475
+  },
+  "knAvengingBash": {
+    "dmg": [
+      391,
+      395
+    ],
+    "mp": 108,
+    "skill_id": 2468
+  },
+  "knAvengingBlade": {
+    "dmg": [
+      500,
+      504
+    ],
+    "mp": 104,
+    "skill_id": 459
+  },
+  "knBleedingSword": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 30000,
+    "interval_ms": 3000,
+    "dmg": [
+      359,
+      363
+    ],
+    "mp": 100,
+    "skill_id": 2060
+  },
+  "knBloodySlash": {
+    "pvp": 75,
+    "dmg": [
+      742,
+      746
+    ],
+    "hp_cost": 412,
+    "skill_id": 2718
+  },
+  "knBrainBreak": {
+    "dmg": [
+      282,
+      286
+    ],
+    "skill_id": 2981
+  },
+  "knBrainStorm": {
+    "acc_magic": 400,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 2000,
+    "dmg": 1073,
+    "cast_ms": 500,
+    "mp": 339,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2986
+  },
+  "knBreakPower": {
+    "range_m": 2,
+    "duration_ms": 30000,
+    "dmg": [
+      3116,
+      3120
+    ],
+    "mp": 103,
+    "skill_id": 2987
+  },
+  "knCaptureOne": {
+    "range_m": 25,
+    "dmg": [
+      355,
+      359
+    ],
+    "mp": 147,
+    "skill_id": 1975
+  },
+  "knConquestMind": {
+    "duration_ms": 60000,
+    "interval_ms": 6000,
+    "mp": 111,
+    "skill_id": 2977
+  },
+  "knCounterOffensive": {
+    "duration_ms": 10000,
+    "mp": 52,
+    "skill_id": 2351
+  },
+  "knCrossBlade": {
+    "dmg": [
+      336,
+      340
+    ],
+    "skill_id": 2469
+  },
+  "knCryingInsult": {
+    "mp": 53,
+    "skill_id": 2460
+  },
+  "knDemonicAdventAsmo": {
+    "duration_ms": 30000,
+    "dp": 4000,
+    "skill_id": 476
+  },
+  "knDestructShield": {
+    "pvp": 120,
+    "range_m": 5,
+    "dmg": [
+      1359,
+      1363
+    ],
+    "cast_ms": 1000,
+    "mp": 332,
+    "skill_id": 2992
+  },
+  "knDestructWish": {
+    "duration_ms": 30000,
+    "mp": 165,
+    "skill_id": 416
+  },
+  "knDivineHand": {
+    "heal": 100,
+    "dp": 2000,
+    "skill_id": 516
+  },
+  "knDivineJudgement": {
+    "dmg": [
+      731,
+      735
+    ],
+    "dp": 2000,
+    "skill_id": 2453
+  },
+  "knDivinePower": {
+    "duration_ms": 30000,
+    "mp": 86,
+    "skill_id": 513
+  },
+  "knDivineSlash": {
+    "dmg": [
+      1075,
+      1079
+    ],
+    "mp": 172,
+    "skill_id": 2988
+  },
+  "knDrainSword": {
+    "dmg": [
+      736,
+      740
+    ],
+    "mp": 124,
+    "skill_id": 474
+  },
+  "knEncouragingRoar": {
+    "heal": 1000,
+    "hp_cost": 1500,
+    "skill_id": 2720
+  },
+  "knExecutionalStrike": {
+    "dmg": [
+      2016,
+      2020
+    ],
+    "mp": 174,
+    "skill_id": 2722
+  },
+  "knFortitudeWave": {
+    "acc_magic": 100,
+    "type": "Physical",
+    "mag_status": true,
+    "duration_ms": 10000,
+    "dmg": [
+      595,
+      599
+    ],
+    "mp": 343,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2991
+  },
+  "knFrozingShield": {
+    "dmg": [
+      702,
+      706
+    ],
+    "mp": 100,
+    "skill_id": 2061
+  },
+  "knGodJudgement": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 2000,
+    "dmg": [
+      736,
+      740
+    ],
+    "mp": 124,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 544
+  },
+  "knGrandProtection": {
+    "range_m": 25,
+    "duration_ms": 30000,
+    "mp": 218,
+    "skill_id": 460
+  },
+  "knHighProvoke": {
+    "range_m": 15,
+    "mp": 143,
+    "skill_id": 2989
+  },
+  "knHolyWrath": {
+    "duration_ms": 30000,
+    "mp": 100,
+    "skill_id": 2058
+  },
+  "knIntimidation": {
+    "range_m": 15,
+    "duration_ms": 10000,
+    "mp": 57,
+    "skill_id": 2990
+  },
+  "knInvinsibleProtect": {
+    "range_m": 20,
+    "duration_ms": 15000,
+    "mp": 404,
+    "skill_id": 1978
+  },
+  "knInvinsibleShield": {
+    "duration_ms": 30000,
+    "mp": 165,
+    "skill_id": 413
+  },
+  "knIronBody": {
+    "duration_ms": 30000,
+    "mp": 122,
+    "skill_id": 426
+  },
+  "knJudgement": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 3000,
+    "dmg": [
+      753,
+      757
+    ],
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2969
+  },
+  "knLandSnacher": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 15,
+    "duration_ms": 10000,
+    "dmg": [
+      300,
+      304
+    ],
+    "cast_ms": 2000,
+    "dp": 4000,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2982
+  },
+  "knLegBreak": {
+    "duration_ms": 12000,
+    "dmg": [
+      89,
+      93
+    ],
+    "skill_id": 2459
+  },
+  "knMassiveProvoke": {
+    "mp": 137,
+    "skill_id": 2970
+  },
+  "knPowerSink": {
+    "acc_magic": 400,
+    "type": "Magical",
+    "range_m": 25,
+    "dmg": 1823,
+    "mp": 272,
+    "skill_id": 2985
+  },
+  "knProtectProud": {
+    "duration_ms": 30000,
+    "heal": 25,
+    "mp": 165,
+    "skill_id": 1969
+  },
+  "knProtectShield": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "mp": 215,
+    "skill_id": 2353
+  },
+  "knPurifyWing": {
+    "duration_ms": 120000,
+    "skill_id": 537
+  },
+  "knRecover": {
+    "heal": 4797,
+    "mp": 282,
+    "skill_id": 2984
+  },
+  "knRevivalTouch": {
+    "range_m": 25,
+    "heal": 3000,
+    "hp_cost": 1500,
+    "skill_id": 2768
+  },
+  "knSentinel": {
+    "duration_ms": 120000,
+    "mp": 282,
+    "skill_id": 2983
+  },
+  "knShieldCharge": {
+    "dmg": [
+      340,
+      344
+    ],
+    "mp": 130,
+    "skill_id": 2452
+  },
+  "knShieldImpact": {
+    "dmg": [
+      687,
+      691
+    ],
+    "mp": 101,
+    "skill_id": 2066
+  },
+  "knShieldStrike": {
+    "range_m": 5,
+    "dmg": [
+      362,
+      366
+    ],
+    "mp": 103,
+    "skill_id": 2356
+  },
+  "knShieldSwing": {
+    "dmg": [
+      439,
+      443
+    ],
+    "mp": 305,
+    "skill_id": 2978
+  },
+  "knShineBlade": {
+    "dmg": [
+      275,
+      279
+    ],
+    "skill_id": 2059
+  },
+  "knShineSlash": {
+    "dmg": [
+      397,
+      401
+    ],
+    "mp": 102,
+    "skill_id": 2979
+  },
+  "knSlashDown": {
+    "dmg": [
+      1011,
+      1015
+    ],
+    "mp": 252,
+    "skill_id": 1977
+  },
+  "knStigmaDemonPunishment": {
+    "dmg": [
+      1273,
+      1277
+    ],
+    "mp": 267,
+    "skill_id": 2976
+  },
+  "knStigmaDrainSwordAsmo": {
+    "dmg": [
+      736,
+      740
+    ],
+    "mp": 124,
+    "skill_id": 547
+  },
+  "knStigmaGodJudgementElyos": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 2000,
+    "dmg": [
+      736,
+      740
+    ],
+    "mp": 124,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 546
+  },
+  "knStigmaGodPunishment": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 2000,
+    "dmg": [
+      1273,
+      1277
+    ],
+    "mp": 267,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2975
+  },
+  "knStigmaResistArmor": {
+    "duration_ms": 30000,
+    "mp": 103,
+    "skill_id": 401
+  },
+  "knStoneBody": {
+    "duration_ms": 180000,
+    "heal": 25,
+    "mp": 113,
+    "skill_id": 506
+  },
+  "knStunningSnacher": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 15,
+    "duration_ms": 10000,
+    "mp": 76,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 523
+  },
+  "knTargetSnatcher": {
+    "range_m": 15,
+    "dp": 400,
+    "skill_id": 2717
+  },
+  "knThreateningWaveAsmo": {
+    "mp": 286,
+    "skill_id": 2769
+  },
+  "knThreateningWaveElyos": {
+    "mp": 286,
+    "skill_id": 2721
+  },
+  "knThunderBlade": {
+    "range_m": 15,
+    "dmg": [
+      905,
+      909
+    ],
+    "mp": 137,
+    "skill_id": 2993
+  },
+  "knTripleSnacher": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 15,
+    "duration_ms": 10000,
+    "dmg": [
+      519,
+      523
+    ],
+    "mp": 218,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2354
+  },
+  "knTurnAggressive": {
+    "duration_ms": 15000,
+    "hp_cost": 659,
+    "skill_id": 2719
+  },
+  "knWeaponBreak": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 12000,
+    "dmg": [
+      95,
+      99
+    ],
+    "skill_id": 2980
+  },
+  "knWindBlade": {
+    "range_m": 15,
+    "dmg": [
+      843,
+      847
+    ],
+    "cast_ms": 1000,
+    "mp": 327,
+    "skill_id": 2355
+  },
+  "knWindSnatcher": {
+    "range_m": 20,
+    "dmg": [
+      26,
+      30
+    ],
+    "mp": 87,
+    "skill_id": 3583
+  },
+  "maCeletialOddElyos": {
+    "range_m": 25,
+    "dmg": 2586,
+    "cast_ms": 2000,
+    "dp": 2000,
+    "skill_id": 2616
+  },
+  "maFlameBolt": {
+    "range_m": 25,
+    "dmg": 681,
+    "cast_ms": 2000,
+    "mp": 204,
+    "skill_id": 2607
+  },
+  "maFrozenShock": {
+    "range_m": 25,
+    "dmg": 637,
+    "mp": 306,
+    "skill_id": 2840
+  },
+  "maGravityCage": {
+    "range_m": 25,
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "dmg": 322,
+    "mp": 193,
+    "skill_id": 2868
+  },
+  "maIceGrab": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 12000,
+    "dmg": 645,
+    "cast_ms": 2000,
+    "mp": 256,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 12000
+      }
+    ],
+    "skill_id": 2852
+  },
+  "maIgnicBurn": {
+    "range_m": 25,
+    "duration_ms": 30000,
+    "dmg": 645,
+    "mp": 305,
+    "skill_id": 2624
+  },
+  "maPandemoniumFocusAsmo": {
+    "range_m": 25,
+    "dmg": 2586,
+    "cast_ms": 2000,
+    "dp": 2000,
+    "skill_id": 2617
+  },
+  "maRoot": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 20000,
+    "mp": 35,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1373
+  },
+  "maStoneSkin": {
+    "duration_ms": 300000,
+    "mp": 521,
+    "skill_id": 2833
+  },
+  "powder": {
+    "heal": 746,
+    "cast_ms": 4000,
+    "skill_id": 2672
+  },
+  "bandage": {
+    "heal": 178,
+    "cast_ms": 4000,
+    "skill_id": 1803
+  },
+  "prAbysalBolt": {
+    "range_m": 25,
+    "dmg": 601,
+    "mp": 138,
+    "skill_id": 2147
+  },
+  "prAbysalCircle": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "heal": 1152,
+    "cast_ms": 3000,
+    "mp": 346,
+    "skill_id": 1189
+  },
+  "prAngerOfEarth": {
+    "range_m": 25,
+    "dmg": 182,
+    "mp": 46,
+    "skill_id": 2740
+  },
+  "prAreaResurrection": {
+    "cast_ms": 10000,
+    "mp_ratio": 15,
+    "skill_id": 1051
+  },
+  "prBindingHeal": {
+    "range_m": 25,
+    "heal": 1404,
+    "cast_ms": 2000,
+    "mp": 124,
+    "skill_id": 2575
+  },
+  "prBlessedShield": {
+    "duration_ms": 20000,
+    "mp": 472,
+    "skill_id": 3014
+  },
+  "prBlindingLightElyos": {
+    "range_m": 15,
+    "duration_ms": 20000,
+    "mp": 30,
+    "cc": [
+      {
+        "name": "ослепление",
+        "name_of": "ослепления",
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1056
+  },
+  "prCallLightning": {
+    "range_m": 25,
+    "dmg": 2690,
+    "cast_ms": 3000,
+    "mp": 598,
+    "skill_id": 3022
+  },
+  "prCallResurrection": {
+    "range_m": 30,
+    "cast_ms": 6000,
+    "mp_ratio": 10,
+    "skill_id": 1057
+  },
+  "prCircleOfWings": {
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "mp": 73,
+    "skill_id": 1183
+  },
+  "prCloakOfRemedy": {
+    "duration_ms": 10000,
+    "heal": 1535,
+    "mp": 335,
+    "skill_id": 2374
+  },
+  "prCourseWound": {
+    "acc_magic": 300,
+    "type": "Magical",
+    "range_m": 15,
+    "duration_ms": 60000,
+    "dmg": 39,
+    "mp": 20,
+    "skill_id": 1060
+  },
+  "prCureCondition": {
+    "range_m": 23,
+    "mp": 70,
+    "skill_id": 1191
+  },
+  "prCureMind": {
+    "range_m": 23,
+    "mp": 108,
+    "skill_id": 1064
+  },
+  "prDivineBolt": {
+    "range_m": 25,
+    "dmg": 601,
+    "mp": 138,
+    "skill_id": 2148
+  },
+  "prDivineCircle": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "heal": 1152,
+    "cast_ms": 3000,
+    "mp": 346,
+    "skill_id": 1188
+  },
+  "prDivineSpark": {
+    "range_m": 25,
+    "dmg": 1891,
+    "mp": 159,
+    "skill_id": 2572
+  },
+  "prDivineTouch": {
+    "range_m": 25,
+    "dmg": 963,
+    "mp": 117,
+    "skill_id": 2568
+  },
+  "prEmergentHeal": {
+    "range_m": 23,
+    "heal": 1194,
+    "cast_ms": 1000,
+    "mp": 183,
+    "skill_id": 2154
+  },
+  "prEternalServentAsmo": {
+    "range_m": 25,
+    "mp": 381,
+    "skill_id": 3024
+  },
+  "prEternalServentElyos": {
+    "range_m": 25,
+    "mp": 381,
+    "skill_id": 3023
+  },
+  "prFirstAid": {
+    "range_m": 23,
+    "heal": 2770,
+    "mp": 332,
+    "skill_id": 2994
+  },
+  "prFocusCasting": {
+    "duration_ms": 10000,
+    "mp": 385,
+    "skill_id": 2574
+  },
+  "prGodsVoice": {
+    "range_m": 25,
+    "duration_ms": 57000,
+    "interval_ms": 3000,
+    "dmg": 965,
+    "dp": 2000,
+    "skill_id": 3013
+  },
+  "prGraceofGod": {
+    "duration_ms": 12000,
+    "skill_id": 1163
+  },
+  "prGreatHeal": {
+    "range_m": 23,
+    "heal": 3485,
+    "cast_ms": 3000,
+    "mp": 341,
+    "skill_id": 3006
+  },
+  "prHarshPain": {
+    "range_m": 25,
+    "duration_ms": 12000,
+    "interval_ms": 3000,
+    "dmg": 286,
+    "mp": 260,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 12000
+      }
+    ],
+    "skill_id": 2373
+  },
+  "prHateDecrease": {
+    "range_m": 25,
+    "cast_ms": 500,
+    "mp": 379,
+    "skill_id": 3008
+  },
+  "prHealingGrace": {
+    "duration_ms": 15000,
+    "mp": 233,
+    "skill_id": 2285
+  },
+  "prHealingServentAsmo": {
+    "cast_ms": 1000,
+    "mp": 359,
+    "skill_id": 3020
+  },
+  "prHealingServentElyos": {
+    "cast_ms": 1000,
+    "mp": 359,
+    "skill_id": 3019
+  },
+  "prHolyCircle": {
+    "duration_ms": 60000,
+    "heal": 30,
+    "dp": 4000,
+    "skill_id": 1164
+  },
+  "prHolyEmpower": {
+    "duration_ms": 8000,
+    "cast_ms": 1000,
+    "mp": 1007,
+    "skill_id": 2745
+  },
+  "prHolyExplosion": {
+    "range_m": 25,
+    "dmg": 1211,
+    "hp_cost": 1213,
+    "skill_id": 2741
+  },
+  "prHolyGrail": {
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "dp": 2000,
+    "skill_id": 1165
+  },
+  "prHolyLight": {
+    "range_m": 23,
+    "heal": 1444,
+    "cast_ms": 1900,
+    "mp": 165,
+    "skill_id": 2742
+  },
+  "prHolyLightwave": {
+    "heal": 709,
+    "cast_ms": 2400,
+    "mp": 354,
+    "skill_id": 2746
+  },
+  "prHolyPreceptElyos": {
+    "dp": 2000,
+    "skill_id": 1166
+  },
+  "prHolyServentAsmo": {
+    "range_m": 25,
+    "mp": 289,
+    "skill_id": 3005
+  },
+  "prHolyServentElyos": {
+    "range_m": 25,
+    "mp": 289,
+    "skill_id": 3004
+  },
+  "prInvinsibleVeill": {
+    "duration_ms": 30000,
+    "mp": 127,
+    "skill_id": 2573
+  },
+  "prInvinsibleWall": {
+    "duration_ms": 8000,
+    "mp": 514,
+    "skill_id": 1031
+  },
+  "prLightningBolt": {
+    "range_m": 25,
+    "dmg": 858,
+    "mp": 121,
+    "skill_id": 2554
+  },
+  "prLightningShock": {
+    "range_m": 25,
+    "dmg": 1022,
+    "mp": 117,
+    "skill_id": 2370
+  },
+  "prMassDispel": {
+    "cast_ms": 1000,
+    "mp": 36,
+    "skill_id": 1180
+  },
+  "prMassEmergentHeal": {
+    "heal": 3139,
+    "cast_ms": 2000,
+    "mp": 521,
+    "skill_id": 3016
+  },
+  "prMassHeal": {
+    "heal": 1842,
+    "cast_ms": 3500,
+    "mp": 470,
+    "skill_id": 1129
+  },
+  "prMeditation": {
+    "duration_ms": 30000,
+    "interval_ms": 3000,
+    "skill_id": 2146
+  },
+  "prMemoryBlur": {
+    "range_m": 25,
+    "mp": 313,
+    "skill_id": 3012
+  },
+  "prPainLinks": {
+    "range_m": 25,
+    "duration_ms": 120000,
+    "interval_ms": 12000,
+    "dmg": 761,
+    "cast_ms": 2000,
+    "mp": 508,
+    "skill_id": 3011
+  },
+  "prPowerSmite": {
+    "range_m": 25,
+    "dmg": 1376,
+    "cast_ms": 2500,
+    "mp": 231,
+    "skill_id": 2579
+  },
+  "prPrepareHolywar": {
+    "duration_ms": 30000,
+    "cast_ms": 500,
+    "mp": 405,
+    "skill_id": 1022
+  },
+  "prPunishingLight": {
+    "acc_magic": 200,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 10000,
+    "dmg": 698,
+    "cast_ms": 1000,
+    "mp": 254,
+    "skill_id": 3015
+  },
+  "prPurgatory": {
+    "range_m": 25,
+    "duration_ms": 9000,
+    "interval_ms": 3000,
+    "dmg": 407,
+    "cast_ms": 1500,
+    "mp": 358,
+    "skill_id": 3017
+  },
+  "prPurify": {
+    "range_m": 25,
+    "mp": 106,
+    "skill_id": 2372
+  },
+  "prRaiseRepentance": {
+    "duration_ms": 8000,
+    "dmg": [
+      440,
+      444
+    ],
+    "mp": 117,
+    "skill_id": 3594
+  },
+  "prRapidRegeneration": {
+    "range_m": 23,
+    "duration_ms": 30000,
+    "interval_ms": 2000,
+    "mp": 93,
+    "skill_id": 2553
+  },
+  "prRebirth": {
+    "duration_ms": 1800000,
+    "cast_ms": 2000,
+    "mp": 536,
+    "skill_id": 1169
+  },
+  "prRegeneraitionShine": {
+    "range_m": 25,
+    "duration_ms": 21000,
+    "interval_ms": 3000,
+    "heal": 460,
+    "cast_ms": 2000,
+    "mp": 409,
+    "skill_id": 3010
+  },
+  "prRepentance": {
+    "range_m": 25,
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "dmg": 244,
+    "mp": 137,
+    "skill_id": 2559
+  },
+  "prRestoreLife": {
+    "range_m": 25,
+    "duration_ms": 60000,
+    "mp": 459,
+    "skill_id": 3018
+  },
+  "prReverseCondition": {
+    "cast_ms": 1000,
+    "skill_id": 1098
+  },
+  "prReviveHand": {
+    "range_m": 25,
+    "duration_ms": 300000,
+    "cast_ms": 1000,
+    "mp": 155,
+    "skill_id": 1041
+  },
+  "prRoot": {
+    "range_m": 25,
+    "duration_ms": 6000,
+    "mp": 35,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "duration_ms": 6000
+      }
+    ],
+    "skill_id": 1099
+  },
+  "prSagesWisdom": {
+    "duration_ms": 10000,
+    "cast_ms": 500,
+    "mp": 187,
+    "skill_id": 1102
+  },
+  "prSecretPreceptAsmo": {
+    "dp": 2000,
+    "skill_id": 1171
+  },
+  "prSkinOfThorn": {
+    "duration_ms": 30000,
+    "cast_ms": 1000,
+    "hp_cost": 460,
+    "skill_id": 3007
+  },
+  "prSprint": {
+    "duration_ms": 10000,
+    "mp_ratio": 6,
+    "skill_id": 2766
+  },
+  "prStigmaAbysalCircleAsmo": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "heal": 1152,
+    "cast_ms": 3000,
+    "mp": 346,
+    "skill_id": 1193
+  },
+  "prStigmaAbysalSanctuary": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "heal": 1794,
+    "cast_ms": 3000,
+    "mp": 572,
+    "skill_id": 3000
+  },
+  "prStigmaDivineCircleElyos": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "heal": 1152,
+    "cast_ms": 3000,
+    "mp": 346,
+    "skill_id": 1192
+  },
+  "prStigmaDivineSanctuary": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "interval_ms": 2000,
+    "heal": 1794,
+    "cast_ms": 3000,
+    "mp": 572,
+    "skill_id": 2999
+  },
+  "prStigmaSuggestion": {
+    "range_m": 25,
+    "cast_ms": 1000,
+    "mp": 181,
+    "skill_id": 3009
+  },
+  "prSufferMemory": {
+    "range_m": 25,
+    "duration_ms": 27000,
+    "interval_ms": 3000,
+    "dmg": 246,
+    "cast_ms": 1000,
+    "mp": 403,
+    "skill_id": 3021
+  },
+  "prSummerCircle": {
+    "duration_ms": 600000,
+    "cast_ms": 1000,
+    "mp": 242,
+    "skill_id": 1186
+  },
+  "prThunderBolt": {
+    "range_m": 25,
+    "dmg": 1989,
+    "mp": 323,
+    "skill_id": 3026
+  },
+  "prThunderofPunishment": {
+    "range_m": 25,
+    "dmg": 1565,
+    "cast_ms": 2000,
+    "mp": 280,
+    "skill_id": 2749
+  },
+  "prTranquility": {
+    "duration_ms": 1000,
+    "interval_ms": 1000,
+    "cast_ms": 2000,
+    "mp": 919,
+    "skill_id": 3025
+  },
+  "prWinterCircle": {
+    "duration_ms": 600000,
+    "cast_ms": 1000,
+    "mp": 208,
+    "skill_id": 1187
+  },
+  "raAimShot": {
+    "dmg": [
+      1226,
+      1230
+    ],
+    "mp": 252,
+    "skill_id": 630
+  },
+  "raApproachShot": {
+    "dmg": [
+      1552,
+      1556
+    ],
+    "mp": 173,
+    "skill_id": 2912
+  },
+  "raArrowStorm": {
+    "range_m": 15,
+    "dmg": [
+      652,
+      656
+    ],
+    "mp": 284,
+    "skill_id": 2902
+  },
+  "raArrowStrike": {
+    "dmg": [
+      525,
+      529
+    ],
+    "skill_id": 2896
+  },
+  "raAssaultArrow": {
+    "range_m": 20,
+    "dmg": [
+      79,
+      83
+    ],
+    "mp": 8,
+    "skill_id": 2723
+  },
+  "raBackdashStab": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 6,
+    "duration_ms": 3000,
+    "mp": 41,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 20,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 655
+  },
+  "raBasicShot": {
+    "dmg": [
+      385,
+      389
+    ],
+    "mp": 109,
+    "skill_id": 2504
+  },
+  "raBrainShot": {
+    "range_m": 30,
+    "dmg": [
+      1402,
+      1406
+    ],
+    "dp": 4000,
+    "skill_id": 2901
+  },
+  "raBreathofNature": {
+    "duration_ms": 300000,
+    "cast_ms": 2000,
+    "mp": 159,
+    "skill_id": 2487
+  },
+  "raBreezeofCalm": {
+    "range_m": 25,
+    "mp": 102,
+    "skill_id": 2884
+  },
+  "raCallCompanionAsmo": {
+    "range_m": 25,
+    "mp": 164,
+    "skill_id": 2511
+  },
+  "raCallCompanionElyos": {
+    "range_m": 25,
+    "mp": 164,
+    "skill_id": 2510
+  },
+  "raCrisisCounter": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "range_m": 6,
+    "dmg": [
+      958,
+      962
+    ],
+    "mp": 109,
+    "skill_id": 2500
+  },
+  "raCrushShot": {
+    "range_m": 20,
+    "dmg": [
+      642,
+      646
+    ],
+    "mp": 172,
+    "skill_id": 2497
+  },
+  "raDestructArrowAsmo": {
+    "dmg": [
+      1034,
+      1038
+    ],
+    "mp": 206,
+    "skill_id": 734
+  },
+  "raDestructionTrapAsmo": {
+    "cast_ms": 2000,
+    "dp": 2000,
+    "skill_id": 2097
+  },
+  "raDestructionTrapElyos": {
+    "cast_ms": 2000,
+    "dp": 2000,
+    "skill_id": 2096
+  },
+  "raDrainEye": {
+    "duration_ms": 60000,
+    "skill_id": 2501
+  },
+  "raDrainShot": {
+    "dmg": [
+      347,
+      351
+    ],
+    "skill_id": 2359
+  },
+  "raEagleEye": {
+    "duration_ms": 60000,
+    "mp": 84,
+    "skill_id": 776
+  },
+  "raEnchantBow": {
+    "duration_ms": 60000,
+    "mp": 103,
+    "skill_id": 639
+  },
+  "raEntangleShot": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 16000,
+    "dmg": [
+      228,
+      232
+    ],
+    "mp": 94,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 16000
+      }
+    ],
+    "skill_id": 2479
+  },
+  "raExplosionArrow": {
+    "dmg": [
+      1349,
+      1353
+    ],
+    "mp": 170,
+    "skill_id": 2900
+  },
+  "raExplosionTrapAsmo": {
+    "cast_ms": 2000,
+    "skill_id": 2499
+  },
+  "raExplosionTrapElyos": {
+    "cast_ms": 2000,
+    "skill_id": 2498
+  },
+  "raFairyFlareAsmo": {
+    "range_m": 15,
+    "skill_id": 793
+  },
+  "raFairyFlareElyos": {
+    "range_m": 15,
+    "skill_id": 794
+  },
+  "raFinalFire": {
+    "range_m": 20,
+    "dmg": [
+      1260,
+      1264
+    ],
+    "mp": 166,
+    "skill_id": 2725
+  },
+  "raFreeShot": {
+    "dmg": [
+      117,
+      121
+    ],
+    "skill_id": 2095
+  },
+  "raHawkEye": {
+    "duration_ms": 60000,
+    "mp": 68,
+    "skill_id": 777
+  },
+  "raHeavensTrapAsmo": {
+    "cast_ms": 1000,
+    "skill_id": 2906
+  },
+  "raHeavensTrapElyos": {
+    "cast_ms": 1000,
+    "skill_id": 2905
+  },
+  "raHeavyShot": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 20,
+    "duration_ms": 500,
+    "dmg": [
+      945,
+      949
+    ],
+    "mp": 158,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 500
+      }
+    ],
+    "skill_id": 2911
+  },
+  "raHunterMind": {
+    "duration_ms": 10000,
+    "mp": 165,
+    "skill_id": 643
+  },
+  "raInstantSprint": {
+    "mp": 221,
+    "skill_id": 2764
+  },
+  "raLightningShot": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 15,
+    "duration_ms": 1000,
+    "dmg": [
+      964,
+      968
+    ],
+    "mp": 231,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 1000
+      }
+    ],
+    "skill_id": 2910
+  },
+  "raMassExplosionArrow": {
+    "pvp": 80,
+    "dmg": [
+      2628,
+      2632
+    ],
+    "cast_ms": 2000,
+    "mp": 288,
+    "skill_id": 2915
+  },
+  "raMindsEye": {
+    "duration_ms": 60000,
+    "skill_id": 693
+  },
+  "raMovingShot": {
+    "dmg": [
+      619,
+      623
+    ],
+    "mp": 168,
+    "skill_id": 2899
+  },
+  "raPainArrow": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 60000,
+    "interval_ms": 6000,
+    "dmg": [
+      1987,
+      1991
+    ],
+    "mp": 256,
+    "skill_id": 2907
+  },
+  "raPantherMove": {
+    "duration_ms": 60000,
+    "mp": 165,
+    "skill_id": 641
+  },
+  "raParalyzeArrow": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "range_m": 15,
+    "duration_ms": 12000,
+    "mp": 110,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "duration_ms": 12000
+      }
+    ],
+    "skill_id": 695
+  },
+  "raPhoenixArrowElyos": {
+    "dmg": [
+      1034,
+      1038
+    ],
+    "mp": 206,
+    "skill_id": 731
+  },
+  "raPoisonArrow": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 12000,
+    "interval_ms": 4000,
+    "dmg": [
+      367,
+      371
+    ],
+    "mp": 94,
+    "skill_id": 2482
+  },
+  "raPoisonTrapAsmo": {
+    "cast_ms": 1000,
+    "skill_id": 2898
+  },
+  "raPoisonTrapElyos": {
+    "cast_ms": 1000,
+    "skill_id": 2897
+  },
+  "raQuickSetting": {
+    "duration_ms": 5000,
+    "skill_id": 2386
+  },
+  "raRapidBow": {
+    "duration_ms": 30000,
+    "mp": 189,
+    "skill_id": 697
+  },
+  "raRapidFire": {
+    "dmg": [
+      361,
+      365
+    ],
+    "mp": 53,
+    "skill_id": 2724
+  },
+  "raRapidShot": {
+    "dmg": [
+      351,
+      355
+    ],
+    "mp": 55,
+    "skill_id": 2361
+  },
+  "raResistMind": {
+    "duration_ms": 10000,
+    "skill_id": 724
+  },
+  "raRestoreWing": {
+    "mp": 125,
+    "skill_id": 701
+  },
+  "raRootArrowAsmo": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 10000,
+    "dmg": [
+      841,
+      845
+    ],
+    "mp": 174,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2090
+  },
+  "raSabageRoarAsmo": {
+    "duration_ms": 120000,
+    "dp": 2000,
+    "skill_id": 690
+  },
+  "raSandstormTrapAsmo": {
+    "cast_ms": 2000,
+    "skill_id": 2904
+  },
+  "raSandstormTrapElyos": {
+    "cast_ms": 2000,
+    "skill_id": 2903
+  },
+  "raSealingArrow": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "duration_ms": 8000,
+    "dmg": [
+      280,
+      284
+    ],
+    "mp": 199,
+    "skill_id": 2730
+  },
+  "raShadowArrow": {
+    "dmg": [
+      1202,
+      1206
+    ],
+    "mp": 230,
+    "skill_id": 2916
+  },
+  "raShockArrowElyos": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 10000,
+    "dmg": [
+      841,
+      845
+    ],
+    "mp": 174,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2089
+  },
+  "raSilentArrow": {
+    "acc_magic": 150,
+    "type": "Physical",
+    "mag_status": true,
+    "duration_ms": 8000,
+    "dmg": [
+      128,
+      132
+    ],
+    "mp": 109,
+    "cc": [
+      {
+        "name": "немота",
+        "name_of": "немоты",
+        "chance": 100,
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 2507
+  },
+  "raSleepingTrapAsmo": {
+    "cast_ms": 1000,
+    "skill_id": 3231
+  },
+  "raSleepingTrapElyos": {
+    "cast_ms": 1000,
+    "skill_id": 3230
+  },
+  "raSnakeBiteTrapAsmo": {
+    "cast_ms": 2000,
+    "skill_id": 2914
+  },
+  "raSnakeBiteTrapElyos": {
+    "cast_ms": 2000,
+    "skill_id": 2913
+  },
+  "raSnakeEye": {
+    "duration_ms": 60000,
+    "mp": 97,
+    "skill_id": 786
+  },
+  "raSpikeBiteTrapAsmo": {
+    "cast_ms": 2000,
+    "skill_id": 2503
+  },
+  "raSpikeBiteTrapElyos": {
+    "cast_ms": 2000,
+    "skill_id": 2502
+  },
+  "raSpikeTrapAsmo": {
+    "cast_ms": 1000,
+    "skill_id": 2494
+  },
+  "raSpikeTrapElyos": {
+    "cast_ms": 1000,
+    "skill_id": 2493
+  },
+  "raSpiralArrow": {
+    "dmg": [
+      795,
+      799
+    ],
+    "skill_id": 2895
+  },
+  "raSpoutArrow": {
+    "range_m": 15,
+    "dmg": [
+      349,
+      353
+    ],
+    "skill_id": 2886
+  },
+  "raSteelArrow": {
+    "acc_magic": 50,
+    "type": "Magical",
+    "duration_ms": 10000,
+    "dmg": [
+      376,
+      380
+    ],
+    "mp": 144,
+    "skill_id": 3586
+  },
+  "raStigmaAncientArrowElyos": {
+    "dmg": [
+      1325,
+      1329
+    ],
+    "mp": 247,
+    "skill_id": 647
+  },
+  "raStigmaDestructArrowAsmo": {
+    "dmg": [
+      1034,
+      1038
+    ],
+    "mp": 206,
+    "skill_id": 650
+  },
+  "raStigmaMysticArrowAsmo": {
+    "dmg": [
+      1325,
+      1329
+    ],
+    "mp": 247,
+    "skill_id": 648
+  },
+  "raStigmaPhoenixArrowElyos": {
+    "dmg": [
+      1034,
+      1038
+    ],
+    "mp": 206,
+    "skill_id": 649
+  },
+  "raStigmaTigerEye": {
+    "duration_ms": 60000,
+    "mp": 124,
+    "skill_id": 646
+  },
+  "raThroughShot": {
+    "mag_status": true,
+    "type": "Physical",
+    "pvp": 80,
+    "range_m": 25,
+    "duration_ms": 2000,
+    "dmg": [
+      421,
+      425
+    ],
+    "mp": 164,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 15,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2362
+  },
+  "raTrueShot": {
+    "dmg": [
+      434,
+      438
+    ],
+    "skill_id": 2478
+  },
+  "raVenomShot": {
+    "dmg": [
+      294,
+      298
+    ],
+    "mp": 208,
+    "skill_id": 2360
+  },
+  "raWildRoarElyos": {
+    "duration_ms": 120000,
+    "dp": 2000,
+    "skill_id": 689
+  },
+  "raWoundingArrow": {
+    "duration_ms": 8000,
+    "dmg": [
+      373,
+      377
+    ],
+    "mp": 73,
+    "skill_id": 2885
+  },
+  "returnHome": {
+    "cast_ms": 6000,
+    "skill_id": 1801
+  },
+  "sudden": {
+    "dmg": [
+      16,
+      20
+    ],
+    "mp": 54,
+    "skill_id": 2492
+  },
+  "counter": {
+    "mag_status": true,
+    "type": "Physical",
+    "duration_ms": 2000,
+    "dmg": [
+      599,
+      603
+    ],
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 80,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2891
+  },
+  "stealth": {
+    "duration_ms": 60000,
+    "mp": 76,
+    "skill_id": 582
+  },
+  "ritual": {
+    "duration_ms": 5000,
+    "mp": 19,
+    "skill_id": 577
+  },
+  "scSpiritofGale": {
+    "duration_ms": 30000,
+    "mp": 52,
+    "skill_id": 560
+  },
+  "swift": {
+    "dmg": [
+      384,
+      388
+    ],
+    "skill_id": 2475
+  },
+  "cleave": {
+    "dmg": [
+      420,
+      424
+    ],
+    "skill_id": 2892
+  },
+  "scTrueShotMind": {
+    "duration_ms": 60000,
+    "cast_ms": 500,
+    "mp": 248,
+    "skill_id": 684
+  },
+  "focusedEvasion": {
+    "duration_ms": 5000,
+    "skill_id": 572
+  },
+  "waArmorBreak": {
+    "duration_ms": 6000,
+    "dmg": [
+      94,
+      98
+    ],
+    "skill_id": 2813
+  },
+  "waAvengingCrash": {
+    "acc_magic": 500,
+    "type": "Physical",
+    "mag_status": true,
+    "duration_ms": 2000,
+    "dmg": [
+      313,
+      317
+    ],
+    "mp": 116,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2806
+  },
+  "waDash": {
+    "duration_ms": 10000,
+    "mp": 102,
+    "skill_id": 182
+  },
+  "waProvoke": {
+    "range_m": 15,
+    "skill_id": 2427
+  },
+  "waRage": {
+    "duration_ms": 10000,
+    "mp": 55,
+    "skill_id": 2800
+  },
+  "waRobustBlow": {
+    "dmg": [
+      224,
+      228
+    ],
+    "skill_id": 2443
+  },
+  "waRobustHit": {
+    "dmg": [
+      163,
+      167
+    ],
+    "skill_id": 2416
+  },
+  "waSteadiness": {
+    "duration_ms": 90000,
+    "mp": 79,
+    "skill_id": 287
+  },
+  "wiAbsenceSoul": {
+    "mp": 211,
+    "skill_id": 2667
+  },
+  "wiAbysalSlayerAsmo": {
+    "range_m": 25,
+    "dmg": 1856,
+    "cast_ms": 2000,
+    "dp": 4000,
+    "skill_id": 2629
+  },
+  "wiAbysalStalkerAsmo": {
+    "range_m": 25,
+    "dmg": 2660,
+    "cast_ms": 2000,
+    "dp": 4000,
+    "skill_id": 2850
+  },
+  "wiArcaneBoost": {
+    "duration_ms": 15000,
+    "mp": 229,
+    "skill_id": 1554
+  },
+  "wiArcanePower": {
+    "duration_ms": 15000,
+    "mp": 229,
+    "skill_id": 1555
+  },
+  "wiArcaneWisdom": {
+    "duration_ms": 15000,
+    "skill_id": 1556
+  },
+  "wiAtomicEnergyAsmo": {
+    "range_m": 25,
+    "dmg": 1313,
+    "cast_ms": 2000,
+    "mp": 499,
+    "skill_id": 1456
+  },
+  "wiAtomicEnergyElyos": {
+    "range_m": 25,
+    "dmg": 1313,
+    "cast_ms": 2000,
+    "mp": 499,
+    "skill_id": 1455
+  },
+  "wiBurningSoul": {
+    "range_m": 25,
+    "dmg": 1171,
+    "cast_ms": 2000,
+    "mp": 282,
+    "skill_id": 2626
+  },
+  "wiChainBurn": {
+    "range_m": 25,
+    "dmg": 986,
+    "mp": 113,
+    "skill_id": 3587
+  },
+  "wiCounterMagic": {
+    "range_m": 25,
+    "duration_ms": 60000,
+    "mp": 271,
+    "skill_id": 2848
+  },
+  "wiCrystalMirror": {
+    "mp": 100,
+    "skill_id": 2395
+  },
+  "wiCursedCorruptTree": {
+    "range_m": 10,
+    "duration_ms": 20000,
+    "mp": 269,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "chance": 100,
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1430
+  },
+  "wiCursedTree": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 20000,
+    "cast_ms": 1500,
+    "mp": 74,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "chance": 100,
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1454
+  },
+  "wiCycloneStrike": {
+    "pvp": 50,
+    "range_m": 25,
+    "dmg": 4913,
+    "cast_ms": 4000,
+    "mp": 940,
+    "skill_id": 2402
+  },
+  "wiDeepSleep": {
+    "range_m": 25,
+    "duration_ms": 5000,
+    "cast_ms": 1400,
+    "mp": 348,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "chance": 100,
+        "duration_ms": 5000
+      }
+    ],
+    "skill_id": 2714
+  },
+  "wiDefendSeal": {
+    "duration_ms": 1800000,
+    "mp": 271,
+    "skill_id": 2397
+  },
+  "wiDelayedExplosion": {
+    "range_m": 25,
+    "dmg": 716,
+    "cast_ms": 2000,
+    "mp": 180,
+    "skill_id": 2200
+  },
+  "wiDelayedStrikeAsmo": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 549,
+    "skill_id": 2712
+  },
+  "wiDelayedStrikeElyos": {
+    "range_m": 25,
+    "cast_ms": 2000,
+    "mp": 549,
+    "skill_id": 2711
+  },
+  "wiDiemsionJump": {
+    "mp": 100,
+    "skill_id": 1424
+  },
+  "wiDivineSlayerElyos": {
+    "range_m": 25,
+    "dmg": 1856,
+    "cast_ms": 2000,
+    "dp": 4000,
+    "skill_id": 2628
+  },
+  "wiDivineStalkerElyos": {
+    "range_m": 25,
+    "dmg": 2660,
+    "cast_ms": 2000,
+    "dp": 4000,
+    "skill_id": 2849
+  },
+  "wiElementalSeal": {
+    "duration_ms": 60000,
+    "mp": 263,
+    "skill_id": 1426
+  },
+  "wiFireShooter": {
+    "range_m": 25,
+    "dmg": 587,
+    "mp": 200,
+    "skill_id": 2209
+  },
+  "wiFlameCage": {
+    "range_m": 25,
+    "duration_ms": 15000,
+    "interval_ms": 3000,
+    "dmg": 230,
+    "mp": 128,
+    "skill_id": 2858
+  },
+  "wiFlameLance": {
+    "range_m": 25,
+    "dmg": 785,
+    "cast_ms": 1400,
+    "mp": 225,
+    "skill_id": 2708
+  },
+  "wiFlameSeal": {
+    "duration_ms": 1800000,
+    "mp": 216,
+    "skill_id": 1590
+  },
+  "wiFlameStrike": {
+    "pvp": 70,
+    "range_m": 25,
+    "dmg": 3404,
+    "cast_ms": 3500,
+    "mp": 1401,
+    "skill_id": 2860
+  },
+  "wiFrostPillarAsmo": {
+    "range_m": 25,
+    "mp": 391,
+    "skill_id": 2845
+  },
+  "wiFrostPillarElyos": {
+    "range_m": 25,
+    "mp": 391,
+    "skill_id": 2844
+  },
+  "wiFrozenCoreAsmo": {
+    "range_m": 25,
+    "duration_ms": 12000,
+    "dmg": 824,
+    "mp": 253,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 12000
+      }
+    ],
+    "skill_id": 2203
+  },
+  "wiFrozenCoreElyos": {
+    "range_m": 25,
+    "duration_ms": 12000,
+    "dmg": 824,
+    "mp": 253,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 12000
+      }
+    ],
+    "skill_id": 2202
+  },
+  "wiFrozenField": {
+    "duration_ms": 14000,
+    "dmg": 83,
+    "mp": 300,
+    "cc": [
+      {
+        "name": "оковы",
+        "name_of": "оков",
+        "chance": 100,
+        "duration_ms": 14000
+      }
+    ],
+    "skill_id": 2834
+  },
+  "wiFrozenSeal": {
+    "duration_ms": 1800000,
+    "mp": 267,
+    "skill_id": 2210
+  },
+  "wiGainMana": {
+    "duration_ms": 5000,
+    "interval_ms": 1000,
+    "skill_id": 2619
+  },
+  "wiHellFire": {
+    "pvp": 80,
+    "range_m": 25,
+    "dmg": 2507,
+    "cast_ms": 4000,
+    "mp": 720,
+    "skill_id": 2201
+  },
+  "wiHibernation": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 15,
+    "duration_ms": 5000,
+    "mp": 892,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "duration_ms": 5000
+      }
+    ],
+    "skill_id": 2396
+  },
+  "wiHydroImpact": {
+    "range_m": 3,
+    "dmg": 865,
+    "mp": 437,
+    "skill_id": 2839
+  },
+  "wiIllusionDance": {
+    "duration_ms": 10000,
+    "mp": 269,
+    "skill_id": 1440
+  },
+  "wiIllusionGateAsmo": {
+    "range_m": 3,
+    "cast_ms": 5000,
+    "mp": 383,
+    "skill_id": 1458
+  },
+  "wiIllusionGateElyos": {
+    "range_m": 3,
+    "cast_ms": 5000,
+    "mp": 383,
+    "skill_id": 1482
+  },
+  "wiIllusionStorm": {
+    "duration_ms": 4000,
+    "dmg": 718,
+    "mp": 846,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 4000
+      }
+    ],
+    "skill_id": 2862
+  },
+  "wiMagicFist": {
+    "range_m": 20,
+    "dmg": 1644,
+    "mp": 481,
+    "skill_id": 2836
+  },
+  "wiMagicalChain": {
+    "range_m": 25,
+    "dmg": 461,
+    "cast_ms": 1000,
+    "skill_id": 3588
+  },
+  "wiMagicalFlame": {
+    "range_m": 25,
+    "dmg": 2940,
+    "cast_ms": 4000,
+    "mp": 1213,
+    "skill_id": 2713
+  },
+  "wiManaBoost": {
+    "duration_ms": 60000,
+    "mp": 734,
+    "skill_id": 1432
+  },
+  "wiMassExplosion": {
+    "range_m": 25,
+    "dmg": 932,
+    "cast_ms": 2000,
+    "mp": 294,
+    "skill_id": 1514
+  },
+  "wiMeltDown": {
+    "range_m": 25,
+    "duration_ms": 10000,
+    "dmg": 520,
+    "cast_ms": 1000,
+    "mp": 196,
+    "skill_id": 2618
+  },
+  "wiMeteor": {
+    "range_m": 25,
+    "duration_ms": 3000,
+    "dmg": 760,
+    "cast_ms": 1500,
+    "mp": 373,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 30,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2861
+  },
+  "wiMindsEye": {
+    "duration_ms": 30000,
+    "mp": 90,
+    "skill_id": 1571
+  },
+  "wiNapalm": {
+    "range_m": 25,
+    "dmg": 901,
+    "cast_ms": 2000,
+    "mp": 526,
+    "skill_id": 2620
+  },
+  "wiPhysicalWall": {
+    "duration_ms": 5000,
+    "mp": 352,
+    "skill_id": 1445
+  },
+  "wiRaisingStorm": {
+    "pvp": 80,
+    "dmg": 491,
+    "cast_ms": 1500,
+    "mp": 470,
+    "skill_id": 2398
+  },
+  "wiRapidShield": {
+    "duration_ms": 5000,
+    "mp": 320,
+    "skill_id": 2710
+  },
+  "wiRockFall": {
+    "pvp": 80,
+    "range_m": 25,
+    "dmg": 1101,
+    "mp": 637,
+    "skill_id": 2851
+  },
+  "wiSleep": {
+    "acc_magic": 50,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 20000,
+    "cast_ms": 2000,
+    "mp": 110,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1495
+  },
+  "wiSleepingCloud": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 20000,
+    "cast_ms": 2000,
+    "dp": 2000,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1497
+  },
+  "wiSleepingStorm": {
+    "acc_magic": 200,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 20000,
+    "cast_ms": 1000,
+    "mp": 512,
+    "cc": [
+      {
+        "name": "сон",
+        "name_of": "сна",
+        "duration_ms": 20000
+      }
+    ],
+    "skill_id": 1443
+  },
+  "wiSoulEater": {
+    "range_m": 25,
+    "dmg": 886,
+    "cast_ms": 2000,
+    "hp_ratio": 10,
+    "skill_id": 2854
+  },
+  "wiSoulFreeze": {
+    "range_m": 25,
+    "duration_ms": 8000,
+    "dmg": 985,
+    "cast_ms": 1000,
+    "mp": 473,
+    "cc": [
+      {
+        "name": "немота",
+        "name_of": "немоты",
+        "chance": 100,
+        "duration_ms": 8000
+      }
+    ],
+    "skill_id": 2853
+  },
+  "wiSoulGain": {
+    "duration_ms": 20000,
+    "mp": 134,
+    "skill_id": 1442
+  },
+  "wiStigmaAtomicEnergyAsmo": {
+    "range_m": 25,
+    "dmg": 1313,
+    "cast_ms": 2000,
+    "mp": 499,
+    "skill_id": 1450
+  },
+  "wiStigmaAtomicEnergyElyos": {
+    "range_m": 25,
+    "dmg": 1313,
+    "cast_ms": 2000,
+    "mp": 499,
+    "skill_id": 1449
+  },
+  "wiStigmaIceLance": {
+    "range_m": 25,
+    "dmg": 1579,
+    "cast_ms": 2500,
+    "mp": 461,
+    "skill_id": 3214
+  },
+  "wiStigmaLavaWaveAsmo": {
+    "range_m": 25,
+    "dmg": 2136,
+    "cast_ms": 2000,
+    "mp": 757,
+    "skill_id": 2855
+  },
+  "wiStigmaVolcanicFlameElyos": {
+    "range_m": 25,
+    "dmg": 2136,
+    "cast_ms": 2000,
+    "mp": 757,
+    "skill_id": 2857
+  },
+  "wiStormShock": {
+    "range_m": 25,
+    "duration_ms": 3000,
+    "dmg": 1083,
+    "cast_ms": 1000,
+    "mp": 571,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2838
+  },
+  "wiSummonTornadoAsmo": {
+    "range_m": 15,
+    "mp": 835,
+    "skill_id": 2294
+  },
+  "wiSummonTornadoElyos": {
+    "range_m": 15,
+    "mp": 835,
+    "skill_id": 2293
+  },
+  "wiVitalityDrain": {
+    "range_m": 25,
+    "dmg": 954,
+    "mp": 645,
+    "skill_id": 2856
+  },
+  "wiWakeup": {
+    "range_m": 25,
+    "mp": 640,
+    "skill_id": 3243
+  },
+  "wiWindArrow": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 25,
+    "dmg": 118,
+    "mp": 55,
+    "skill_id": 2707
+  },
+  "wiWindCutter": {
+    "range_m": 25,
+    "duration_ms": 6000,
+    "interval_ms": 3000,
+    "dmg": 1054,
+    "cast_ms": 1500,
+    "mp": 412,
+    "skill_id": 2841
+  },
+  "wiWindSpear": {
+    "acc_magic": 100,
+    "type": "Magical",
+    "range_m": 25,
+    "duration_ms": 5000,
+    "dmg": 405,
+    "mp": 172,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 33,
+        "duration_ms": 5000
+      }
+    ],
+    "skill_id": 2394
+  },
+  "wiWizardryHook": {
+    "range_m": 20,
+    "dmg": 645,
+    "cast_ms": 2800,
+    "mp": 375,
+    "skill_id": 2835
+  },
+  "wiWizardrySeal": {
+    "duration_ms": 1800000,
+    "mp": 282,
+    "skill_id": 2627
+  },
+  "wiZeroPoint": {
+    "pvp": 65,
+    "range_m": 25,
+    "dmg": 4335,
+    "cast_ms": 4000,
+    "mp": 1867,
+    "skill_id": 2847
+  },
+  "wiIceBarrier": {
+    "duration_ms": 8000,
+    "cast_ms": 2000,
+    "mp": 214,
+    "skill_id": 1597
+  },
+  "wiIcyVeinsAsmo": {
+    "duration_ms": 15000,
+    "mp": 201,
+    "skill_id": 1588
+  },
+  "wiIcyVeinsElyos": {
+    "duration_ms": 15000,
+    "mp": 201,
+    "skill_id": 1587
+  },
+  "wiIcyShield": {
+    "duration_ms": 30000,
+    "mp": 1030,
+    "skill_id": 2843
   }
 }

@@ -252,6 +252,19 @@
       "activation": "Active",
       "icon": "CBT_AS_CarveSignetChain_G1.dds"
     },
+    "asChainFlyingDagger": {
+      "client_id": 3584,
+      "client_name": "AS_ChainFlyingDagger_G1",
+      "group": "AS_ChainFlyingDagger",
+      "classes": [
+        "assassin"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "AS_ChainFlyingDagger_G1"
+    },
     "agonyRune": {
       "client_id": 2939,
       "client_name": "AS_ChainSignetBurst_G6",
@@ -433,6 +446,19 @@
       "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_AS_FlyingDagger_G1"
+    },
+    "asGaleMove": {
+      "client_id": 912,
+      "client_name": "AS_GaleMove_G1",
+      "group": "AS_GaleMove",
+      "classes": [
+        "assassin"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Toggle",
+      "icon": "CBT_AS_GaleMove_G1.dds"
     },
     "massacre": {
       "client_id": 2369,
@@ -799,6 +825,19 @@
       "activation": "Active",
       "icon": "Live_AS_StabStance_G1"
     },
+    "asStigmaDemonicBurstAsmo": {
+      "client_id": 945,
+      "client_name": "AS_Stigma_DemonicBurst_G1",
+      "group": "AS_Stigma_DemonicBurst",
+      "classes": [
+        "assassin"
+      ],
+      "race": "asmo",
+      "stigma": "normal",
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_AS_DemonicBurst_G1.dds"
+    },
     "runeSwipe": {
       "client_id": 947,
       "client_name": "AS_Stigma_MoonBurst_G1",
@@ -811,6 +850,19 @@
       "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_AS_Stigma_MoonBurst_G1"
+    },
+    "asStigmaNovaBurstElyos": {
+      "client_id": 944,
+      "client_name": "AS_Stigma_NovaBurst_G1",
+      "group": "AS_Stigma_NovaBurst",
+      "classes": [
+        "assassin"
+      ],
+      "race": "elyos",
+      "stigma": "normal",
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_AS_NovaBurst_G1"
     },
     "shadowStep": {
       "client_id": 948,
@@ -889,6 +941,19 @@
       "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_AS_StunBurst_G1.dds"
+    },
+    "asStunBurst": {
+      "client_id": 2933,
+      "client_name": "AS_StunBurst_1_G5",
+      "group": "AS_StunBurst",
+      "classes": [
+        "assassin"
+      ],
+      "race": null,
+      "stigma": "greater",
+      "chain_follow": false,
+      "activation": "Charge",
+      "icon": "LIVE_AS_StunBurst_G1"
     },
     "deadlyPoison": {
       "client_id": 919,
@@ -1072,6 +1137,19 @@
       "activation": "Active",
       "icon": "CBT_AS_WindWalk_G1.dds"
     },
+    "angelRADPDeathBlowElyos": {
+      "client_id": 2505,
+      "client_name": "Angel_RA_DP_DeathBlow_G2",
+      "group": "Angel_RA_DP_DeathBlow",
+      "classes": [
+        "ranger"
+      ],
+      "race": "elyos",
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_Angel_RA_DP_DeathBlow"
+    },
     "mpHerb": {
       "client_id": 2673,
       "client_name": "Aromatherapy_G5",
@@ -1091,242 +1169,6 @@
       "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_Aromatherapy_G1.dds"
-    },
-    "powder": {
-      "client_id": 2672,
-      "client_name": "Mending_G6",
-      "group": "Mending",
-      "classes": [
-        "assassin",
-        "chanter",
-        "cleric",
-        "gladiator",
-        "ranger",
-        "sorcerer",
-        "spiritmaster",
-        "templar"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_Mending_G2.dds"
-    },
-    "bandage": {
-      "client_id": 1803,
-      "client_name": "Mending_G1",
-      "group": "Mending_L",
-      "classes": [
-        "assassin",
-        "chanter",
-        "cleric",
-        "gladiator",
-        "ranger",
-        "sorcerer",
-        "spiritmaster",
-        "templar"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_Mending_G1.dds"
-    },
-    "returnHome": {
-      "client_id": 1801,
-      "client_name": "Returnhome1",
-      "group": "Returnhome1",
-      "classes": [
-        "assassin",
-        "chanter",
-        "cleric",
-        "gladiator",
-        "ranger",
-        "sorcerer",
-        "spiritmaster",
-        "templar"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_Returnhome1.dds"
-    },
-    "sudden": {
-      "client_id": 2492,
-      "client_name": "SC_AssaultStabber_G6",
-      "group": "SC_AssaultStabber",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_SC_AssaultStabber_G1"
-    },
-    "counter": {
-      "client_id": 2891,
-      "client_name": "SC_CounterSlash_G6",
-      "group": "SC_CounterSlash",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_SC_CounterSlash_G1"
-    },
-    "stealth": {
-      "client_id": 582,
-      "client_name": "SC_Hide_G2",
-      "group": "SC_Hide",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_SC_Hide_G1.dds"
-    },
-    "ritual": {
-      "client_id": 577,
-      "client_name": "SC_InvokePower_G1",
-      "group": "SC_InvokePower",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_SC_InvokePower_G1.dds"
-    },
-    "swift": {
-      "client_id": 2475,
-      "client_name": "SC_SwiftEdge_G6",
-      "group": "SC_SwiftEdge",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_SC_SwiftEdge_G1"
-    },
-    "cleave": {
-      "client_id": 2892,
-      "client_name": "SC_SwiftShock_G6",
-      "group": "SC_SwiftShock",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": true,
-      "activation": "Active",
-      "icon": "CBT_SC_SwiftShock_G1"
-    },
-    "focusedEvasion": {
-      "client_id": 572,
-      "client_name": "SC_WhisperofWind_G1",
-      "group": "SC_WhisperofWind",
-      "classes": [
-        "assassin",
-        "ranger"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_SC_WhisperofWind_G1.dds"
-    },
-    "asChainFlyingDagger": {
-      "client_id": 3584,
-      "client_name": "AS_ChainFlyingDagger_G1",
-      "group": "AS_ChainFlyingDagger",
-      "classes": [
-        "assassin"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": true,
-      "activation": "Active",
-      "icon": "AS_ChainFlyingDagger_G1"
-    },
-    "asGaleMove": {
-      "client_id": 912,
-      "client_name": "AS_GaleMove_G1",
-      "group": "AS_GaleMove",
-      "classes": [
-        "assassin"
-      ],
-      "race": null,
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Toggle",
-      "icon": "CBT_AS_GaleMove_G1.dds"
-    },
-    "asStigmaDemonicBurstAsmo": {
-      "client_id": 945,
-      "client_name": "AS_Stigma_DemonicBurst_G1",
-      "group": "AS_Stigma_DemonicBurst",
-      "classes": [
-        "assassin"
-      ],
-      "race": "asmo",
-      "stigma": "normal",
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_AS_DemonicBurst_G1.dds"
-    },
-    "asStigmaNovaBurstElyos": {
-      "client_id": 944,
-      "client_name": "AS_Stigma_NovaBurst_G1",
-      "group": "AS_Stigma_NovaBurst",
-      "classes": [
-        "assassin"
-      ],
-      "race": "elyos",
-      "stigma": "normal",
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_AS_NovaBurst_G1"
-    },
-    "asStunBurst": {
-      "client_id": 2933,
-      "client_name": "AS_StunBurst_1_G5",
-      "group": "AS_StunBurst",
-      "classes": [
-        "assassin"
-      ],
-      "race": null,
-      "stigma": "greater",
-      "chain_follow": false,
-      "activation": "Charge",
-      "icon": "LIVE_AS_StunBurst_G1"
-    },
-    "angelRADPDeathBlowElyos": {
-      "client_id": 2505,
-      "client_name": "Angel_RA_DP_DeathBlow_G2",
-      "group": "Angel_RA_DP_DeathBlow",
-      "classes": [
-        "ranger"
-      ],
-      "race": "elyos",
-      "stigma": null,
-      "chain_follow": false,
-      "activation": "Active",
-      "icon": "CBT_Angel_RA_DP_DeathBlow"
     },
     "chAbyssGloriaAsmo": {
       "client_id": 1305,
@@ -1922,7 +1764,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_CH_PowerAttack_G1.dds"
     },
@@ -2013,7 +1855,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_CH_ShockAttack_G1.dds"
     },
@@ -2104,7 +1946,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_CH_SonicSwing_G1.dds"
     },
@@ -2299,7 +2141,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_CH_TriangleShock_G1.dds"
     },
@@ -2477,7 +2319,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_CL_SonicEruption_G1.dds"
     },
@@ -3192,7 +3034,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_EL_QuickHPMPDrain_G1.dds"
     },
@@ -3517,7 +3359,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_EL_StoneShock_G1.dds"
     },
@@ -3946,7 +3788,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_FI_ConsecutiveHit_G1.dds"
     },
@@ -4089,7 +3931,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "FI_DrainWave_G1"
     },
@@ -4167,7 +4009,7 @@
       ],
       "race": "elyos",
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_FI_ForceBlade_G1"
     },
@@ -4206,7 +4048,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_FI_GustBlade_G1"
     },
@@ -4232,7 +4074,7 @@
       ],
       "race": "asmo",
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_FI_HeavySwing_G1"
     },
@@ -4362,7 +4204,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_FI_RageBurst_G1.dds"
     },
@@ -4479,7 +4321,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_FI_SeismicImpact_G1.dds"
     },
@@ -4492,7 +4334,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_FI_SeismicShock_G1.dds"
     },
@@ -4674,7 +4516,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_FI_TripleSlash_G1.dds"
     },
@@ -4843,7 +4685,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "KN_BloodySlash_G1"
     },
@@ -4895,7 +4737,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_KN_CaptureOne_G1.dds"
     },
@@ -4934,7 +4776,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_KN_CrossBlade_G1.dds"
     },
@@ -5415,7 +5257,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_KN_ShieldImpact_G1.dds"
     },
@@ -5428,7 +5270,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_KN_ShieldStrike_G1.dds"
     },
@@ -5729,7 +5571,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_MA_FrozenShock_G1.dds"
     },
@@ -5771,7 +5613,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_MA_IgnicBurn_G1.dds"
     },
@@ -5829,6 +5671,46 @@
       "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_MA_StoneSkin_G1.dds"
+    },
+    "powder": {
+      "client_id": 2672,
+      "client_name": "Mending_G6",
+      "group": "Mending",
+      "classes": [
+        "assassin",
+        "chanter",
+        "cleric",
+        "gladiator",
+        "ranger",
+        "sorcerer",
+        "spiritmaster",
+        "templar"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_Mending_G2.dds"
+    },
+    "bandage": {
+      "client_id": 1803,
+      "client_name": "Mending_G1",
+      "group": "Mending_L",
+      "classes": [
+        "assassin",
+        "chanter",
+        "cleric",
+        "gladiator",
+        "ranger",
+        "sorcerer",
+        "spiritmaster",
+        "templar"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_Mending_G1.dds"
     },
     "prAbysalBolt": {
       "client_id": 2147,
@@ -6060,7 +5942,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_PR_DivineTouch_G1.dds"
     },
@@ -6177,7 +6059,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_PR_HarshPain_G1.dds"
     },
@@ -6398,7 +6280,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_PR_LightningBolt_G1.dds"
     },
@@ -6411,7 +6293,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_PR_LightningShock_G1.dds"
     },
@@ -6840,7 +6722,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "LIVE_PR_ThunderBolt_G1"
     },
@@ -6931,7 +6813,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_RA_ArrowStrike_G1.dds"
     },
@@ -7087,7 +6969,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_RA_CrushShot_G1"
     },
@@ -7269,7 +7151,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "RA_FinalFire_G1"
     },
@@ -7490,7 +7372,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_RA_PoisonArrow_G1"
     },
@@ -8075,9 +7957,85 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_RA_WoundingArrow_G1"
+    },
+    "returnHome": {
+      "client_id": 1801,
+      "client_name": "Returnhome1",
+      "group": "Returnhome1",
+      "classes": [
+        "assassin",
+        "chanter",
+        "cleric",
+        "gladiator",
+        "ranger",
+        "sorcerer",
+        "spiritmaster",
+        "templar"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_Returnhome1.dds"
+    },
+    "sudden": {
+      "client_id": 2492,
+      "client_name": "SC_AssaultStabber_G6",
+      "group": "SC_AssaultStabber",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_SC_AssaultStabber_G1"
+    },
+    "counter": {
+      "client_id": 2891,
+      "client_name": "SC_CounterSlash_G6",
+      "group": "SC_CounterSlash",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_SC_CounterSlash_G1"
+    },
+    "stealth": {
+      "client_id": 582,
+      "client_name": "SC_Hide_G2",
+      "group": "SC_Hide",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_SC_Hide_G1.dds"
+    },
+    "ritual": {
+      "client_id": 577,
+      "client_name": "SC_InvokePower_G1",
+      "group": "SC_InvokePower",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_SC_InvokePower_G1.dds"
     },
     "scSpiritofGale": {
       "client_id": 560,
@@ -8092,6 +8050,34 @@
       "activation": "Active",
       "icon": "CBT_SC_SpiritofGale_G1.dds"
     },
+    "swift": {
+      "client_id": 2475,
+      "client_name": "SC_SwiftEdge_G6",
+      "group": "SC_SwiftEdge",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_SC_SwiftEdge_G1"
+    },
+    "cleave": {
+      "client_id": 2892,
+      "client_name": "SC_SwiftShock_G6",
+      "group": "SC_SwiftShock",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": true,
+      "activation": "Active",
+      "icon": "CBT_SC_SwiftShock_G1"
+    },
     "scTrueShotMind": {
       "client_id": 684,
       "client_name": "SC_TrueShotMind_G1",
@@ -8104,6 +8090,20 @@
       "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_SC_TrueShotMind_G1"
+    },
+    "focusedEvasion": {
+      "client_id": 572,
+      "client_name": "SC_WhisperofWind_G1",
+      "group": "SC_WhisperofWind",
+      "classes": [
+        "assassin",
+        "ranger"
+      ],
+      "race": null,
+      "stigma": null,
+      "chain_follow": false,
+      "activation": "Active",
+      "icon": "CBT_SC_WhisperofWind_G1.dds"
     },
     "waArmorBreak": {
       "client_id": 2813,
@@ -8199,7 +8199,7 @@
       ],
       "race": null,
       "stigma": null,
-      "chain_follow": true,
+      "chain_follow": false,
       "activation": "Active",
       "icon": "CBT_WA_RobustBlow_G1.dds"
     },
@@ -9340,47 +9340,12 @@
   },
   "chain_follow": [
     "ancient",
-    "asChainFlyingDagger",
     "beastKick",
     "beastSwipe",
-    "chPowerAttack",
-    "chShockAttack",
-    "chSonicSwing",
-    "chTriangleShock",
-    "clSonicEruption",
     "cleave",
     "crossSlash",
-    "elQuickHPMPDrain",
-    "elStoneShock",
     "encirclingStrike",
-    "fiConsecutiveHit",
-    "fiDrainWave",
-    "fiForceBladeElyos",
-    "fiGustBlade",
-    "fiHeavySwingAsmo",
-    "fiRageBurst",
-    "fiSeismicImpact",
-    "fiSeismicShock",
-    "fiTripleSlash",
-    "knBloodySlash",
-    "knCaptureOne",
-    "knCrossBlade",
-    "knShieldImpact",
-    "knShieldStrike",
-    "maFrozenShock",
-    "maIgnicBurn",
-    "prDivineTouch",
-    "prHarshPain",
-    "prLightningBolt",
-    "prLightningShock",
-    "prThunderBolt",
-    "raArrowStrike",
-    "raCrushShot",
-    "raFinalFire",
-    "raPoisonArrow",
-    "raWoundingArrow",
     "sideStrike",
-    "storm",
-    "waRobustBlow"
+    "storm"
   ]
 }
