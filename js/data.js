@@ -43,17 +43,8 @@ const COMBOS = [
 
 const LOCKED = new Set(["combat:1", "combat:2", "combat:3", "combat:4", "combat:5"]);
 const MOVE = new Set(["KeyW", "KeyS"]);
-const CHAIN_FOLLOW = new Set([
-  "cleave",
-  "beastKick",
-  "beastSwipe",
-  "ancient",
-  "sideStrike",
-  "encirclingStrike",
-  "crossSlash",
-  "storm",
-]);
 
+const DEFAULT_CLASS = "assassin";
 const DEFAULT_RACE = "asmo";
 const STIGMA_SLOTS = { normal: 6, greater: 6 };
 
@@ -108,41 +99,324 @@ const STIGMA_EN_TO_ID = {
   Shadowfall: "shadowfall",
   "Break Away": "escape",
   "Searching Strike": "searchStrike",
+  // Gladiator (stigma.origincdx.com 4.6 + Codex icon → client id)
+  "Sure Strike": "fiBurserkLance",
+  "Severe Precision Cut": "fiChargingShock",
+  "Tendon Slice": "fiKneeCrash",
+  "Precision Cut": "fiChargingHit",
+  Berserking: "fiBerserkStance",
+  "Crippling Cut": "fiCripplingCut",
+  Lockdown: "fiLockdownImpact",
+  "Severe Weakening Blow": "fiEnfeebleHit",
+  "Draining Sword": "fiDrainSword",
+  "Vicious Blow": "fiVorpalHit",
+  "Whirling Strike": "fiJumpAttack",
+  "Spite Strike": "fiTechnicalCounter",
+  "Sharp Strike": "fiSharpnessHit",
+  "Vengeful Strike": "fiRevengeSlash",
+  "Dauntless Spirit": "fiRagespirit",
+  "Advanced Dual-Wielding": "fiBladeMode",
+  // Templar
+  "Empyrean Providence": "knInvinsibleProtect",
+  "Shield of Faith": "knInvinsibleShield",
+  "Threatening Taunt": "knIntimidation",
+  "Prayer of Resilience": "knRecover",
+  "Prayer of Victory": "knSentinel",
+  "Incite Rage": "knHighProvoke",
+  "Provoking Roar": "knMassiveProvoke",
+  Bodyguard: "knGrandProtection",
+  Shieldburst: "knDestructShield",
+  "Empyrean Fury": "knDestructWish",
+  "Punishing Wave": "knFortitudeWave",
+  "Divine Justice": "knBrainStorm",
+  "Magic Smash": "knPowerSink",
+  "Divine Fury": "knDivinePower",
+  "Break Power": "knBreakPower",
+  "Holy Shield": "knHolyWrath",
+  // Ranger
+  "Lightning Arrow": "raLightningShot",
+  "Heart Shot": "raShadowArrow",
+  "Blazing Trap": { elyos: "raBlazingTrapElyos", asmo: "raBlazingTrapAsmo" },
+  "Gale Arrow": "raMovingShot",
+  "Speed of the Wind": "raPantherMove",
+  "Retreating Slash": "raBackdashStab",
+  "Breath of Nature": "raBreathofNature",
+  "Trap of Slowing": { elyos: "raThrowingTrapElyos", asmo: "raThrowingTrapAsmo" },
+  "Agonizing Arrow": "raPainArrow",
+  "Lethal Arrow": "raMassExplosionArrow",
+  "Sharpen Arrows": "raTrackerMind",
+  "Explosive Arrow": "raExplosionArrow",
+  "Hunter's Might": "raHunterMind",
+  "Bow of Blessing": "raEnchantBow",
+  "Focused Shots": "scTrueShotMind",
+  "Arrow Deluge": "raSpoutArrow",
+  // Sorcerer
+  "Wintry Armor": "wiIcyShield",
+  "Sleeping Storm": "wiSleepingStorm",
+  "Elemental Ward": "wiElementalSeal",
+  "Illusion Storm": "wiIllusionStorm",
+  Illusion: "wiIllusionDance",
+  "Curse of Roots": "wiCursedTree",
+  "Curse of Weakness": "wiCounterMagic",
+  "Vaizel's Wisdom": "wiArcaneBoost",
+  "Glacial Shard": "wiZeroPoint",
+  "Flame Spray": "wiFlameStrike",
+  "Arcane Thunderbolt": "wiStormShock",
+  "Summon Rock": "wiRockFall",
+  "Supplication of Focus": "wiSoulGain",
+  "Ice Sheet": { elyos: "wiFrostPillarElyos", asmo: "wiFrostPillarAsmo" },
+  "Wind Cut Down": "wiWindCutter",
+  "Zikel's Wisdom": "wiArcanePower",
+  // Spiritmaster
+  "Spirit Hypnosis": "elOrderOmen",
+  "Spirit Ruinous Offensive": "elStigmaOrderDestructImpact",
+  "Healing Spirit": "elElementalCharge",
+  "Summon Cyclone Servant": { elyos: "elSlaveStormServentElyos", asmo: "elSlaveStormServentAsmo" },
+  "Armor Spirit": "elEnchantArmor",
+  "Enmity Swap": "elSympatheticSwitch",
+  "Weaken Spirit": "elDimissPolymorph",
+  "Spirit Recovery": "elEtherCharge",
+  "Infernal Blight": "elHellCurse",
+  "Infernal Pain": "elHellPain",
+  "Hand of Torpor": "elSleepingSpirit",
+  "Shackle of Vulnerability": "elEnfeeblement",
+  "Magic Implosion": "elManaReverse",
+  "Body Root": "elBind",
+  "Sigil of Silence": "elSilence",
+  "Ignite Aether": "elEnchantmentBurst",
+  // Cleric
+  Benevolence: "prHealersHand",
+  "Ripple of Purification": "prTranquility",
+  "Summon Healing Servant": { elyos: "prHealingServentElyos", asmo: "prHealingServentAsmo" },
+  "Splendor of Rebirth": "prRegeneraitionShine",
+  "Shatter Memory": "prMemoryBlur",
+  "Flash of Recovery": "prFirstAid",
+  "Splendor of Recovery": "prMassEmergentHeal",
+  "Splendor of Purification": "prMassDispel",
+  "Call Lightning": "prCallLightning",
+  "Summon Noble Energy": { elyos: "prEternalServentElyos", asmo: "prEternalServentAsmo" },
+  "Enfeebling Burst": "prSufferMemory",
+  "Chain of Suffering": "prPainLinks",
+  "Hand of Reincarnation": "prReviveHand",
+  "Grace of Empyrean Lord": "prGraceofGod",
+  "Earth's Wrath": "prPurgatory",
+  "Sage's Wisdom": "prSagesWisdom",
+  // Chanter
+  "Elemental Screen": "chImprovedBody",
+  "Invincibility Mantra": "chChantInvincible",
+  "Healing Burst": "chSurperiorHeal",
+  "Magic Recovery": "chMPHeal",
+  "Blessing of Stone": "chBlessProtect",
+  "Protective Ward": "chProtectSelf",
+  "Word of Inspiration": "chImprovedAllAttack",
+  "Word of Protection": "chImprovedAllDefend",
+  "Numbing Blow": "chSlowCrash",
+  "Mountain Crash": "chMountainCrash",
+  "Disorienting Blow": "chShockWave",
+  "Stamina Restoration": "chChakra",
+  "Blessing of Wind": "chImbuePower",
+  "Rage Spell": "chNightWish",
+  "Binding Word": "chSwordBind",
+  "Splash Swing": "chSplashSwing",
 };
 
 const STIGMA_ID_TO_EN = Object.fromEntries(
-  Object.entries(STIGMA_EN_TO_ID).map(([en, id]) => [id, en])
+  Object.entries(STIGMA_EN_TO_ID).flatMap(([en, id]) => {
+    if (id && typeof id === "object") return Object.values(id).filter(Boolean).map((v) => [v, en]);
+    return [[id, en]];
+  })
 );
 STIGMA_ID_TO_EN.slayerElyos = "Slayer Form";
 STIGMA_ID_TO_EN.slayerAsmo = "Slayer Form";
 STIGMA_ID_TO_EN.complex = "Complex Rune Carve";
 
-const STIGMA_TREES = [
-  {
-    name: "Quickening Doom",
-    requirements: {
-      "Quickening Doom": ["Dash and Slash", "Sensory Boost"],
-      "Dash and Slash": ["Apply Lethal Venom", "Lightning Slash"],
-      "Apply Lethal Venom": ["Apply Deadly Poison", "Oath of Accuracy"],
-      "Lightning Slash": ["Blinding Burst"],
-      "Sensory Boost": ["Apply Deadly Poison", "Blinding Burst"],
+const STIGMA_TREES_BY_CLASS = {
+  assassin: [
+    {
+      name: "Quickening Doom",
+      requirements: {
+        "Quickening Doom": ["Dash and Slash", "Sensory Boost"],
+        "Dash and Slash": ["Apply Lethal Venom", "Lightning Slash"],
+        "Apply Lethal Venom": ["Apply Deadly Poison", "Oath of Accuracy"],
+        "Lightning Slash": ["Blinding Burst"],
+        "Sensory Boost": ["Apply Deadly Poison", "Blinding Burst"],
+      },
     },
-  },
-  {
-    name: "Signet Silence",
-    requirements: {
-      "Signet Silence": ["Agony Rune", "Explosive Burst"],
-      "Agony Rune": ["Beastly Scar", "Agonizing Slash"],
-      "Beastly Scar": ["Rune Knife", "Rune Burst"],
-      "Agonizing Slash": ["Eye of Wrath"],
-      "Explosive Burst": ["Rune Knife", "Eye of Wrath"],
+    {
+      name: "Signet Silence",
+      requirements: {
+        "Signet Silence": ["Agony Rune", "Explosive Burst"],
+        "Agony Rune": ["Beastly Scar", "Agonizing Slash"],
+        "Beastly Scar": ["Rune Knife", "Rune Burst"],
+        "Agonizing Slash": ["Eye of Wrath"],
+        "Explosive Burst": ["Rune Knife", "Eye of Wrath"],
+      },
     },
-  },
-];
+  ],
+  gladiator: [
+    {
+      name: "Sure Strike",
+      requirements: {
+        "Sure Strike": ["Severe Precision Cut", "Tendon Slice"],
+        "Severe Precision Cut": ["Precision Cut", "Berserking"],
+        "Precision Cut": ["Severe Weakening Blow", "Crippling Cut"],
+        Berserking: ["Lockdown"],
+        "Tendon Slice": ["Lockdown", "Crippling Cut"],
+      },
+    },
+    {
+      name: "Draining Sword",
+      requirements: {
+        "Draining Sword": ["Vicious Blow", "Whirling Strike"],
+        "Vicious Blow": ["Spite Strike", "Sharp Strike"],
+        "Spite Strike": ["Vengeful Strike", "Dauntless Spirit"],
+        "Sharp Strike": ["Advanced Dual-Wielding"],
+        "Whirling Strike": ["Advanced Dual-Wielding", "Vengeful Strike"],
+      },
+    },
+  ],
+  templar: [
+    {
+      name: "Empyrean Providence",
+      requirements: {
+        "Empyrean Providence": ["Shield of Faith", "Threatening Taunt"],
+        "Shield of Faith": ["Prayer of Resilience", "Prayer of Victory"],
+        "Prayer of Resilience": ["Incite Rage"],
+        "Prayer of Victory": ["Provoking Roar", "Bodyguard"],
+        "Threatening Taunt": ["Incite Rage", "Bodyguard"],
+      },
+    },
+    {
+      name: "Shieldburst",
+      requirements: {
+        Shieldburst: ["Empyrean Fury", "Punishing Wave"],
+        "Empyrean Fury": ["Divine Justice", "Magic Smash"],
+        "Divine Justice": ["Divine Fury", "Break Power"],
+        "Magic Smash": ["Holy Shield"],
+        "Punishing Wave": ["Break Power", "Holy Shield"],
+      },
+    },
+  ],
+  ranger: [
+    {
+      name: "Lightning Arrow",
+      requirements: {
+        "Lightning Arrow": ["Heart Shot", "Blazing Trap"],
+        "Heart Shot": ["Gale Arrow", "Speed of the Wind"],
+        "Gale Arrow": ["Retreating Slash", "Breath of Nature"],
+        "Speed of the Wind": ["Trap of Slowing"],
+        "Blazing Trap": ["Breath of Nature", "Trap of Slowing"],
+      },
+    },
+    {
+      name: "Agonizing Arrow",
+      requirements: {
+        "Agonizing Arrow": ["Lethal Arrow", "Sharpen Arrows"],
+        "Lethal Arrow": ["Explosive Arrow", "Hunter's Might"],
+        "Explosive Arrow": ["Bow of Blessing", "Focused Shots"],
+        "Hunter's Might": ["Arrow Deluge"],
+        "Sharpen Arrows": ["Arrow Deluge", "Focused Shots"],
+      },
+    },
+  ],
+  sorcerer: [
+    {
+      name: "Wintry Armor",
+      requirements: {
+        "Wintry Armor": ["Sleeping Storm", "Elemental Ward"],
+        "Sleeping Storm": ["Illusion Storm", "Illusion"],
+        "Illusion Storm": ["Curse of Roots", "Curse of Weakness"],
+        Illusion: ["Vaizel's Wisdom"],
+        "Elemental Ward": ["Curse of Weakness", "Vaizel's Wisdom"],
+      },
+    },
+    {
+      name: "Glacial Shard",
+      requirements: {
+        "Glacial Shard": ["Flame Spray", "Arcane Thunderbolt"],
+        "Flame Spray": ["Summon Rock", "Supplication of Focus"],
+        "Summon Rock": ["Ice Sheet", "Wind Cut Down"],
+        "Supplication of Focus": ["Zikel's Wisdom"],
+        "Arcane Thunderbolt": ["Ice Sheet", "Zikel's Wisdom"],
+      },
+    },
+  ],
+  spiritmaster: [
+    {
+      name: "Spirit Hypnosis",
+      requirements: {
+        "Spirit Hypnosis": ["Spirit Ruinous Offensive", "Healing Spirit"],
+        "Spirit Ruinous Offensive": ["Summon Cyclone Servant", "Armor Spirit"],
+        "Summon Cyclone Servant": ["Enmity Swap"],
+        "Armor Spirit": ["Weaken Spirit", "Spirit Recovery"],
+        "Healing Spirit": ["Enmity Swap", "Weaken Spirit"],
+      },
+    },
+    {
+      name: "Infernal Blight",
+      requirements: {
+        "Infernal Blight": ["Infernal Pain", "Hand of Torpor"],
+        "Infernal Pain": ["Shackle of Vulnerability", "Magic Implosion"],
+        "Shackle of Vulnerability": ["Body Root", "Sigil of Silence"],
+        "Magic Implosion": ["Ignite Aether"],
+        "Hand of Torpor": ["Sigil of Silence", "Ignite Aether"],
+      },
+    },
+  ],
+  cleric: [
+    {
+      name: "Benevolence",
+      requirements: {
+        Benevolence: ["Ripple of Purification", "Summon Healing Servant"],
+        "Ripple of Purification": ["Splendor of Rebirth", "Shatter Memory"],
+        "Splendor of Rebirth": ["Flash of Recovery", "Splendor of Recovery"],
+        "Shatter Memory": ["Splendor of Purification"],
+        "Summon Healing Servant": ["Splendor of Purification", "Splendor of Recovery"],
+      },
+    },
+    {
+      name: "Call Lightning",
+      requirements: {
+        "Call Lightning": ["Summon Noble Energy", "Enfeebling Burst"],
+        "Summon Noble Energy": ["Chain of Suffering", "Hand of Reincarnation"],
+        "Chain of Suffering": ["Grace of Empyrean Lord", "Earth's Wrath"],
+        "Hand of Reincarnation": ["Sage's Wisdom"],
+        "Enfeebling Burst": ["Grace of Empyrean Lord", "Sage's Wisdom"],
+      },
+    },
+  ],
+  chanter: [
+    {
+      name: "Elemental Screen",
+      requirements: {
+        "Elemental Screen": ["Invincibility Mantra", "Healing Burst"],
+        "Invincibility Mantra": ["Magic Recovery", "Blessing of Stone"],
+        "Magic Recovery": ["Protective Ward", "Word of Inspiration"],
+        "Blessing of Stone": ["Word of Protection"],
+        "Healing Burst": ["Word of Inspiration", "Word of Protection"],
+      },
+    },
+    {
+      name: "Numbing Blow",
+      requirements: {
+        "Numbing Blow": ["Mountain Crash", "Disorienting Blow"],
+        "Mountain Crash": ["Stamina Restoration", "Blessing of Wind"],
+        "Stamina Restoration": ["Rage Spell"],
+        "Blessing of Wind": ["Binding Word", "Splash Swing"],
+        "Disorienting Blow": ["Rage Spell", "Binding Word"],
+      },
+    },
+  ],
+};
+
+const STIGMA_TREES = STIGMA_TREES_BY_CLASS.assassin;
 
 function stigmaIdFromEn(en) {
   if (en === "Slayer Form") return state.race === "elyos" ? "slayerElyos" : "slayerAsmo";
-  return STIGMA_EN_TO_ID[en] || null;
+  const v = STIGMA_EN_TO_ID[en];
+  if (!v) return null;
+  if (typeof v === "string") return v;
+  return v[state.race] || v.elyos || v.asmo || null;
 }
 
 function layoutStigmaTree(tree) {
@@ -195,9 +469,12 @@ function layoutStigmaTree(tree) {
 
 const STIGMA_REQS = (() => {
   const map = {};
-  for (const tree of STIGMA_TREES) {
-    for (const [name, reqs] of Object.entries(tree.requirements)) {
-      map[name] = reqs;
+  const groups = typeof STIGMA_TREES_BY_CLASS !== "undefined" ? Object.values(STIGMA_TREES_BY_CLASS) : [STIGMA_TREES];
+  for (const trees of groups) {
+    for (const tree of trees) {
+      for (const [name, reqs] of Object.entries(tree.requirements)) {
+        map[name] = reqs;
+      }
     }
   }
   return map;
@@ -315,8 +592,40 @@ function padStigmas(src) {
   return out;
 }
 
-function defaultStigmaBoard() {
-  return padStigmas(DEFAULT_STIGMAS);
+function classLayout(cls) {
+  if (!cls || cls === "assassin") {
+    return {
+      learned: LEARNED_BINDS,
+      racial: RACIAL_BINDS,
+      stigma: STIGMA_BINDS,
+      defaultStigmas: DEFAULT_STIGMAS,
+    };
+  }
+  return (
+    (typeof CLASS_DEFAULTS !== "undefined" && CLASS_DEFAULTS[cls]) || {
+      learned: {
+        combat: {},
+        shift: {},
+        ctrl: { Digit1: "lifeSerum", Digit2: "manaSerum", Digit3: "recoverySerum", Digit4: "curePotion" },
+      },
+      racial: { elyos: [], asmo: [] },
+      stigma: {},
+      defaultStigmas: { normal: [], greater: [] },
+    }
+  );
+}
+
+function classNameOf(cls) {
+  const row = (typeof CLASSES !== "undefined" ? CLASSES : []).find((c) => c.id === cls);
+  return row ? row.name : "Убийца";
+}
+
+function classCombos(cls) {
+  return !cls || cls === "assassin" ? COMBOS : [];
+}
+
+function defaultStigmaBoard(cls) {
+  return padStigmas(classLayout(cls || DEFAULT_CLASS).defaultStigmas);
 }
 
 function installedStigmaSet(board) {
@@ -328,25 +637,32 @@ function installedStigmaSet(board) {
 }
 
 function applyBind(binds, layer, key, skillId) {
+  if (!binds[layer]) binds[layer] = {};
   for (const [k, sid] of Object.entries(binds[layer])) {
     if (sid === skillId) delete binds[layer][k];
   }
   binds[layer][key] = skillId;
 }
 
-function buildDefaultBinds(race, board) {
-  const binds = structuredClone(LEARNED_BINDS);
-  for (const row of RACIAL_BINDS[race] || []) {
+function buildDefaultBinds(cls, race, board) {
+  const layout = classLayout(cls);
+  const binds = {
+    combat: { ...(layout.learned.combat || {}) },
+    shift: { ...(layout.learned.shift || {}) },
+    ctrl: { ...(layout.learned.ctrl || {}) },
+  };
+  for (const row of layout.racial[race] || []) {
     applyBind(binds, row.layer, row.key, row.skill);
   }
+  const stigmaMap = layout.stigma && Object.keys(layout.stigma).length ? layout.stigma : STIGMA_BINDS;
   for (const id of installedStigmaSet(board)) {
-    const slot = STIGMA_BINDS[id];
+    const slot = stigmaMap[id];
     if (slot) applyBind(binds, slot.layer, slot.key, id);
   }
   return binds;
 }
 
-const DEFAULT_BINDS = buildDefaultBinds(DEFAULT_RACE, defaultStigmaBoard());
+const DEFAULT_BINDS = buildDefaultBinds(DEFAULT_CLASS, DEFAULT_RACE, defaultStigmaBoard());
 
 const KEYBOARD = [
   [

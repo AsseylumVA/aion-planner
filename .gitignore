@@ -5,3 +5,4 @@ __pycache__
 local-state.json
 tools/encdec/
 tools/tmp_ui/
+tools/aidb_trees/

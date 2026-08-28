@@ -1,12 +1,15 @@
-const STORE = "aion-assassin-binds-v7";
+const STORE = "aion-binds-v8";
 const STATE_API = "http://127.0.0.1:46462/api/state";
 
 const state = {
   view: "binds",
   layer: "combat",
+  class: DEFAULT_CLASS,
   race: DEFAULT_RACE,
+  multirace: false,
   stigmas: defaultStigmaBoard(),
   binds: null,
+  byClass: {},
   pickSkill: null,
   pickKey: null,
   pickSlot: null,
@@ -15,12 +18,20 @@ const state = {
 loadState();
 
 function defaultState() {
-  const stigmas = defaultStigmaBoard();
+  const stigmas = defaultStigmaBoard(DEFAULT_CLASS);
   return {
+    class: DEFAULT_CLASS,
     race: DEFAULT_RACE,
+    multirace: false,
     stigmas,
-    binds: buildDefaultBinds(DEFAULT_RACE, stigmas),
+    binds: buildDefaultBinds(DEFAULT_CLASS, DEFAULT_RACE, stigmas),
+    byClass: {},
   };
+}
+
+function cleanClass(id) {
+  if (id && typeof CLASSES !== "undefined" && CLASSES.some((c) => c.id === id)) return id;
+  return DEFAULT_CLASS;
 }
 
 function loadState() {
@@ -32,10 +43,13 @@ function loadState() {
       return;
     }
     const parsed = JSON.parse(raw);
+    state.class = cleanClass(parsed.class);
     state.race = parsed.race === "elyos" ? "elyos" : "asmo";
-    state.stigmas = padStigmas(parsed.stigmas || DEFAULT_STIGMAS);
+    state.multirace = Boolean(parsed.multirace);
+    state.byClass = parsed.byClass && typeof parsed.byClass === "object" ? parsed.byClass : {};
+    state.stigmas = padStigmas(parsed.stigmas || classLayout(state.class).defaultStigmas);
     pruneStigmas();
-    const base = buildDefaultBinds(state.race, state.stigmas);
+    const base = buildDefaultBinds(state.class, state.race, state.stigmas);
     state.binds = {
       combat: { ...base.combat, ...(parsed.binds && parsed.binds.combat) },
       shift: { ...base.shift, ...(parsed.binds && parsed.binds.shift) },
@@ -48,9 +62,28 @@ function loadState() {
 }
 
 function applyCore(next) {
+  state.class = next.class || DEFAULT_CLASS;
   state.race = next.race;
+  state.multirace = Boolean(next.multirace);
   state.stigmas = next.stigmas;
   state.binds = next.binds;
+  state.byClass = next.byClass || {};
+}
+
+function persistClassSnapshot(cls) {
+  if (!cls || !state.binds || !state.stigmas) return;
+  state.byClass = state.byClass || {};
+  state.byClass[cls] = {
+    stigmas: {
+      normal: state.stigmas.normal.slice(),
+      greater: state.stigmas.greater.slice(),
+    },
+    binds: {
+      combat: { ...state.binds.combat },
+      shift: { ...state.binds.shift },
+      ctrl: { ...state.binds.ctrl },
+    },
+  };
 }
 
 function skillName(id) {
@@ -60,14 +93,18 @@ function skillName(id) {
 let lastRemoteAt = 0;
 
 function snapshot(source) {
+  persistClassSnapshot(state.class);
   return {
+    class: state.class,
     race: state.race,
+    multirace: state.multirace,
     stigmas: state.stigmas,
     stigmaNames: {
       normal: state.stigmas.normal.map(skillName),
       greater: state.stigmas.greater.map(skillName),
     },
     binds: state.binds,
+    byClass: state.byClass,
     updatedAt: Date.now(),
     source: source || "ui",
   };
@@ -76,7 +113,10 @@ function snapshot(source) {
 function applyRemote(data) {
   if (!data || !data.stigmas) return;
   lastRemoteAt = Number(data.updatedAt) || Date.now();
+  state.class = cleanClass(data.class);
   state.race = data.race === "elyos" ? "elyos" : "asmo";
+  state.multirace = Boolean(data.multirace);
+  if (data.byClass && typeof data.byClass === "object") state.byClass = data.byClass;
   state.stigmas = padStigmas(data.stigmas);
   pruneStigmas();
   const incoming = data.binds || {};
@@ -90,6 +130,7 @@ function applyRemote(data) {
     STORE,
     JSON.stringify({ ...snapshot("api"), updatedAt: lastRemoteAt, source: data.source || "api" })
   );
+  renderCombos();
   render();
 }
 
@@ -121,7 +162,9 @@ async function saveToFile() {
 
 function sharePayload() {
   return {
+    k: state.class,
     r: state.race === "elyos" ? 1 : 0,
+    m: state.multirace ? 1 : 0,
     n: state.stigmas.normal.map((id) => id || ""),
     g: state.stigmas.greater.map((id) => id || ""),
     c: state.binds.combat,
@@ -195,7 +238,9 @@ function cleanBindMap(map) {
 }
 
 function applyShare(data) {
+  state.class = cleanClass(data.k);
   state.race = data.r === 1 ? "elyos" : "asmo";
+  state.multirace = Boolean(data.m);
   state.stigmas = padStigmas({
     normal: (data.n || []).map(cleanSkillId),
     greater: (data.g || []).map(cleanSkillId),
@@ -235,7 +280,7 @@ async function copyShareLink() {
   const url = shareUrl(await encodeShare(sharePayload()));
   try {
     if (navigator.share && navigator.canShare && navigator.canShare({ url })) {
-      await navigator.share({ title: "Раскладка убийцы Aion 4.6", url });
+      await navigator.share({ title: `Раскладка ${classNameOf(state.class)} Aion 4.6`, url });
       return;
     }
   } catch (err) {
@@ -295,27 +340,54 @@ function isBasicSkill(id) {
 }
 
 function skillRace(id) {
-  return SKILL_RACE[id] || null;
+  if (SKILL_RACE[id]) return SKILL_RACE[id];
+  if (/Elyos$/i.test(id)) return "elyos";
+  if (/Asmo$/i.test(id)) return "asmo";
+  return null;
 }
 
 function isInstalledStigma(id) {
   return installedStigmaSet(state.stigmas).has(id);
 }
 
+function belongsToClass(id) {
+  if (isBasicSkill(id) || isPotion(id)) return true;
+  if (typeof SKILL_CLASS === "undefined" || !SKILL_CLASS[id]) return true;
+  return SKILL_CLASS[id].includes(state.class);
+}
+
 function isVisibleSkill(id) {
   if (!SKILLS[id]) return false;
-  if (CHAIN_FOLLOW.has(id)) return false;
+  if (typeof CHAIN_FOLLOW !== "undefined" && CHAIN_FOLLOW.has(id)) return false;
+  if (!belongsToClass(id)) return false;
   const race = skillRace(id);
-  if (race && race !== state.race) return false;
   const tier = stigmaTier(id);
+  if (race) {
+    if (tier) {
+      if (race !== state.race) return false;
+    } else if (!state.multirace && race !== state.race) return false;
+  }
   if (tier) return isInstalledStigma(id);
   return true;
+}
+
+function bindIsStale(sid) {
+  if (!SKILLS[sid]) return true;
+  if (typeof CHAIN_FOLLOW !== "undefined" && CHAIN_FOLLOW.has(sid)) return true;
+  if (!belongsToClass(sid)) return true;
+  const tier = stigmaTier(sid);
+  if (tier) {
+    if (!isInstalledStigma(sid)) return true;
+    const race = skillRace(sid);
+    if (race && race !== state.race) return true;
+  }
+  return false;
 }
 
 function pruneBinds() {
   for (const layer of Object.keys(state.binds)) {
     for (const [key, sid] of Object.entries(state.binds[layer])) {
-      if (!isVisibleSkill(sid)) delete state.binds[layer][key];
+      if (bindIsStale(sid)) delete state.binds[layer][key];
     }
   }
 }
@@ -393,7 +465,7 @@ function bindAt(key) {
 }
 
 function skillIcon(id) {
-  return `img/skills/${id}.png`;
+  return `img/skills/${id}.png?v=42`;
 }
 
 function iconTag(id, cls) {
@@ -492,7 +564,8 @@ function clearAllStigmas() {
 }
 
 function applyStigmaDefault(id) {
-  const slot = STIGMA_BINDS[id];
+  const layout = classLayout(state.class);
+  const slot = (layout.stigma && layout.stigma[id]) || STIGMA_BINDS[id];
   if (!slot) return;
   applyBind(state.binds, slot.layer, slot.key, id);
 }
@@ -507,13 +580,49 @@ function removeSkillBinds(id) {
 }
 
 function setRace(race) {
+  if (race !== "elyos" && race !== "asmo") return;
   if (state.race === race) return;
   state.race = race;
   pruneStigmas();
   pruneBinds();
-  for (const row of RACIAL_BINDS[race] || []) {
+  for (const row of classLayout(state.class).racial[race] || []) {
     applyBind(state.binds, row.layer, row.key, row.skill);
   }
+  save();
+  render();
+}
+
+function setMultirace(on) {
+  const next = Boolean(on);
+  if (state.multirace === next) return;
+  state.multirace = next;
+  save();
+  render();
+}
+
+function setClass(cls) {
+  cls = cleanClass(cls);
+  if (state.class === cls) return;
+  persistClassSnapshot(state.class);
+  state.class = cls;
+  const snap = state.byClass[cls];
+  if (snap && snap.binds) {
+    state.stigmas = padStigmas(snap.stigmas);
+    state.binds = {
+      combat: { ...(snap.binds.combat || {}) },
+      shift: { ...(snap.binds.shift || {}) },
+      ctrl: { ...(snap.binds.ctrl || {}) },
+    };
+  } else {
+    state.stigmas = defaultStigmaBoard(cls);
+    state.binds = buildDefaultBinds(cls, state.race, state.stigmas);
+  }
+  pruneStigmas();
+  pruneBinds();
+  state.pickSkill = null;
+  state.pickKey = null;
+  state.pickSlot = null;
+  renderCombos();
   save();
   render();
 }
@@ -712,7 +821,15 @@ function showInspect(skillId, key) {
 }
 
 function renderCombos() {
-  document.getElementById("combos").innerHTML = COMBOS.map(
+  const list = classCombos(state.class);
+  const root = document.getElementById("combos");
+  if (!list.length) {
+    root.innerHTML = "";
+    root.hidden = true;
+    return;
+  }
+  root.hidden = false;
+  root.innerHTML = list.map(
     (c) => `
     <article class="combo card">
       <h2>${c.title}</h2>
@@ -847,6 +964,7 @@ function renderStigmaPool() {
   const used = installedStigmaSet(state.stigmas);
   const ids = Object.keys(SKILLS).filter((id) => {
     if (!stigmaTier(id)) return false;
+    if (!belongsToClass(id)) return false;
     const race = skillRace(id);
     if (race && race !== state.race) return false;
     return true;
@@ -869,7 +987,13 @@ function renderStigmaTrees() {
   const used = installedStigmaSet(state.stigmas);
   const usedEn = new Set([...used].map((id) => STIGMA_ID_TO_EN[id]).filter(Boolean));
   const root = document.getElementById("stigma-trees");
-  root.innerHTML = `<div class="tree-grid">${STIGMA_TREES.map((tree) => {
+  const trees =
+    (typeof STIGMA_TREES_BY_CLASS !== "undefined" && STIGMA_TREES_BY_CLASS[state.class]) || [];
+  if (!trees.length) {
+    root.innerHTML = "";
+    return;
+  }
+  root.innerHTML = `<div class="tree-grid">${trees.map((tree) => {
     const layout = layoutStigmaTree(tree);
     const selected = (name) => usedEn.has(name);
     const edges = layout.connectors
@@ -923,6 +1047,13 @@ function renderChrome() {
   document.querySelectorAll("[data-race]").forEach((b) => {
     b.classList.toggle("active", b.dataset.race === state.race);
   });
+  const multi = document.getElementById("multirace");
+  if (multi) {
+    multi.classList.toggle("active", state.multirace);
+    multi.setAttribute("aria-pressed", state.multirace ? "true" : "false");
+  }
+  const pick = document.getElementById("class-pick");
+  if (pick && pick.value !== state.class) pick.value = state.class;
   document.querySelectorAll("[data-layer]").forEach((b) => {
     b.classList.toggle("active", b.dataset.layer === state.layer);
   });
@@ -931,7 +1062,7 @@ function renderChrome() {
   document.getElementById("reset-binds").hidden = state.view !== "binds";
   document.getElementById("reset-stigmas").hidden = state.view !== "stigmas";
   document.querySelector(".app").classList.toggle("is-stigmas", state.view === "stigmas");
-  document.getElementById("combos").hidden = state.view === "stigmas";
+  document.getElementById("combos").hidden = state.view === "stigmas" || !classCombos(state.class).length;
   const sideTitle = document.getElementById("side-title");
   const filter = document.getElementById("filter");
   if (state.view === "stigmas") {
@@ -939,8 +1070,23 @@ function renderChrome() {
     filter.placeholder = "Поиск стигмы…";
   } else {
     sideTitle.textContent = "Умения и стигмы";
-    filter.placeholder = "Поиск: клеймо, яд, засада…";
+    filter.placeholder = "Поиск умения…";
     document.getElementById("skills").classList.remove("is-stigma-pool");
+  }
+  const mouseHint = document.getElementById("mouse-hint");
+  const boardHint = document.getElementById("board-hint");
+  if (state.class === "assassin") {
+    if (mouseHint) mouseHint.textContent = "Мышь — в движении. M4 клятва уклонения, M5 маскировка, колесо просветление.";
+    if (boardHint) {
+      boardHint.textContent =
+        "До боя только F1–F5: скорость, чувства, готовность, штурмовая, точность (КТ последней). В бою Q ритуал, E ТР. Контроль: F клеймо, C вспышка-стан, B кинжал в воздух, V спина, X убийство, ⇧C клинок, ⇧B смертельные яды. Перетащите скилл на другую клавишу, чтобы поменять местами. Клик по скиллу — крестик справа сверху, чтобы снять. ПКМ тоже снимает.";
+    }
+  } else {
+    if (mouseHint) mouseHint.textContent = "Мышь — в движении. W/S ход, A и D — скиллы. Автоатака и смена оружия не на M4/M5.";
+    if (boardHint) {
+      boardHint.textContent =
+        "F1–F5 — баффы до боя. Боевые умения на 1–5 и Q E R A D F. Клавиши 6+ и F7–F12 далеко для боя. Перетащите скилл на клавишу. Клик по скиллу — крестик, чтобы снять. ПКМ тоже снимает.";
+    }
   }
 }
 
@@ -1027,7 +1173,7 @@ function onStigmaSlot(tier, index) {
 function copyBinds() {
   const raceName = state.race === "elyos" ? "Элиос" : "Асмодианин";
   const lines = [
-    `Aion 4.6 убийца — ${raceName}, W/S ход, A/D скиллы`,
+    `Aion 4.6 ${classNameOf(state.class)} — ${raceName}${state.multirace ? ", мультирасса" : ""}, W/S ход, A/D скиллы`,
     "",
     "Стигмы",
     "Обычные: " + state.stigmas.normal.map((id) => (id ? SKILLS[id].name : "—")).join(", "),
@@ -1210,8 +1356,16 @@ document.querySelector(".view-tabs").addEventListener("click", (e) => {
   render();
 });
 document.querySelector(".race-switch").addEventListener("click", (e) => {
+  const multi = e.target.closest("#multirace");
+  if (multi) {
+    setMultirace(!state.multirace);
+    return;
+  }
   const btn = e.target.closest("[data-race]");
   if (btn) setRace(btn.dataset.race);
+});
+document.getElementById("class-pick").addEventListener("change", (e) => {
+  setClass(e.target.value);
 });
 document.getElementById("save-state").addEventListener("click", saveToFile);
 document.getElementById("share").addEventListener("click", copyShareLink);
@@ -1226,6 +1380,14 @@ document.getElementById("filter").addEventListener("input", () => {
   if (state.view !== "stigmas") renderSkills();
 });
 
+function fillClassPick() {
+  const sel = document.getElementById("class-pick");
+  if (!sel || typeof CLASSES === "undefined") return;
+  sel.innerHTML = CLASSES.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
+  sel.value = state.class;
+}
+
+fillClassPick();
 renderCombos();
 openShareFromUrl().finally(() => {
   render();

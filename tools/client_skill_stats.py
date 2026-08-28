@@ -223,6 +223,16 @@ def load_cached_stats() -> dict[str, dict]:
 
 
 def planner_ids() -> dict[str, int]:
+    catalog = ROOT / "tools" / "client_skill_catalog.json"
+    if catalog.exists():
+        data = json.loads(catalog.read_text(encoding="utf-8"))
+        out = {
+            sid: int(rec["client_id"])
+            for sid, rec in (data.get("skills") or {}).items()
+            if rec.get("client_id")
+        }
+        if out:
+            return out
     details = json.loads(DETAILS_PATH.read_text(encoding="utf-8"))
     return {sid: int(rec["skill_id"]) for sid, rec in details.items() if rec.get("skill_id")}
 

@@ -1,4 +1,9 @@
-"""Download Aion 4.x assassin/scout skill icons from Aion Codex."""
+"""Download Aion 4.x assassin/scout skill icons from Aion Codex.
+
+Codex and aidb PNGs are native 40×40 — same art as the 40×40 region inside
+client skills.pak 64×64 DDS. There is no 64/128 class-skill pack on Codex.
+Prefer tools/generate_all_skills.py copy_icon from the client zip.
+"""
 from __future__ import annotations
 
 import html

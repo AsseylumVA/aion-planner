@@ -1,4 +1,7 @@
-"""Build js/skills.js and download max-rank icons from aidb.ru."""
+"""Build js/skills.js from aidb.ru (assassin-only, legacy).
+
+Prefer tools/generate_all_skills.py — it reads Origin client XML for all 4.6 classes.
+"""
 from __future__ import annotations
 
 import json

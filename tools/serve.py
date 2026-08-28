@@ -6,6 +6,8 @@ POST   /api/state   same as PUT (UI save)
 PATCH  /api/state   partial edit:
 
   {"race": "asmo"}
+  {"class": "ranger"}
+  {"multirace": true}
   {"slot": {"tier": "normal", "index": 0, "id": "fog"}}   # id null = clear
   {"bind": {"layer": "combat", "key": "KeyF", "id": "stigma"}}  # id null = unbind
   {"stigmas": {"normal": [...], "greater": [...]}}
@@ -52,6 +54,18 @@ def pad_row(row, n: int) -> list:
     return out
 
 
+CLASSES = {
+    "gladiator",
+    "templar",
+    "assassin",
+    "ranger",
+    "sorcerer",
+    "spiritmaster",
+    "cleric",
+    "chanter",
+}
+
+
 def normalize(data: dict) -> dict:
     names = skill_names()
     stigmas = data.get("stigmas") or {}
@@ -59,8 +73,12 @@ def normalize(data: dict) -> dict:
     greater = pad_row(stigmas.get("greater"), SLOTS["greater"])
     binds = data.get("binds") or {}
     race = "elyos" if data.get("race") == "elyos" else "asmo"
+    cls = data.get("class") if data.get("class") in CLASSES else "assassin"
+    by_class = data.get("byClass") if isinstance(data.get("byClass"), dict) else {}
     return {
+        "class": cls,
         "race": race,
+        "multirace": bool(data.get("multirace")),
         "stigmas": {"normal": normal, "greater": greater},
         "stigmaNames": {
             "normal": [names.get(i) if i else None for i in normal],
@@ -71,6 +89,7 @@ def normalize(data: dict) -> dict:
             "shift": dict(binds.get("shift") or {}),
             "ctrl": dict(binds.get("ctrl") or {}),
         },
+        "byClass": by_class,
         "updatedAt": int(data.get("updatedAt") or now_ms()),
         "source": data.get("source") or "api",
     }
@@ -106,6 +125,10 @@ def apply_patch(cur: dict, patch: dict) -> dict:
     data = json.loads(json.dumps(cur))
     if "race" in patch:
         data["race"] = patch["race"]
+    if "class" in patch:
+        data["class"] = patch["class"]
+    if "multirace" in patch:
+        data["multirace"] = bool(patch["multirace"])
     if "stigmas" in patch:
         src = patch["stigmas"] or {}
         if "normal" in src:
