@@ -1,0 +1,15 @@
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/live_as_explosionpoison_g7.png" width="40" height="40" alt="Порох VII" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=2927">Порох VII</a>  (<u style="color:#ff0000">Стигма</u>)<br/><em>no_name</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 280</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>180 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+</table>
+<div class='s_gettop' align='center'><a href='#top'>TOP</a></div>
+<div class='s_getlvl' align='center'><a href='#level_9'>9</a></div>

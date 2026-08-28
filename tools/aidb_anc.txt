@@ -1,0 +1,15 @@
+ncestral Radiant Rune I</em><i style='color:#e67b72;'>Только для Элийцев</i><br /></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 144</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>180 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_as_demonicburst_g1.png" width="40" height="40" alt="[Древняя стигма] Воспламенение клейма тьмы I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=945">[Древняя стигма] Воспламенение клейма тьмы I</a>  (<u style="color:#ff0000">Стигма</u>)<br/><em>Ancestral Darkness Rune I</em><i style='color:#9034ac;'>Только для Асмодиан</i><br /></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 144</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>180 сек.</spa

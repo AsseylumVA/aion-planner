@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aion 4.6 Assassin — W/S ход, A/D скиллы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=33" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="header-row">
+        <div>
+          <h1>Раскладка: W/S ход, A и D — скиллы, камера мышью</h1>
+          <p class="lead">Aion 4.6, 65. Скиллы с aidb.ru — только активные, максимальный ранг, без пассивок. Не установленные стигмы в списке не показываются.</p>
+        </div>
+        <div class="race-switch" role="group" aria-label="Раса">
+          <button type="button" data-race="elyos">
+            <img src="img/race/elyos.png" alt="" />
+            Элиос
+          </button>
+          <button type="button" data-race="asmo">
+            <img src="img/race/asmo.png" alt="" />
+            Асмо
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="combos" id="combos"></section>
+
+    <div class="layout">
+      <div class="board card">
+        <div class="view-tabs">
+          <button type="button" data-view="binds" class="active">Раскладка</button>
+          <button type="button" data-view="stigmas">Стигмы</button>
+          <span class="spacer"></span>
+          <button type="button" class="copy" id="save-state">Сохранить</button>
+          <button type="button" class="copy" id="share">Поделиться</button>
+          <button type="button" class="copy" id="copy">Скопировать бинды</button>
+          <button type="button" class="reset" id="reset-binds">Сбросить бинды</button>
+          <button type="button" class="reset" id="reset-stigmas" hidden>Сбросить стигмы</button>
+        </div>
+        <div id="binds-view">
+        <div class="layers" id="layer-bar">
+          <button type="button" data-layer="combat" class="active">Бой</button>
+          <button type="button" data-layer="shift">Shift</button>
+          <button type="button" data-layer="ctrl">Ctrl</button>
+        </div>
+        <div class="kb-wrap">
+          <div class="keyboard" id="keyboard"></div>
+        </div>
+        <div class="mouse-row">
+          <div class="mouse" id="mouse">
+            <div class="body"></div>
+            <div class="lmb">ЛКМ</div>
+            <div class="rmb">ПКМ</div>
+            <button type="button" class="wheel" data-key="Wheel" title="Колесо"></button>
+            <button type="button" class="side m4" data-key="Mouse4">M4</button>
+            <button type="button" class="side m5" data-key="Mouse5">M5</button>
+          </div>
+          <p class="mouse-hint">Мышь — в движении. M4 клятва уклонения, M5 маскировка, колесо просветление.</p>
+        </div>
+        <p class="hint">
+          До боя только F1–F5: скорость, чувства, готовность, штурмовая, точность (КТ последней).
+          В бою Q ритуал, E ТР. Контроль: F клеймо, C вспышка-стан, B кинжал в воздух, V спина, X убийство, ⇧C клинок, ⇧B смертельные яды.
+          Перетащите скилл на другую клавишу, чтобы поменять местами. Клик по скиллу — крестик справа сверху, чтобы снять. ПКМ тоже снимает.
+        </p>
+        </div>
+        <div id="stigma-view" hidden>
+          <div class="workspace">
+            <div class="slot-panel card">
+              <div id="stigma-board" class="slot-grid" aria-label="Слоты стигм"></div>
+            </div>
+            <aside class="list-panel card">
+              <div id="stigma-list" class="stigma-list"></div>
+            </aside>
+            <div id="stigma-trees" class="tree-panel"></div>
+          </div>
+        </div>
+        <div class="inspect" id="inspect">
+          <p>Кликните клавишу или скилл. Перетащите между клавишами. Клик по скиллу — крестик, чтобы снять.</p>
+        </div>
+      </div>
+      <aside class="side card">
+        <h2 id="side-title">Умения и стигмы</h2>
+        <input id="filter" class="filter" type="search" placeholder="Поиск: клеймо, яд, засада…" />
+        <div class="skill-list" id="skills"></div>
+      </aside>
+    </div>
+  </div>
+  <div class="toast" id="toast">Скопировано</div>
+  <script src="js/skills.js?v=33"></script>
+  <script src="js/data.js?v=33"></script>
+  <script src="js/app.js?v=33"></script>
+</body>
+</html>

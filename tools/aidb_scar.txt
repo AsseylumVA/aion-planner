@@ -1,0 +1,29 @@
+tlvl' align='center'><a href='#level_65'>65</a></div><div class='s_clr'></div><br />
+<b>Уровень 45</b> <a name="level_45"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/live_as_tigerassault_g1.png" width="40" height="40" alt="Чудовищный шрам I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=837">Чудовищный шрам I</a>  (<u style="color:#ff0000">Стигма</u>)<br/><em>Beastly Scar I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 124</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>6 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td cl

@@ -1,0 +1,10 @@
+ADD  L01 R1 Быстрое возвращение | no_name | 3600 сек. | cbt_returnhome1.png | 20 сек.
+ADD  L01 R1 Возвращение | no_name | 1200 сек. | cbt_returnhome1.png | 6 сек.
+ADD  L01 R1 Концентрация на уклонении | Focused Evasion I | 30 сек. | cbt_sc_whisperofwind_g1.png | 0 сек.
+ADD  L01 R1 Перевязка | no_name | 16 сек. | cbt_mending_g1.png | 4 сек.
+SKIP L01 R1 Стремительный удар | Swift Edge I | 7 сек. | cbt_sc_swiftedge_g1.png | 0 сек.
+SKIP L03 R1 Внезапная атака | Surprise Attack I | 16 сек. | cbt_sc_assaultstabber_g1.png | 0 сек.
+SKIP L05 R1 Контратака | Counterattack I | 10 сек. | cbt_sc_counterslash_g1.png | 0 сек.
+SKIP L05 R1 Маскировка | Hide I | 60 сек. | cbt_sc_hide_g1.png | 0 сек.
+SKIP L07 R1 Рассекающий удар | Soul Slash I | 6 сек. | cbt_sc_swiftshock_g1.png | 0 сек.
+ADD  L09 R1 Ритуал | Devotion I | 30 сек. | cbt_sc_invokepower_g1.png | 0 сек.

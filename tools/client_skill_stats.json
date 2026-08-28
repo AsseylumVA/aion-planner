@@ -1,0 +1,271 @@
+{
+  "fog": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "cc": [
+      {
+        "name": "ослепление",
+        "name_of": "ослепления",
+        "duration_ms": 25000
+      }
+    ],
+    "skill_id": 802
+  },
+  "darknessRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "skill_id": 941
+  },
+  "runeSwipe": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "skill_id": 947
+  },
+  "divineRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "skill_id": 946
+  },
+  "radiantRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 20,
+    "skill_id": 940
+  },
+  "calm": {
+    "range_m": 25,
+    "skill_id": 2117
+  },
+  "beastLeap": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 7,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 50,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2363
+  },
+  "throwShuriken": {
+    "range_m": 20,
+    "skill_id": 2512
+  },
+  "dash": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "range_m": 20,
+    "skill_id": 2515
+  },
+  "explosiveBurst": {
+    "acc_magic": 200,
+    "type": "Magical",
+    "range_m": 10,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2528
+  },
+  "dagger": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 20,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2525
+  },
+  "bloodRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "skill_id": 2523
+  },
+  "silenceRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "skill_id": 2529
+  },
+  "shadowfall": {
+    "range_m": 3,
+    "skill_id": 2364
+  },
+  "weaken": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "skill_id": 2524
+  },
+  "flash": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "skill_id": 2532
+  },
+  "poisonHit": {
+    "mag_status": true,
+    "type": "Physical",
+    "skill_id": 2545
+  },
+  "massacre": {
+    "mag_status": true,
+    "type": "Physical",
+    "range_m": 15,
+    "cc": [
+      {
+        "name": "замедление",
+        "name_of": "замедления",
+        "chance": 100,
+        "duration_ms": 10000
+      }
+    ],
+    "skill_id": 2369
+  },
+  "bindingRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "range_m": 10,
+    "skill_id": 2536
+  },
+  "ambush": {
+    "acc_magic": 500,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 20,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 3213
+  },
+  "counter": {
+    "mag_status": true,
+    "type": "Physical",
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 80,
+        "duration_ms": 2000
+      }
+    ],
+    "skill_id": 2891
+  },
+  "encirclingStrike": {
+    "mag_status": true,
+    "type": "Physical",
+    "skill_id": 2733
+  },
+  "needle": {
+    "acc_magic": 1000,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "skill_id": 2930
+  },
+  "quickDoom": {
+    "mag_status": true,
+    "type": "Physical",
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2935
+  },
+  "spiralSlash": {
+    "acc_phys": 3000,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 25,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 3000
+      }
+    ],
+    "skill_id": 2928
+  },
+  "runeKnife": {
+    "range_m": 10,
+    "skill_id": 2931
+  },
+  "blindSide": {
+    "acc_magic": 500,
+    "type": "Physical",
+    "mag_status": true,
+    "range_m": 20,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 500
+      }
+    ],
+    "skill_id": 2737
+  },
+  "crush": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "pvp": 120,
+    "range_m": 10,
+    "skill_id": 2932
+  },
+  "dashSlash": {
+    "range_m": 20,
+    "skill_id": 2938
+  },
+  "agonyRune": {
+    "acc_magic": 500,
+    "type": "Magical",
+    "range_m": 10,
+    "skill_id": 2939
+  },
+  "searchStrike": {
+    "acc_magic": 500,
+    "type": "Physical",
+    "mag_status": true,
+    "cc": [
+      {
+        "name": "стан",
+        "name_of": "стана",
+        "chance": 100,
+        "duration_ms": 1500
+      }
+    ],
+    "skill_id": 2736
+  }
+}

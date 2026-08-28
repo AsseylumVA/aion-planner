@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+	<title>������ ������ Assassin - ���� ������ ���� 4.0.2 (Aion)</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<meta http-equiv="X-UA-compatible" content="IE=EmulateIE8"/>
+	<meta name="description" content="������ ������ Assassin | ���� ������ ���� (Aion)" />
+	<meta name="keywords" content="������, ����� ������ assassin, aion, The Tower of Eternity, �����, aion 2.1.9, ���� 2.5, ���� 3.0, skills, ������, ������, ������� ������ aion ���������, �����, ���������, ���� 4.0.2, ����, ���� ������ ����, ���� ������, ���� ������ aion" />
+	<link rel="alternate" type="application/rss+xml" title="AIDB.ru - ��������� ���������� �����" href="https://aidb.ru/rss/aion.xml" />
+	<link rel="icon" href="https://aidb.ru/template/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="https://aidb.ru/template/favicon.ico" type="image/x-icon" /> 
+	<link rel="stylesheet" type="text/css" href="template/style.css" media="all"/>
+	<!--[if IE]>
+	<link rel="stylesheet" type="text/css" href="template/ie.css" media="all"/>
+	<![endif]-->
+
+	<script type="text/javascript" src="https://aidb.ru/template/js/lib/jquery.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/template/js/lib/jquery.dimensions.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/template/js/jquery.accordion.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/jsfiles/etc.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/template/js/etc.js"></script>
+	<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?10" charset="windows-1251"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#acc1").accordion({
+			alwaysOpen: false,
+			autoheight: false,
+			header: 'a.acc1',
+			clearStyle: true,
+			active: 0		});
+
+		$("#ddca").html('<!-- Banner JS //-->');
+	});
+	</script>
+<script type="text/javascript">
+   var request = null;
+
+   function createRequest() {
+     try {
+       request = new XMLHttpRequest();
+     } catch (trymicrosoft) {
+       try {
+         request = new ActiveXObject("Msxml2.XMLHTTP");
+       } catch (othermicrosoft) {
+         try {
+           request = new ActiveXObject("Microsoft.XMLHTTP");
+         } catch (failed) {
+           request = 

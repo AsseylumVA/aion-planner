@@ -1,0 +1,86 @@
+max active 85
+L10 R01 Маскировка тени                            60 сек.    no_name                      as_shadowhide_g1.png
+L10 R01 Точный расчет                              30 сек.    Killer's Eye                 cbt_as_strikingintention_g1.png
+L20 R01 Клятва скорости                            120 сек.   Flurry                       cbt_as_quickmove_g1.png STIGMA
+L22 R01 Клятва уклонения                           60 сек.    Aethertwisting               cbt_as_whisperofgale_g1.png STIGMA
+L22 R01 Поиск слабых мест                          120 сек.   Clear Focus                  cbt_as_clearfocus_g1.png
+L28 R01 Обостренное восприятие                     120 сек.   Searching Eye                cbt_as_sixsense_g1.png
+L28 R01 Применение смертельных ядов                10 сек.    Apply Deadly Poison          cbt_as_stuningintention_g1.png STIGMA
+L31 R01 Клятва точности                            180 сек.   Oath of Accuracy             live_as_hitmanmind_g1.png STIGMA
+L31 R01 Покров сумрака                             60 сек.    Wind Walk                    cbt_as_windwalk_g1.png
+L34 R02 Маскировка                                 60 сек.    Hide                         cbt_sc_hide_g2.png
+L37 R01 Око гнева                                  60 сек.    Eye of Wrath                 cbt_as_visiouseye_g1.png STIGMA
+L37 R01 Туманная завеса                            180 сек.   Blinding Burst               cbt_as_blindingburst_g1.png STIGMA
+L40 R01 Просветление                               300 сек.   All-Seeing Eye               cbt_as_sixsense_g2.png
+L40 R01 Снятие шока                                60 сек.    Remove Shock                 live_all_shockreflect_g1.png
+L40 R01 Теневая иллюзия                            180 сек.   no_name                      live_as_shadowdodge_g1.png STIGMA
+L42 R01 Боевая готовность                          600 сек.   Spelldodging                 cbt_as_alertstance_g1.png [elyos]
+L42 R01 Стойка налетчика                           600 сек.   Shadow Rage                  cbt_as_assaultstance_g1.png [asmo]
+L45 R01 Теневой шаг                                180 сек.   Shadow Walk                  live_as_stigma_shadowwalk_g1.png STIGMA
+L48 R01 Готовность                                 300 сек.   Deadly Abandon               live_as_stabstance_g1.png STIGMA
+L50 R01 Воспламенение клейма тьмы                  180 сек.   Darkness Rune                cbt_as_demonicburst_g1.png [asmo]
+L50 R01 Воспламенение клейма черного пекла         180 сек.   Rune Swipe                   live_as_stigma_moonburst_g1.png STIGMA [asmo]
+L50 R01 Вспышка клейма небес                       180 сек.   Divine Rune                  live_as_stigma_sunburst_g1.png STIGMA [elyos]
+L50 R01 Вспышка клейма света                       180 сек.   Radiant Rune                 cbt_as_novaburst_g1.png [elyos]
+L51 R01 Цепь уклонений                             120 сек.   Evasive Boost                live_as_repeatevade_g1.png
+L52 R01 Обострение чувств                          180 сек.   Sensory Boost                live_as_senseboost_g1.png STIGMA
+L54 R04 Усмирение                                  120 сек.   Calming Whisper              cbt_as_breezeofcalm_g4.png
+L55 R02 Клык зверя                                 60 сек.    no_name                      live_as_tigerbeat_g2.png
+L55 R03 Убийство                                   30 сек.    Assassination                cbt_as_corruptingcut_g3.png
+L55 R01 Штурмовая стойка                           300 сек.   Deadly Focus                 live_as_raidstance_g1.png
+L56 R03 Бросок сюрикена                            30 сек.    no_name                      cbt_as_mirrorattack_g3.png STIGMA
+L56 R01 Прыжок зверя                               60 сек.    no_name                      live_as_tumbling_g1.png
+L56 R06 Стремительный удар                         7 сек.     no_name                      cbt_sc_swiftedge_g6.png
+L57 R01 Крестообразный надрез                      10 сек.    no_name                      live_as_straightcounter_g1.png
+L57 R04 Нанесение древнего клейма                  5 сек.     no_name                      cbt_as_signetassault_g4.png
+L57 R05 Режущая атака                              40 сек.    no_name                      cbt_as_dashattack_g5.png
+L57 R05 Удар небес                                 30 сек.    no_name                      cbt_as_divineassault_g5.png [elyos]
+L57 R05 Удар тьмы                                  30 сек.    no_name                      cbt_as_abysalassault_g5.png [asmo]
+L58 R03 Блистательная вспышка                      120 сек.   no_name                      live_as_stunburst_g3.png STIGMA
+L58 R02 Бросок кинжала                             40 сек.    no_name                      cbt_as_flyingdagger_g2.png
+L58 R05 Восстановление MP                          16 сек.    no_name                      cbt_aromatherapy_g5.png
+L58 R03 Вспышка иссушающего клейма                 60 сек.    no_name                      cbt_as_drainburst_g3.png
+L58 R02 Вспышка клейма молчания                    90 сек.    no_name                      live_as_silentburst_g2.png STIGMA
+L58 R05 Лечение травами                            16 сек.    no_name                      cbt_mending_g6.png
+L58 R01 Падение в тень                             60 сек.    no_name                      live_as_shadowdrop_g1.png STIGMA
+L58 R03 Подлый удар                                60 сек.    no_name                      cbt_as_backassault_g3.png
+L59 R06 Внезапная атака                            16 сек.    no_name                      cbt_sc_assaultstabber_g6.png
+L59 R05 Вспышка клейма                             18 сек.    no_name                      cbt_as_signetburst_g5.png
+L59 R05 Нанесение клейма                           7 сек.     no_name                      cbt_as_carvesignet_g5.png
+L59 R01 Распятие                                   30 сек.    no_name                      live_as_pollutioncut_g1.png
+L60 R02 Атака ядом                                 120 сек.   no_name                      live_as_venomstab_g2.png STIGMA
+L60 R01 Всеобщее истребление                       90 сек.    no_name                      live_as_genocidalsword_g1.png
+L60 R02 Кинжал Байзела                             3600 сек.  no_name                      cbt_as_soulbreak_g2.png [elyos]
+L60 R02 Кинжал Триниэль                            3600 сек.  no_name                      cbt_as_deathbringer_g2.png [asmo]
+L60 R04 Небесный плен                              60 сек.    no_name                      cbt_as_heavensedge_g4.png
+L60 R02 Отражение клейма                           60 сек.    no_name                      live_as_reflectsignet_g2.png
+L60 R01 Перевоплощение: Убийца                     180 сек.   no_name                      live_as_light_defendroar_g1.png STIGMA [elyos]
+L60 R01 Перевоплощение: Убийца                     180 сек.   no_name                      live_as_dark_defendroar_g1.png STIGMA [asmo]
+L60 R04 Ураганная мощь                             60 сек.    no_name                      cbt_as_flowingspiner_g4.png
+L61 R07 Засада                                     40 сек.    no_name                      cbt_as_blindside_g7.png STIGMA
+L61 R01 Обратный порез                             16 сек.    no_name                      as_backslash_g1.png
+L61 R03 Падение                                    60 сек.    no_name                      cbt_as_hellsblade_g1.png
+L62 R06 Контратака                                 10 сек.    no_name                      cbt_sc_counterslash_g6.png
+L62 R06 Рассекающий удар                           6 сек.     no_name                      cbt_sc_swiftshock_g6.png
+L62 R01 Спасение                                   180 сек.   no_name                      as_runnersstance_g1.png STIGMA
+L63 R01 Обратный урон                              16 сек.    no_name                      as_backstrike_g1.png
+L63 R05 Отравленный клинок                         10 сек.    no_name                      cbt_as_poisoningintention_g5.png
+L63 R07 Порох                                      180 сек.   no_name                      live_as_explosionpoison_g7.png STIGMA
+L63 R07 Рассекающая молния                         24 сек.    no_name                      live_as_flashslash_g7.png STIGMA
+L63 R05 Рев зверя                                  6 сек.     no_name                      cbt_as_tigerfang_g5.png
+L63 R07 Стремительный рассекающий удар             24 сек.    no_name                      live_as_windslash_g7.png STIGMA
+L63 R04 Удар зверя                                 6 сек.     no_name                      cbt_as_tigerkick_g4.png
+L63 R07 Чудовищный шрам                            6 сек.     no_name                      live_as_tigerassault_g7.png STIGMA
+L64 R03 Бросок зверя                               6 сек.     no_name                      cbt_as_tigerupper_g3.png
+L64 R03 Вспышка особого клейма                     90 сек.    no_name                      cbt_as_signetblast_g3.png
+L64 R04 Клинок обморока                            60 сек.    no_name                      live_as_venomslash_g4.png STIGMA
+L64 R03 Крученый удар                              900 сек.   no_name                      cbt_as_spiralstab_g3.png
+L64 R06 Нанесение клейма на расстоянии             7 сек.     no_name                      cbt_as_signetwave_g6.png STIGMA
+L64 R01 Подлый набег                               40 сек.    no_name                      as_blindstrike_g1.png
+L64 R07 Разрушение клейма                          12 сек.    no_name                      live_as_signetflare_g7.png STIGMA
+L65 R06 Вспышка сложного клейма                    60 сек.    no_name                      live_as_chainsignetburst_g6.png STIGMA
+L65 R06 Кровоточащий порез                         180 сек.   no_name                      live_as_assaultslash_g6.png STIGMA
+L65 R09 Нанесение сложного клейма                  6 сек.     no_name                      cbt_as_carvesignetchain_g9.png STIGMA
+L65 R01 Обратный сокрушительный удар               30 сек.    no_name                      as_backblow_g1.png STIGMA
+L65 R01 Приветствие тени                           180 сек.   no_name                      as_shadowillusion_g1.png
+L65 R02 Штормовая мощь                             18 сек.    no_name                      live_as_stormslash_g2.png

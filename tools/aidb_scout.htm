@@ -1,0 +1,683 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+	<title>Умения класса Scout - база знаний Айон 4.0.2 (Aion)</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<meta http-equiv="X-UA-compatible" content="IE=EmulateIE8"/>
+	<meta name="description" content="Умения класса Scout | база знаний Айон (Aion)" />
+	<meta name="keywords" content="умения, скилы класса scout, aion, The Tower of Eternity, скилы, aion 2.1.9, айон 2.5, айон 3.0, skills, статьи, квесты, скачать клиент aion бесплатно, видео, скриншоты, айон 4.0.2, аион, база знаний айон, база знаний, база знаний aion" />
+	<link rel="alternate" type="application/rss+xml" title="AIDB.ru - Последние обновления сайта" href="https://aidb.ru/rss/aion.xml" />
+	<link rel="icon" href="https://aidb.ru/template/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="https://aidb.ru/template/favicon.ico" type="image/x-icon" /> 
+	<link rel="stylesheet" type="text/css" href="template/style.css" media="all"/>
+	<!--[if IE]>
+	<link rel="stylesheet" type="text/css" href="template/ie.css" media="all"/>
+	<![endif]-->
+
+	<script type="text/javascript" src="https://aidb.ru/template/js/lib/jquery.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/template/js/lib/jquery.dimensions.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/template/js/jquery.accordion.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/jsfiles/etc.js"></script>
+	<script type="text/javascript" src="https://aidb.ru/template/js/etc.js"></script>
+	<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?10" charset="windows-1251"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#acc1").accordion({
+			alwaysOpen: false,
+			autoheight: false,
+			header: 'a.acc1',
+			clearStyle: true,
+			active: 0		});
+
+		$("#ddca").html('<!-- Banner JS //-->');
+	});
+	</script>
+<script type="text/javascript">
+   var request = null;
+
+   function createRequest() {
+     try {
+       request = new XMLHttpRequest();
+     } catch (trymicrosoft) {
+       try {
+         request = new ActiveXObject("Msxml2.XMLHTTP");
+       } catch (othermicrosoft) {
+         try {
+           request = new ActiveXObject("Microsoft.XMLHTTP");
+         } catch (failed) {
+           request = null;
+         }
+       }
+     }
+
+     if (request == null)
+       alert("Error creating request object!");
+   }
+	var last_section_menu = null;
+	function openSectionMenu(obj){
+		if(last_section_menu == obj) return;
+		if(last_section_menu) Effect.BlindUp(last_section_menu, {duration:0.3});
+		last_section_menu = obj;
+		Effect.BlindDown(obj, {duration:0.3});
+	}
+</script>
+<script type="text/javascript">
+function voteadd(){
+     createRequest();
+
+
+    var frm = document.do_vote;
+	var vote_check = '';
+
+    for (var i=0; i < frm.elements.length; i++) {
+        var elmnt = frm.elements[i];
+        if (elmnt.type=='radio') {
+            if(elmnt.checked == true){ vote_check = elmnt.value; break;}
+        }
+    }
+
+
+
+     var url = "engine/ajax/vote_add.php?voteid=" + vote_check + "&amp;key=" + Math.random();
+     request.open("GET", url, true);
+     request.onreadystatechange = votefresh;
+     request.send(null);
+}
+function votefresh(){
+     createRequest();
+     var url = "engine/ajax/vote_refresh.php?key=" + Math.random();
+     request.open("GET", url, true);
+     request.onreadystatechange = voterefresh;
+     request.send(null);
+}
+
+function voterefresh(){
+    if (request.readyState == 4) {
+		document.getElementById("voload").style.display = "none";
+		var votodo = request.responseText;
+	document.getElementById("votfield").innerHTML=votodo;
+}else{
+document.getElementById("voload").style.display = "block";
+	document.getElementById("votfield").innerHTML="";
+document.getElementById("prelo").style.display = "none";
+}
+}
+
+</script>
+</head>
+<body>
+<!--LiveInternet counter--><script type="text/javascript"><!--
+new Image().src = "//counter.yadro.ru/hit?r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random();//--></script><!--/LiveInternet-->
+
+
+<div class="site">
+
+<!-- head -->
+<div class="head">
+		<!-- logo -->
+	<div><a href="https://aidb.ru/" class="logo"><span>База знаний AION</span></a></div>
+	<!-- /logo -->
+
+	<!--login-->
+	<div class="login-in">
+		<form action="https://aidb.ru/" method="post">
+			<fieldset>
+				<div>
+					<p class="podlog">
+						<label>Логин:</label>
+						<input type="text" name="comer" />
+						<span class="pll"></span><span class="plr"></span>
+					</p>
+					<p class="podlog">
+						<label>Пароль:</label>
+						<input type="password" name="wsp" />
+						<span class="pll"></span><span class="plr"></span>
+					</p>
+					<button><span>Войти<b></b></span></button>
+					<a href="https://aidb.ru/?aion=register" class="registr">Создать</a>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<!--/login-->
+	<!-- Search -->
+	<div class="search">
+		<form action="https://aidb.ru/?aion=search" method="get">
+			<fieldset>
+				<div>
+					<p class="podlog">
+						<input type="hidden" name="aion" value="search">
+						<input name="str" type="text" onblur="if(this.value==''){this.value='Боевые морковки детектед'}"
+					       onfocus="if(this.value=='Боевые морковки детектед'){this.value=''}" value="Боевые морковки детектед"/>
+						<span class="pll"></span><span class="plr"></span>
+					</p>
+					<button><span>Найти в базе &#8594;<b></b><em></em></span></button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<!-- /Search -->
+
+	<div class="clear"></div>
+
+	<!-- main menu -->
+	<div class="wrapp-main-menu">
+		<div>
+			<ul>
+				<li><a href="https://aidb.ru/">AIDB<span></span></a></li>
+				<li><a href="https://aidb.ru/?aion=items">Предметы<span></span></a></li>
+				<li><a href="https://aidb.ru/?aion=quests">Задания<span></span></a></li>
+				<li><a href="https://aidb.ru/?aion=recipes">Рецепты<span></span></a></li>
+				<li><a href="https://aidb.ru/?aion=gather">Сбор<span></span></a></li>
+				<li><a href="https://aidb.ru/?aion=npcs">NPC<span></span></a></li>
+
+			</ul>
+		</div>
+	</div>
+
+	<!-- /main menu -->
+	
+</div>
+<!-- /head -->
+
+<div class="content-wrapper">
+<!--MAIN-CONTENT-->
+			<div class="main-content">
+			<div class="wp-cont-fix">
+
+<script type="text/javascript" src="jsfiles/ajax.js"></script>
+<div style="display:none" class="tooltip_hint" id="tooltip_hint">
+Загрузка...
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+<script type="text/javascript">
+	var flashvars = {};
+	var params = {link1: "http://ddestiny.ru/c/chxI/"};
+	var attributes = {};
+	swfobject.embedSWF("https://aidb.ru/template/swf/aidb.ru_728x90.swf", "tera2015", "729", "90", "9.0.0", flashvars, params, attributes);
+</script>
+<div id="tera2015"></div><h1 class="highlight"><a name="top"></a><a href="https://aidb.ru/?aion=class_tree">Дерево классов</a> &raquo; Умения класса Следопыт (Scout)</h1><br />
+<b>Уровень 1</b> <a name="level_1"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_equip_enhancedsword_g1.png" width="40" height="40" alt="Меч: теория" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=1">Меч: теория</a> <br/><em>Basic Sword Training</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_equip_enhancedcloth_g1.png" width="40" height="40" alt="Одежда: теория" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=4">Одежда: теория</a> <br/><em>Basic Clothing Proficiency</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_equip_enhancedleather_g1.png" width="40" height="40" alt="Кожаные доспехи: теория" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=5">Кожаные доспехи: теория</a> <br/><em>Basic Leather Armor Proficiency</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_equip_enhanceddagger_g1.png" width="40" height="40" alt="Кинжал: теория" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=30">Кинжал: теория</a> <br/><em>Basic Dagger Training</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_equip_enhancedrobe_g1.png" width="40" height="40" alt="Магическая одежда: теория" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=67">Магическая одежда: теория</a> <br/><em>Basic Cloth Armor Proficiency</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_swiftedge_g1.png" width="40" height="40" alt="Стремительный удар I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=564">Стремительный удар I</a> <br/><em>Swift Edge I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>7 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_whisperofwind_g1.png" width="40" height="40" alt="Концентрация на уклонении I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=572">Концентрация на уклонении I</a> <br/><em>Focused Evasion I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>30 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_returnhome1.png" width="40" height="40" alt="Возвращение" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=1801">Возвращение</a> <br/><em>no_name</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>6 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>1200 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_mending_g1.png" width="40" height="40" alt="Перевязка" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=1803">Перевязка</a> <br/><em>no_name</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>4 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>16 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_returnhome1.png" width="40" height="40" alt="Быстрое возвращение" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=3512">Быстрое возвращение</a> <br/><em>no_name</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>20 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>3600 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>Авто</span></div></td>
+						</tr>
+</table>
+<div class='s_gettop' align='center'><a href='#top'>TOP</a></div>
+<div class='s_getlvl' align='center'><a href='#level_1'>1</a></div><div class='s_getlvl' align='center'><a href='#level_3'>3</a></div><div class='s_getlvl' align='center'><a href='#level_5'>5</a></div><div class='s_getlvl' align='center'><a href='#level_7'>7</a></div><div class='s_getlvl' align='center'><a href='#level_9'>9</a></div><div class='s_clr'><br>
+				<div style="width:100%;text-align:center;">
+					<script type="text/javascript"><!--
+					google_ad_client = "ca-pub-7876734108541447";
+					/* aidb_ru_list_middle */
+					google_ad_slot = "1608330548";
+					google_ad_width = 728;
+					google_ad_height = 90;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
+				</div>
+	
+	</div><br />
+<b>Уровень 3</b> <a name="level_3"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_assaultstabber_g1.png" width="40" height="40" alt="Внезапная атака I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=551">Внезапная атака I</a> <br/><em>Surprise Attack I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 13</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>16 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500173"><img src="uploads/item_icon/icon_item_skillbook_01.png" width="40" height="40" alt="Внезапная атака I" title="Внезапная атака I" /></a></span></div></td>
+						</tr>
+</table>
+<div class='s_gettop' align='center'><a href='#top'>TOP</a></div>
+<div class='s_getlvl' align='center'><a href='#level_1'>1</a></div><div class='s_getlvl' align='center'><a href='#level_3'>3</a></div><div class='s_getlvl' align='center'><a href='#level_5'>5</a></div><div class='s_getlvl' align='center'><a href='#level_7'>7</a></div><div class='s_getlvl' align='center'><a href='#level_9'>9</a></div><div class='s_clr'></div><br />
+<b>Уровень 5</b> <a name="level_5"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_equip_dual_g1.png" width="40" height="40" alt="Парное оружие: практика I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=19">Парное оружие: практика I</a> <br/><em>Advanced Dual-Wielding I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500170"><img src="uploads/item_icon/icon_item_skillbook_02.png" width="40" height="40" alt="Парное оружие: практика I" title="Парное оружие: практика I" /></a></span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_statboosthitaccuracy_g1.png" width="40" height="40" alt="Увеличение точности I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=113">Увеличение точности I</a> <br/><em>Boost Accuracy I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500171"><img src="uploads/item_icon/icon_item_skillbook_02.png" width="40" height="40" alt="Увеличение точности I" title="Увеличение точности I" /></a></span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_counterslash_g1.png" width="40" height="40" alt="Контратака I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=555">Контратака I</a> <br/><em>Counterattack I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>10 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500174"><img src="uploads/item_icon/icon_item_skillbook_01.png" width="40" height="40" alt="Контратака I" title="Контратака I" /></a></span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_hide_g1.png" width="40" height="40" alt="Маскировка I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=559">Маскировка I</a> <br/><em>Hide I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 30</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>60 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500175"><img src="uploads/item_icon/icon_item_skillbook_01.png" width="40" height="40" alt="Маскировка I" title="Маскировка I" /></a></span></div></td>
+						</tr>
+</table>
+<div class='s_gettop' align='center'><a href='#top'>TOP</a></div>
+<div class='s_getlvl' align='center'><a href='#level_1'>1</a></div><div class='s_getlvl' align='center'><a href='#level_3'>3</a></div><div class='s_getlvl' align='center'><a href='#level_5'>5</a></div><div class='s_getlvl' align='center'><a href='#level_7'>7</a></div><div class='s_getlvl' align='center'><a href='#level_9'>9</a></div><div class='s_clr'></div><br />
+<b>Уровень 7</b> <a name="level_7"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_swiftshock_g1.png" width="40" height="40" alt="Рассекающий удар I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=568">Рассекающий удар I</a> <br/><em>Soul Slash I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>6 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500176"><img src="uploads/item_icon/icon_item_skillbook_01.png" width="40" height="40" alt="Рассекающий удар I" title="Рассекающий удар I" /></a></span></div></td>
+						</tr>
+</table>
+<div class='s_gettop' align='center'><a href='#top'>TOP</a></div>
+<div class='s_getlvl' align='center'><a href='#level_1'>1</a></div><div class='s_getlvl' align='center'><a href='#level_3'>3</a></div><div class='s_getlvl' align='center'><a href='#level_5'>5</a></div><div class='s_getlvl' align='center'><a href='#level_7'>7</a></div><div class='s_getlvl' align='center'><a href='#level_9'>9</a></div><div class='s_clr'></div><br />
+<b>Уровень 9</b> <a name="level_9"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_p_statboostdodge_g1.png" width="40" height="40" alt="Увеличение шанса уклонения I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=112">Увеличение шанса уклонения I</a> <br/><em>Evasion Rate Increase I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Пассивный</span></div></td>
+							<td class="td4"><div class="td-rp"><span> </span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500172"><img src="uploads/item_icon/icon_item_skillbook_02.png" width="40" height="40" alt="Увеличение шанса уклонения I" title="Увеличение шанса уклонения I" /></a></span></div></td>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_invokepower_g1.png" width="40" height="40" alt="Ритуал I" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=577">Ритуал I</a> <br/><em>Devotion I</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 19</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>30 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500177"><img src="uploads/item_icon/icon_item_skillbook_01.png" width="40" height="40" alt="Ритуал I" title="Ритуал I" /></a></span></div></td>
+						</tr>
+</table>
+<div class='s_gettop' align='center'><a href='#top'>TOP</a></div>
+<div class='s_getlvl' align='center'><a href='#level_1'>1</a></div><div class='s_getlvl' align='center'><a href='#level_3'>3</a></div><div class='s_getlvl' align='center'><a href='#level_5'>5</a></div><div class='s_getlvl' align='center'><a href='#level_7'>7</a></div><div class='s_getlvl' align='center'><a href='#level_9'>9</a></div><div class='s_clr'></div><br />				<div style="width:100%;text-align:center;">
+				<script type="text/javascript"><!--
+				google_ad_client = "ca-pub-7876734108541447";
+				/* aidb_ru_main_bottom */
+				google_ad_slot = "3004338543";
+				google_ad_width = 728;
+				google_ad_height = 90;
+				//-->
+				</script>
+				<script type="text/javascript"
+				src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
+				</div>
+
+			</div>
+			</div>
+		</div>
+		
+<!--End MAIN-CONTENT-->
+
+<!--SIDEBAR-FIRST-->
+		<div id="sidebar-first">
+
+			<div class="sdb1">
+				<h3 class="pl15">Содержание:</h3>
+<ul id="acc1" class="ui-accordion-container">
+	<li>
+
+		<div class="ui-accordion-left"></div>
+		<a class="ui-accordion-link acc1">База знаний</a>
+		<div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=items">Предметы</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=quests">Задания</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=recipes">Рецепты</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=gather">Сбор</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=npcs">NPC</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=class_tree">Умения</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=item_sets">Сеты</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=pets">Питомцы</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=locs">Локации</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=titles">Титулы</a></div>
+		</div>
+
+	</li>
+	<li>
+
+		<div class="ui-accordion-left"></div>
+		<a class="ui-accordion-link acc1">Калькуляторы</a>
+		<div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=speed_calc">Скор. бега и атаки</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=aion_translator">Переводчик чата</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=grind_calc&amp;doItem&amp;sort=3&amp;level=1">Прокачка</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=stigma_calc&amp;class=1">Стигмы</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=apcalc">Очки бездны</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=craft_calc">Крафт</a></div>
+		</div>
+
+	</li>
+	<li>
+
+		<div class="ui-accordion-left"></div>
+		<a class="ui-accordion-link acc1">Инструменты</a>
+		<div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=maps">Карты</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=market">Аукцион</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=groups">Поиск группы</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=clans">Рейтинг легионов</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=userbars">Генератор подписей</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=shots&amp;id=7">Галерея</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=articles">Статьи</a></div>
+		</div>
+
+	</li>
+	<li>
+
+		<div class="ui-accordion-left"></div>
+		<a class="ui-accordion-link acc1">Сообщество</a>
+		<div>
+			<div class="m_links"><a href="https://aidb.ru/forum/">Форум</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=qa">Задать вопрос</a></div>
+			<div class="m_links"><a href="https://aidb.ru/forum/index.php?/topic/36-%D0%BD%D0%B0%D1%88-teamspeak-3-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80/">TeamSpeak 3</a></div>
+			<div class="m_links"><a href="https://aidb.ru/?aion=adv">Рекламодателям</a></div>
+		</div>
+
+	</li>
+
+
+</ul>
+			</div>
+			
+			
+
+			<div class="sdb2">
+				<h3>Комментарии &#8595;</h3>
+				<ul class="menu-n3">
+<li><em>Группы &#8594; </em><a href="?aion=char_info&amp;id=1">Экскаватор</a><span>Автор: DimkaTsv</span></li><li><em>Титулы &#8594; </em><a href="?aion=title_info&amp;id=9">Стоик</a><span>Автор: DimkaTsv</span></li><li><em>Петы &#8594; </em><a href="?aion=pet_info&amp;id=900041">Аккуратный шиго</a><span>Автор: BoroBoro</span></li><li><em>Сбор &#8594; </em><a href="?aion=gather_info&amp;id=400303">Хрусталь</a><span>Автор: BoroBoro</span></li><li><em>Предметы &#8594; </em><a href="?aion=item_info&amp;id=170190039">Фиора благословения Каруна</a><span>Автор: ANDRAON</span></li><li><em>Сеты &#8594; </em><a href="?aion=item_set_info&amp;id=7">Кожаный комплект проблеска</a><span>Автор: aceutd</span></li><li><em>Мобы и НПЦ &#8594; </em><a href="?aion=npc_info&amp;id=210548">Глава клана Кумпаран</a><span>Автор: xakivolk001</span></li><li><em>Квесты &#8594; </em><a href="?aion=quest_info&amp;id=21461">Потерянная книга</a><span>Автор: Onvisible</span></li><li><em>Умения &#8594; </em><a href="?aion=skill_info&amp;id=646">Тигриный глаз I</a><span>Автор: vaal</span></li><li><em>Локации &#8594; </em><a href="?aion=zone_info&amp;id=220050000">Брустхонин [Brusthonin]</a><span>Автор: xakivolk001</span></li><li><em>Статьи &#8594; </em><a href="aion_rasa_elyos.htm">Раса Elyos</a><span>Автор: xakivolk001</span></li> 
+				</ul>
+				<div class="sdb2-in"></div>
+			</div>
+
+			
+		</div>
+<!--End SIDEBAR-FIRST-->
+
+<!--SIDEBAR-SECOND-->
+		<div id="sidebar-second">
+
+			<div class="sdb3 tac">
+<div style="font-align:center;padding-bottom:10px;">
+<a onclick="return AddToFavs();" target="general"  rel="sidebar" href="https://aidb.ru/">Добавить в избранное</a><br /><a href="https://aidb.ru/aion_poiskovyie_plaginyi_dlya_opera_i_firefox.htm">Дополнение к браузеру</a>
+</div>
+					<br>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7876734108541447";
+/* aidb_ru_right_sidebar */
+google_ad_slot = "9888476945";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+			<div class="sdb4">
+				<h3>Галерея  &#8595;</h3>
+
+<a href="https://aidb.ru/?aion=shots&amp;id=96"><img src="uploads/gallery/96_thumb.jpeg" alt="" title="Смотреть в галерее" width="160" /></a>
+
+
+				<div class="sdb4-in"></div>
+			</div>
+
+
+			<div class="sdb4">
+
+				<h3>Голосование  &#8595;</h3>
+<div id="voload" style="text-align:center;display:none;">Загрузка...</div>
+<div id="votfield">
+<p>Сколько человек в вашем легионе?</p><div class="golos"><form method="get" action="/" name="do_vote"><div><p><label><input type="radio" name="voteid" value="3" /> 1+</label></p><p><label><input type="radio" name="voteid" value="2" /> 10+</label></p><p><label><input type="radio" name="voteid" value="1" /> 20+</label></p><p><label><input type="radio" name="voteid" value="7" /> 30+</label></p>
+<button onclick="voteadd();return false;"><span>Проголосовать<b></b></span></button>
+</div>
+</form>
+</div>
+</div>
+				<div class="sdb4-in"></div>
+			</div>
+		</div>
+<!--End-SIDEBAR-SECOND-->
+
+		<div class="clear"><!-- c --></div>
+<div class="push"></div>
+<!-- Footer -->
+<div class="footer">
+	<div class="footer-in">
+		<div class="copyright">
+			<p><a href="https://aidb.ru/">AIDB.ru</a> — Русская база знаний Aion &copy;</p>
+			<span class="fz10"><a href="https://aidb.ru/?aion=adv"><b>Размещение рекламы</b></a> | При копировании информации, ссылка на <a href="https://aidb.ru/">www.aidb.ru</a> обязательна.</span>
+		</div>
+
+		<div class="freeztime">
+			<a href="http://freezetime.ru/" rel="nofollow">&#171;<span>freezetime</span>&#187;</a>
+			<p>&copy;2009-2026</p>
+			<p><!--LiveInternet logo--><a href="http://www.liveinternet.ru/click"
+target="_blank" rel="nofollow"><img src="//counter.yadro.ru/logo?14.2"
+title="LiveInternet: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня"
+alt="" border="0" width="88" height="31"/></a><!--/LiveInternet-->
+
+<!-- Yandex.Metrika counter -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106685890', 'ym');
+
+    ym(106685890, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/106685890" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<!-- /Yandex.Metrika counter -->
+
+
+			</p>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+</div>
+</div>
+<!-- End Footer -->
+</body>
+</html>

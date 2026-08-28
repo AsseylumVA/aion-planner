@@ -1,0 +1,24 @@
+"level_10"></a>
+<div class="bl-black">
+						<div></div>
+					</div>
+
+					<table class="drop">
+						<tr>
+							<th class="td1">#</th>
+							<th class="td2">Название</th>
+							<th class="td3">Тип</th>
+							<th class="td4">Стоимость</th>
+							<th class="td5">Врем. каста</th>
+							<th class="td5">Врем. отк.</th>
+							<th class="td5">Изучение</th>
+						</tr>
+
+						<tr>
+							<td class="td1" style="vertical-align:top;"><div class="td-f"><img src="uploads/item_icon/cbt_sc_swiftedge_g2.png" width="40" height="40" alt="Стремительный удар II" /></div></td>
+							<td class="td2"><div class="td-rp"><p><span><a href="https://aidb.ru/?aion=skill_info&amp;id=565">Стремительный удар II</a> <br/><em>Swift Edge II</em></span></p></div></td>
+							<td class="td3"><div class="td-rp"><span>Активный</span></div></td>
+							<td class="td4"><div class="td-rp"><span>MP 0</span></div></td>
+							<td class="td5"><div class="td-rp"><span>0 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span>7 сек.</span></div></td>
+							<td class="td5"><div class="td-rp"><span><a href="https://aidb.ru/?aion=item_info&amp;id=169500187"><img src="uploads/item_icon/icon_item_skillbook_0
