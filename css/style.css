@@ -857,6 +857,47 @@ header p.lead {
   color: #9db4ff;
 }
 .inspect p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.hidden-stats {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.hidden-stats caption {
+  caption-side: top;
+  text-align: left;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hidden-stats th,
+.hidden-stats td {
+  padding: 3px 0;
+  border-top: 1px solid var(--hairline-soft);
+  vertical-align: baseline;
+}
+.hidden-stats tr:first-child th,
+.hidden-stats tr:first-child td {
+  border-top: 0;
+}
+.hidden-stats th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 600;
+  padding-right: 12px;
+}
+.hidden-stats td {
+  text-align: right;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.inspect .hidden-stats { margin-top: 10px; }
+.hidden-stats + .hidden-stats { margin-top: 10px; }
 .inspect .unbind {
   margin-top: 10px;
   display: inline-flex;
@@ -1265,9 +1306,14 @@ header p.lead {
 .stigma-row:hover .skill-hover-card,
 .stigma-row:focus-visible .skill-hover-card,
 .tree-flow-node:hover .skill-hover-card,
-.tree-flow-node:focus-visible .skill-hover-card {
+.tree-flow-node:focus-visible .skill-hover-card,
+.skill-item:hover .skill-hover-card,
+.skill-item:focus-visible .skill-hover-card {
   display: grid;
   gap: 6px;
+}
+.skill-hover-card.hover-flip {
+  transform: translate(-50%, calc(-100% - 8px));
 }
 .hover-title { font-size: 14px; font-weight: 700; line-height: 1.25; color: var(--ink); }
 .hover-meta {

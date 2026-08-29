@@ -11,51 +11,108 @@ const CLASSES = [
 
 const CLASS_DEFAULTS = {
   gladiator: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   templar: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   assassin: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   ranger: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   sorcerer: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   spiritmaster: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   cleric: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
   chanter: {
-    learned: { combat: {}, shift: {}, ctrl: {} },
-    racial: { elyos: [], asmo: [] },
+    learned: {
+      combat: {},
+      shift: {},
+      ctrl: {},
+    },
+    racial: {
+      elyos: [],
+      asmo: [],
+    },
     stigma: {},
     defaultStigmas: { normal: [], greater: [] },
   },
 };
+

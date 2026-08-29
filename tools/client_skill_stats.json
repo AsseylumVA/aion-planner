@@ -102,12 +102,14 @@
     "acc_magic": 500,
     "type": "Magical",
     "duration_ms": 25000,
+    "duration_min_ms": 15000,
     "mp": 79,
     "cc": [
       {
         "name": "ослепление",
         "name_of": "ослепления",
-        "duration_ms": 25000
+        "duration_ms": 25000,
+        "duration_min_ms": 15000
       }
     ],
     "skill_id": 802
@@ -118,6 +120,7 @@
     "mag_status": true,
     "range_m": 20,
     "duration_ms": 3000,
+    "duration_min_ms": 2000,
     "dmg": [
       255,
       259
@@ -128,7 +131,8 @@
         "name": "стан",
         "name_of": "стана",
         "chance": 100,
-        "duration_ms": 3000
+        "duration_ms": 3000,
+        "duration_min_ms": 2000
       }
     ],
     "skill_id": 3213
@@ -724,6 +728,7 @@
   },
   "windWalk": {
     "duration_ms": 20000,
+    "duration_min_ms": 10000,
     "dp": 2000,
     "skill_id": 851
   },
@@ -1337,6 +1342,8 @@
     "skill_id": 972
   },
   "clSmite": {
+    "acc_magic": -50,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 518,
     "cast_ms": 1500,
@@ -1384,13 +1391,15 @@
   "elBind": {
     "range_m": 25,
     "duration_ms": 8000,
+    "duration_min_ms": 6000,
     "cast_ms": 500,
     "mp": 108,
     "cc": [
       {
         "name": "оковы",
         "name_of": "оков",
-        "duration_ms": 8000
+        "duration_ms": 8000,
+        "duration_min_ms": 6000
       }
     ],
     "skill_id": 1746
@@ -1480,7 +1489,8 @@
         "name": "замедление",
         "name_of": "замедления",
         "chance": 100,
-        "duration_ms": 15000
+        "duration_ms": 15000,
+        "duration_min_ms": 10000
       }
     ],
     "skill_id": 2647
@@ -1521,6 +1531,8 @@
     "skill_id": 2412
   },
   "elElementalStrike": {
+    "acc_magic": -60,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 973,
     "cast_ms": 2500,
@@ -1589,15 +1601,19 @@
     "skill_id": 2635
   },
   "elFear": {
+    "acc_magic": -100,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 15000,
+    "duration_min_ms": 8000,
     "cast_ms": 2500,
     "mp": 327,
     "cc": [
       {
         "name": "страх",
         "name_of": "страха",
-        "duration_ms": 15000
+        "duration_ms": 15000,
+        "duration_min_ms": 8000
       }
     ],
     "skill_id": 1636
@@ -1609,8 +1625,11 @@
     "skill_id": 2866
   },
   "elFireFear": {
+    "acc_magic": -30,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 8000,
+    "duration_min_ms": 6000,
     "mp": 180,
     "cc": [
       {
@@ -1631,13 +1650,15 @@
   "elGaiaGrab": {
     "range_m": 25,
     "duration_ms": 12000,
+    "duration_min_ms": 10000,
     "cast_ms": 1000,
     "mp": 205,
     "cc": [
       {
         "name": "замедление",
         "name_of": "замедления",
-        "duration_ms": 12000
+        "duration_ms": 12000,
+        "duration_min_ms": 10000
       }
     ],
     "skill_id": 1763
@@ -1669,6 +1690,8 @@
     "skill_id": 2761
   },
   "elManaReverse": {
+    "acc_magic": -60,
+    "type": "Magical",
     "range_m": 25,
     "mp": 388,
     "skill_id": 2874
@@ -1803,13 +1826,15 @@
   "elSilence": {
     "range_m": 25,
     "duration_ms": 8000,
+    "duration_min_ms": 6000,
     "cast_ms": 1000,
     "mp": 131,
     "cc": [
       {
         "name": "немота",
         "name_of": "немоты",
-        "duration_ms": 8000
+        "duration_ms": 8000,
+        "duration_min_ms": 6000
       }
     ],
     "skill_id": 1769
@@ -1903,6 +1928,7 @@
   "elSlow": {
     "range_m": 25,
     "duration_ms": 35000,
+    "duration_min_ms": 25000,
     "cast_ms": 1000,
     "mp": 240,
     "skill_id": 1770
@@ -2028,20 +2054,25 @@
     "skill_id": 1683
   },
   "elTerrorSpirit": {
+    "acc_magic": -150,
+    "type": "Magical",
     "duration_ms": 18000,
+    "duration_min_ms": 11000,
     "cast_ms": 1500,
     "mp": 520,
     "cc": [
       {
         "name": "страх",
         "name_of": "страха",
-        "duration_ms": 18000
+        "duration_ms": 18000,
+        "duration_min_ms": 11000
       },
       {
         "name": "замедление",
         "name_of": "замедления",
         "chance": 100,
-        "duration_ms": 18000
+        "duration_ms": 18000,
+        "duration_min_ms": 13000
       }
     ],
     "skill_id": 1685
@@ -2053,6 +2084,8 @@
     "skill_id": 2642
   },
   "elVacuumExplosion": {
+    "acc_magic": -60,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 839,
     "cast_ms": 2000,
@@ -2060,8 +2093,11 @@
     "skill_id": 2643
   },
   "elWaterFear": {
+    "acc_magic": -30,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 8000,
+    "duration_min_ms": 6000,
     "mp": 180,
     "cc": [
       {
@@ -2320,6 +2356,7 @@
     "mag_status": true,
     "range_m": 15,
     "duration_ms": 10000,
+    "duration_min_ms": 8000,
     "dmg": [
       345,
       349
@@ -2330,7 +2367,8 @@
         "name": "замедление",
         "name_of": "замедления",
         "chance": 50,
-        "duration_ms": 10000
+        "duration_ms": 10000,
+        "duration_min_ms": 8000
       }
     ],
     "skill_id": 2033
@@ -2351,6 +2389,8 @@
     "skill_id": 2345
   },
   "fiGustBlade": {
+    "acc_phys": -50,
+    "type": "Physical",
     "range_m": 15,
     "dmg": [
       203,
@@ -2363,6 +2403,7 @@
     "mag_status": true,
     "type": "Physical",
     "duration_ms": 10000,
+    "duration_min_ms": 8000,
     "dmg": [
       344,
       348
@@ -2373,7 +2414,8 @@
         "name": "замедление",
         "name_of": "замедления",
         "chance": 100,
-        "duration_ms": 10000
+        "duration_ms": 10000,
+        "duration_min_ms": 8000
       }
     ],
     "skill_id": 2818
@@ -2384,6 +2426,7 @@
     "mag_status": true,
     "range_m": 15,
     "duration_ms": 10000,
+    "duration_min_ms": 8000,
     "dmg": [
       345,
       349
@@ -2394,7 +2437,8 @@
         "name": "замедление",
         "name_of": "замедления",
         "chance": 50,
-        "duration_ms": 10000
+        "duration_ms": 10000,
+        "duration_min_ms": 8000
       }
     ],
     "skill_id": 2034
@@ -2593,6 +2637,8 @@
     "skill_id": 321
   },
   "fiSlashigForce": {
+    "acc_phys": -100,
+    "type": "Physical",
     "range_m": 15,
     "dmg": [
       29,
@@ -2653,6 +2699,8 @@
     "skill_id": 397
   },
   "fiStormBlade": {
+    "acc_phys": -80,
+    "type": "Physical",
     "range_m": 15,
     "dmg": [
       491,
@@ -2698,6 +2746,8 @@
     "skill_id": 2442
   },
   "fiWhirlDrain": {
+    "acc_phys": -100,
+    "type": "Physical",
     "dmg": [
       66,
       70
@@ -2706,6 +2756,8 @@
     "skill_id": 2349
   },
   "fiWhirlTornado": {
+    "acc_phys": -100,
+    "type": "Physical",
     "dmg": [
       811,
       815
@@ -2722,6 +2774,8 @@
     "skill_id": 2808
   },
   "fiWingBlade": {
+    "acc_phys": -100,
+    "type": "Physical",
     "range_m": 15,
     "dmg": [
       189,
@@ -3330,6 +3384,8 @@
     "skill_id": 2616
   },
   "maFlameBolt": {
+    "acc_magic": -30,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 681,
     "cast_ms": 2000,
@@ -3413,6 +3469,8 @@
     "skill_id": 1803
   },
   "prAbysalBolt": {
+    "acc_magic": -100,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 601,
     "mp": 138,
@@ -3427,6 +3485,8 @@
     "skill_id": 1189
   },
   "prAngerOfEarth": {
+    "acc_magic": -50,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 182,
     "mp": 46,
@@ -3507,6 +3567,8 @@
     "skill_id": 1064
   },
   "prDivineBolt": {
+    "acc_magic": -100,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 601,
     "mp": 138,
@@ -3562,6 +3624,8 @@
     "skill_id": 2574
   },
   "prGodsVoice": {
+    "acc_magic": -100,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 57000,
     "interval_ms": 3000,
@@ -3630,6 +3694,8 @@
     "skill_id": 2745
   },
   "prHolyExplosion": {
+    "acc_magic": -50,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 1211,
     "hp_cost": 1213,
@@ -3795,6 +3861,8 @@
     "skill_id": 3010
   },
   "prRepentance": {
+    "acc_magic": -50,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 15000,
     "interval_ms": 3000,
@@ -3820,6 +3888,8 @@
     "skill_id": 1041
   },
   "prRoot": {
+    "acc_magic": -100,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 6000,
     "mp": 35,
@@ -4093,6 +4163,7 @@
     "mag_status": true,
     "type": "Physical",
     "duration_ms": 16000,
+    "duration_min_ms": 12000,
     "dmg": [
       228,
       232
@@ -4103,7 +4174,8 @@
         "name": "замедление",
         "name_of": "замедления",
         "chance": 100,
-        "duration_ms": 16000
+        "duration_ms": 16000,
+        "duration_min_ms": 12000
       }
     ],
     "skill_id": 2479
@@ -4361,6 +4433,7 @@
     "acc_magic": 500,
     "type": "Magical",
     "duration_ms": 8000,
+    "duration_min_ms": 6000,
     "dmg": [
       280,
       284
@@ -4400,6 +4473,7 @@
     "type": "Physical",
     "mag_status": true,
     "duration_ms": 8000,
+    "duration_min_ms": 6000,
     "dmg": [
       128,
       132
@@ -4410,7 +4484,8 @@
         "name": "немота",
         "name_of": "немоты",
         "chance": 100,
-        "duration_ms": 8000
+        "duration_ms": 8000,
+        "duration_min_ms": 6000
       }
     ],
     "skill_id": 2507
@@ -4453,6 +4528,8 @@
     "skill_id": 2493
   },
   "raSpiralArrow": {
+    "acc_phys": -300,
+    "type": "Physical",
     "dmg": [
       795,
       799
@@ -4558,6 +4635,7 @@
   },
   "raWoundingArrow": {
     "duration_ms": 8000,
+    "duration_min_ms": 4000,
     "dmg": [
       373,
       377
@@ -4597,6 +4675,7 @@
   },
   "stealth": {
     "duration_ms": 60000,
+    "duration_min_ms": 40000,
     "mp": 76,
     "skill_id": 582
   },
@@ -4796,6 +4875,8 @@
     "skill_id": 1454
   },
   "wiCycloneStrike": {
+    "acc_magic": -60,
+    "type": "Magical",
     "pvp": 50,
     "range_m": 25,
     "dmg": 4913,
@@ -4804,6 +4885,8 @@
     "skill_id": 2402
   },
   "wiDeepSleep": {
+    "acc_magic": -50,
+    "type": "Magical",
     "range_m": 25,
     "duration_ms": 5000,
     "cast_ms": 1400,
@@ -4880,6 +4963,8 @@
     "skill_id": 2858
   },
   "wiFlameLance": {
+    "acc_magic": -60,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 785,
     "cast_ms": 1400,
@@ -4892,6 +4977,8 @@
     "skill_id": 1590
   },
   "wiFlameStrike": {
+    "acc_magic": -60,
+    "type": "Magical",
     "pvp": 70,
     "range_m": 25,
     "dmg": 3404,
@@ -4964,6 +5051,8 @@
     "skill_id": 2619
   },
   "wiHellFire": {
+    "acc_magic": -30,
+    "type": "Magical",
     "pvp": 80,
     "range_m": 25,
     "dmg": 2507,
@@ -4976,12 +5065,14 @@
     "type": "Magical",
     "range_m": 15,
     "duration_ms": 5000,
+    "duration_min_ms": 3000,
     "mp": 892,
     "cc": [
       {
         "name": "стан",
         "name_of": "стана",
-        "duration_ms": 5000
+        "duration_ms": 5000,
+        "duration_min_ms": 3000
       }
     ],
     "skill_id": 2396
@@ -5036,6 +5127,8 @@
     "skill_id": 3588
   },
   "wiMagicalFlame": {
+    "acc_magic": -60,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 2940,
     "cast_ms": 4000,
@@ -5135,13 +5228,15 @@
     "type": "Magical",
     "range_m": 25,
     "duration_ms": 20000,
+    "duration_min_ms": 10000,
     "cast_ms": 2000,
     "dp": 2000,
     "cc": [
       {
         "name": "сон",
         "name_of": "сна",
-        "duration_ms": 20000
+        "duration_ms": 20000,
+        "duration_min_ms": 10000
       }
     ],
     "skill_id": 1497
@@ -5205,6 +5300,8 @@
     "skill_id": 1449
   },
   "wiStigmaIceLance": {
+    "acc_magic": -100,
+    "type": "Magical",
     "range_m": 25,
     "dmg": 1579,
     "cast_ms": 2500,
@@ -5297,6 +5394,8 @@
     "skill_id": 2394
   },
   "wiWizardryHook": {
+    "acc_magic": -250,
+    "type": "Magical",
     "range_m": 20,
     "dmg": 645,
     "cast_ms": 2800,
@@ -5309,6 +5408,8 @@
     "skill_id": 2627
   },
   "wiZeroPoint": {
+    "acc_magic": -60,
+    "type": "Magical",
     "pvp": 65,
     "range_m": 25,
     "dmg": 4335,

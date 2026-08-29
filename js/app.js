@@ -5,7 +5,11 @@ const STATE_API = "http://127.0.0.1:46462/api/state";
 /*
  * Origin 4.6 HUD is a visual arrangement of keyboard binds, not a second bind table.
  * Lives on the «Панели» tab (state.view === "hud"). Each cell stores {layer, key}
- * and live-reads state.binds. Bar III / II sit flush above the main 12-slot bar and
+ * and live-reads state.binds for the current class. Slot placements are per-class:
+ * switching away snapshots this class's HUD; a class without a snapshot gets empty
+ * slots (no leftover {layer,key} caption). A cell is empty when it has no ref or
+ * that key is unbound on the current class.
+ * Bar III / II sit flush above the main 12-slot bar and
  * never rotate. Extra I/II sit above that stack; one rotate button cycles
  * 4 orientations independently (1×N, N×1, 2×N, N×2). Side is a static
  * vertical 12-slot rail on the right of the whole center group.
@@ -96,21 +100,51 @@ function defaultQuickbar() {
   return next;
 }
 
-function cleanQbRef(ref) {
-  if (!ref || typeof ref !== "object") return null;
-  const layer = ref.layer;
-  const key = ref.key;
-  if (!QB_LAYERS.includes(layer) || typeof key !== "string" || !key || isMove(key)) return null;
+function unpackPackedRef(item) {
+  if (typeof item !== "string") return null;
+  const i = item.indexOf(":");
+  if (i < 1) return null;
+  const layerOf = { c: "combat", s: "shift", t: "ctrl" };
+  const layer = layerOf[item[0]] || null;
+  const key = item.slice(i + 1);
+  if (!QB_LAYERS.includes(layer) || !key || isMove(key)) return null;
   return { layer, key };
 }
 
-function padBarSlots(arr) {
+function bindPlaceForSkill(skillId, binds) {
+  if (!skillId || !binds) return null;
+  for (const layer of QB_LAYERS) {
+    const map = binds[layer] || {};
+    for (const [key, sid] of Object.entries(map)) {
+      if (sid === skillId && key && !isMove(key)) return { layer, key };
+    }
+  }
+  return null;
+}
+
+function liveQbRef(ref, binds) {
+  if (!ref || !QB_LAYERS.includes(ref.layer) || typeof ref.key !== "string" || !ref.key || isMove(ref.key)) {
+    return null;
+  }
+  const sid = binds && binds[ref.layer] && binds[ref.layer][ref.key];
+  return sid ? { layer: ref.layer, key: ref.key } : null;
+}
+
+function cleanQbRef(ref, binds) {
+  if (ref == null || ref === "") return null;
+  const table = binds || state.binds;
+  if (typeof ref === "string") return liveQbRef(unpackPackedRef(ref), table) || bindPlaceForSkill(ref, table);
+  if (typeof ref !== "object") return null;
+  return liveQbRef(ref, table) || bindPlaceForSkill(ref.skillId || ref.id || ref.skill, table);
+}
+
+function padBarSlots(arr, binds) {
   const out = [];
-  for (let i = 0; i < QB_SLOT_COUNT; i += 1) out.push(cleanQbRef(arr && arr[i]));
+  for (let i = 0; i < QB_SLOT_COUNT; i += 1) out.push(cleanQbRef(arr && arr[i], binds));
   return out;
 }
 
-function padQuickbar(q) {
+function padQuickbar(q, binds) {
   const next = defaultQuickbar();
   if (!q || typeof q !== "object") return next;
   setExtraMode(next, "extra1mode", readExtraMode(q, "extra1"));
@@ -119,9 +153,17 @@ function padQuickbar(q) {
   next.siderows = 1;
   const src = q.bars && typeof q.bars === "object" ? q.bars : q;
   for (const id of Object.keys(next.bars)) {
-    next.bars[id] = padBarSlots(src[id]);
+    next.bars[id] = padBarSlots(src[id], binds);
   }
   return next;
+}
+
+function normalizeQuickbar(binds) {
+  if (!state.quickbar || !state.quickbar.bars) return;
+  const table = binds || state.binds;
+  for (const id of Object.keys(state.quickbar.bars)) {
+    state.quickbar.bars[id] = padBarSlots(state.quickbar.bars[id], table);
+  }
 }
 
 function qbRef(bar, index) {
@@ -153,17 +195,7 @@ function packQbSlots(slots) {
 
 function unpackQbSlots(arr) {
   if (!Array.isArray(arr)) return emptyBarSlots();
-  const layerOf = { c: "combat", s: "shift", t: "ctrl" };
-  return padBarSlots(
-    arr.map((item) => {
-      if (!item) return null;
-      if (typeof item === "object") return item;
-      if (typeof item !== "string") return null;
-      const i = item.indexOf(":");
-      if (i < 1) return null;
-      return { layer: layerOf[item[0]] || null, key: item.slice(i + 1) };
-    })
-  );
+  return padBarSlots(arr);
 }
 
 function applyQuickbarShare(q) {
@@ -224,7 +256,6 @@ function loadState() {
     state.race = parsed.race === "elyos" ? "elyos" : "asmo";
     state.multirace = Boolean(parsed.multirace);
     state.byClass = parsed.byClass && typeof parsed.byClass === "object" ? parsed.byClass : {};
-    state.quickbar = padQuickbar(parsed.quickbar);
     state.stigmas = padStigmas(parsed.stigmas);
     pruneStigmas();
     const incoming = parsed.binds || {};
@@ -233,6 +264,7 @@ function loadState() {
       shift: { ...(incoming.shift || {}) },
       ctrl: { ...(incoming.ctrl || {}) },
     };
+    state.quickbar = padQuickbar(parsed.quickbar, state.binds);
     pruneBinds();
   } catch {
     applyCore(fallback);
@@ -245,8 +277,35 @@ function applyCore(next) {
   state.multirace = Boolean(next.multirace);
   state.stigmas = next.stigmas;
   state.binds = next.binds;
-  state.quickbar = padQuickbar(next.quickbar);
+  state.quickbar = padQuickbar(next.quickbar, next.binds);
   state.byClass = next.byClass || {};
+}
+
+function cloneQbBars(bars) {
+  const out = {};
+  for (const id of Object.keys(QB_BARS)) {
+    const src = bars && bars[id];
+    out[id] = [];
+    for (let i = 0; i < QB_SLOT_COUNT; i += 1) {
+      const ref = src && src[i];
+      out[id].push(ref && ref.layer && ref.key ? { layer: ref.layer, key: ref.key } : null);
+    }
+  }
+  return out;
+}
+
+function applyHudBars(bars, binds) {
+  if (!state.quickbar || !state.quickbar.bars) state.quickbar = defaultQuickbar();
+  const table = binds || state.binds;
+  if (!bars) {
+    for (const id of Object.keys(state.quickbar.bars)) {
+      state.quickbar.bars[id] = emptyBarSlots();
+    }
+    return;
+  }
+  for (const id of Object.keys(state.quickbar.bars)) {
+    state.quickbar.bars[id] = padBarSlots(bars[id], table);
+  }
 }
 
 function persistClassSnapshot(cls) {
@@ -262,6 +321,7 @@ function persistClassSnapshot(cls) {
       shift: { ...state.binds.shift },
       ctrl: { ...state.binds.ctrl },
     },
+    quickbar: { bars: cloneQbBars(state.quickbar && state.quickbar.bars) },
   };
 }
 
@@ -272,6 +332,7 @@ function skillName(id) {
 let lastRemoteAt = 0;
 
 function snapshot(source) {
+  normalizeQuickbar(state.binds);
   persistClassSnapshot(state.class);
   return {
     class: state.class,
@@ -306,7 +367,7 @@ function applyRemote(data) {
     ctrl: { ...(incoming.ctrl || {}) },
   };
   if (data.quickbar) {
-    const next = padQuickbar(data.quickbar);
+    const next = padQuickbar(data.quickbar, state.binds);
     const incomingHasSlots = data.quickbar.bars && typeof data.quickbar.bars === "object";
     if (!incomingHasSlots && state.quickbar && state.quickbar.bars) next.bars = state.quickbar.bars;
     state.quickbar = next;
@@ -683,6 +744,43 @@ function iconTag(id, cls) {
   return `<img class="${cls}" src="${skillIcon(id)}" alt="" draggable="false" onerror="this.remove()">`;
 }
 
+function esc(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+const CLIENT_PARAM_NAMES = new Set(["КД", "Стоимость", "Время каста"]);
+
+function statsTable(caption, rows) {
+  if (!rows || !rows.length) return "";
+  const body = rows
+    .map((r) => `<tr><th scope="row">${esc(r.name)}</th><td>${esc(r.value)}</td></tr>`)
+    .join("");
+  return `<table class="hidden-stats"><caption>${caption}</caption><tbody>${body}</tbody></table>`;
+}
+
+function clientParamRows(s) {
+  if (s && Array.isArray(s.params)) return s.params;
+  return (s && s.hidden ? s.hidden : []).filter((r) => CLIENT_PARAM_NAMES.has(r.name));
+}
+
+function hiddenStatRows(s) {
+  const rows = (s && s.hidden) || [];
+  if (s && Array.isArray(s.params)) return rows;
+  return rows.filter((r) => !CLIENT_PARAM_NAMES.has(r.name));
+}
+
+function skillStatTables(s) {
+  return (
+    statsTable("Параметры", clientParamRows(s)) +
+    statsTable("Скрытые статы", hiddenStatRows(s)) +
+    statsTable("Ловушка", s && s.trap)
+  );
+}
+
 function usedMap() {
   const map = {};
   for (const [key, sid] of Object.entries(state.binds[state.layer] || {})) {
@@ -767,7 +865,8 @@ function clearBtn(key) {
 
 function qbCaption(bar, index) {
   const ref = qbRef(bar, index);
-  return ref ? formatHudKey(ref.layer, ref.key) : "";
+  if (!ref || !bindAtLayer(ref.layer, ref.key)) return "";
+  return formatHudKey(ref.layer, ref.key);
 }
 
 function qbSlotSelected(bar, index) {
@@ -794,7 +893,7 @@ function refForSkill(skillId) {
 }
 
 function placeBindOnSlot(bar, index, layer, key) {
-  if (!QB_BARS[bar] || isMove(key)) return false;
+  if (!QB_BARS[bar] || isMove(key) || !bindAtLayer(layer, key)) return false;
   setQbRef(bar, index, { layer, key });
   save();
   return true;
@@ -858,6 +957,7 @@ function setMultirace(on) {
 function setClass(cls) {
   cls = cleanClass(cls);
   if (state.class === cls) return;
+  normalizeQuickbar(state.binds);
   persistClassSnapshot(state.class);
   state.class = cls;
   const snap = state.byClass[cls];
@@ -872,8 +972,10 @@ function setClass(cls) {
     state.stigmas = emptyStigmas();
     state.binds = emptyBinds();
   }
+  applyHudBars(snap && snap.quickbar && snap.quickbar.bars, state.binds);
   pruneStigmas();
   pruneBinds();
+  normalizeQuickbar(state.binds);
   state.pickSkill = null;
   state.pickKey = null;
   state.pickSlot = null;
@@ -1006,21 +1108,32 @@ function removeCascade(id) {
   save();
 }
 
-function stigmaHover(id, missing) {
+function skillHoverCard(id, meta, extra) {
   if (!id || !SKILLS[id]) return "";
   const s = SKILLS[id];
+  return `<span class="skill-hover-card">
+    <span class="hover-title">${s.name}</span>
+    <span class="hover-meta">${meta}</span>
+    <span class="hover-description">${s.desc}</span>
+    ${skillStatTables(s)}
+    ${extra || ""}
+  </span>`;
+}
+
+function skillListHover(id) {
+  const s = SKILLS[id];
+  return skillHoverCard(id, s ? `КД ${s.cd}` : "");
+}
+
+function stigmaHover(id, missing) {
+  if (!id || !SKILLS[id]) return "";
   const en = STIGMA_ID_TO_EN[id] || "";
   const tier = stigmaTier(id) === "greater" ? "Greater Stigma" : "Normal Stigma";
   const reqs =
     missing && missing.length
       ? `<span class="hover-requirements">Нужно: ${missing.join(", ")}</span>`
       : "";
-  return `<span class="skill-hover-card">
-    <span class="hover-title">${s.name}</span>
-    <span class="hover-meta">${en ? en + " · " : ""}${tier} · КД ${s.cd}</span>
-    <span class="hover-description">${s.desc}</span>
-    ${reqs}
-  </span>`;
+  return skillHoverCard(id, `${en ? en + " · " : ""}${tier} · КД ${SKILLS[id].cd}`, reqs);
 }
 
 function stigmaFrame(id, greater) {
@@ -1056,7 +1169,8 @@ function showInspect(skillId, key, layer) {
     return;
   }
   const s = SKILLS[skillId];
-  const tags = skillTags(skillId)
+  const tagList = skillTags(skillId);
+  const tags = tagList
     .map((t) => `<span class="${tagClass(t)}">${t}</span>`)
     .join("");
   const lay = layer || state.layer;
@@ -1069,10 +1183,12 @@ function showInspect(skillId, key, layer) {
       ${iconTag(skillId, "icon-lg")}
       <h3>${s.name}</h3>
     </div>
-    <div class="tags">${tags}</div>
+    ${tags ? `<div class="tags">${tags}</div>` : ""}
     <p>${s.desc}</p>
+    ${skillStatTables(s)}
     ${unbind}
   `;
+  el.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function renderCombos() {
@@ -1215,7 +1331,8 @@ function visibleSkillIds() {
     if (!isVisibleSkill(id)) return false;
     if (!q) return true;
     const s = SKILLS[id];
-    return [s.name, s.desc, ...(s.tags || [])].join(" ").toLowerCase().includes(q);
+    const extra = [...(s.params || []), ...(s.hidden || []), ...(s.trap || [])].flatMap((h) => [h.name, h.value]);
+    return [s.name, s.desc, ...(s.tags || []), ...extra].join(" ").toLowerCase().includes(q);
   });
 }
 
@@ -1246,6 +1363,7 @@ function skillButton(id, used, allBinds) {
       <span class="n">${s.name}</span>
       <span class="m">${where}</span>
     </span>
+    ${skillListHover(id)}
   </button>`;
 }
 
@@ -1258,7 +1376,8 @@ function boundHudBinds() {
       const s = SKILLS[sid];
       const cap = formatHudKey(layer, key);
       if (q) {
-        const hay = [s.name, s.desc, ...(s.tags || []), cap, prettyKey(key)].join(" ").toLowerCase();
+        const extra = [...(s.params || []), ...(s.hidden || []), ...(s.trap || [])].flatMap((h) => [h.name, h.value]);
+        const hay = [s.name, s.desc, ...(s.tags || []), ...extra, cap, prettyKey(key)].join(" ").toLowerCase();
         if (!hay.includes(q)) continue;
       }
       out.push({ layer, key, skill: sid, cap });
@@ -1924,15 +2043,20 @@ document.getElementById("skills").addEventListener("click", (e) => {
   }
   onSkill(btn.dataset.skill);
 });
-document.getElementById("stigma-view").addEventListener("pointerover", (e) => {
-  const host = e.target.closest(".slot, .stigma-row, .tree-flow-node");
+function placeHoverCard(e) {
+  const host = e.target.closest(".slot, .stigma-row, .tree-flow-node, .skill-item");
   if (!host) return;
   const card = host.querySelector(":scope > .skill-hover-card");
   if (!card) return;
   const r = host.getBoundingClientRect();
-  card.style.setProperty("--hover-top", `${Math.round(r.bottom)}px`);
+  const spaceBelow = window.innerHeight - r.bottom;
+  const flip = spaceBelow < 240;
+  card.style.setProperty("--hover-top", `${Math.round(flip ? r.top : r.bottom)}px`);
   card.style.setProperty("--hover-left", `${Math.round(r.left + r.width / 2)}px`);
-});
+  card.classList.toggle("hover-flip", flip);
+}
+document.getElementById("stigma-view").addEventListener("pointerover", placeHoverCard);
+document.getElementById("skills").addEventListener("pointerover", placeHoverCard);
 document.getElementById("stigma-view").addEventListener("click", (e) => {
   const slotBtn = e.target.closest("[data-stigma-tier]");
   if (slotBtn) {

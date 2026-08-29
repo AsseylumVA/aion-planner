@@ -19,11 +19,15 @@ from client_skill_stats import (
     STATS_PATH,
     STRINGS_PATH,
     client_xml_text,
+    extract_client_params,
+    extract_hidden,
+    extract_trap,
     fill_client_desc,
     fmt_sec,
+    load_npc_by_name,
     parse_block,
+    strip_guaranteed_chances,
     with_mag_status_tag,
-    with_stats,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -338,19 +342,19 @@ def cd_from_fields(fields: dict[str, str]) -> str:
 
 
 def range_tag(fields: dict[str, str], stats: dict | None) -> str:
-    if stats and stats.get("range_m"):
-        return f"{stats['range_m']} м"
-    dist = fields.get("first_target_valid_distance") or "0"
-    try:
-        n = int(dist)
-    except ValueError:
-        n = 0
+    """Targeting chip only. Numeric range belongs in the hidden table if L10N omitted it."""
     first = (fields.get("first_target") or "").lower()
-    if first in ("me", "") or n <= 1:
-        if first in ("me",):
-            return "на себя"
-        return "ближний"
-    return f"{n} м"
+    if first == "me":
+        return "на себя"
+    dist = stats.get("range_m") if stats else None
+    if dist is None:
+        try:
+            dist = int(fields.get("first_target_valid_distance") or "0")
+        except ValueError:
+            dist = 0
+    if dist and dist > 1:
+        return ""
+    return "ближний"
 
 
 def strip_rank(name: str) -> str:
@@ -362,11 +366,10 @@ def skill_desc(
     fields: dict[str, str],
     strings: dict[str, str],
     by_name: dict[str, str],
-    stats: dict | None,
 ) -> str:
     filled = fill_client_desc(body, strings, by_name)
     if filled:
-        return with_stats(filled, stats)
+        return strip_guaranteed_chances(filled)
     key = fields.get("desc_long") or fields.get("desc") or ""
     raw = strings.get(key) or ""
     raw = re.sub(r"\[%[^%\]]+%?\]", "", raw)
@@ -374,7 +377,7 @@ def skill_desc(
     if not raw:
         short = strings.get(fields.get("desc") or "") or ""
         raw = strip_rank(short) or fields.get("name") or ""
-    return with_stats(raw, stats)
+    return strip_guaranteed_chances(raw)
 
 
 def is_chain_follow(
@@ -417,12 +420,12 @@ def _share_class(a, b) -> bool:
     return bool(set(a or ()) & set(b or ()))
 
 
-def apply_chain_chance_descs(
+def chain_chance_rows(
     skills: dict,
     assigned: dict[str, dict],
     skill_class: dict[str, list[str]],
-) -> int:
-    """Append Russian chain-window percents from client XML onto planner descs."""
+) -> dict[str, list[dict]]:
+    """Non-100% chain-window percents from client XML → hidden-table rows."""
     by_cat: dict[str, list[str]] = defaultdict(list)
     by_pre: dict[str, list[str]] = defaultdict(list)
     by_client_name: dict[str, str] = {}
@@ -437,17 +440,17 @@ def apply_chain_chance_descs(
         by_client_name[rec["name"]] = sid
         by_client_name[G_TAIL.sub("", rec["name"])] = sid
 
-    n = 0
+    out: dict[str, list[dict]] = {}
     for sid, rec in assigned.items():
         if sid not in skills:
             continue
         fields = rec["fields"]
         my_classes = skill_class.get(sid) or sorted(rec["classes"])
-        bits: list[str] = []
+        rows: list[dict] = []
 
         p = parse_chain_prob(fields)
         cat = (fields.get("chain_category_name") or "").strip()
-        if p is not None and p > 0 and cat:
+        if p is not None and 0 < p < 100 and cat:
             next_names: list[str] = []
             for nid in by_pre.get(cat, []):
                 if nid == sid or nid not in skills:
@@ -460,7 +463,7 @@ def apply_chain_chance_descs(
                     next_names.append(name)
             if next_names:
                 names = ", ".join(sorted(next_names, key=str.lower))
-                bits.append(f"Шанс открыть следующее умение серии ({names}): {p}%.")
+                rows.append({"name": f"Открывает ({names})", "value": f"{p}%"})
 
         prev_pairs: list[tuple[str, int]] = []
         seen_pair: set[tuple[str, int]] = set()
@@ -480,7 +483,7 @@ def apply_chain_chance_descs(
             if not _share_class(my_classes, their):
                 continue
             op = parse_chain_prob(assigned[oid]["fields"])
-            if op is None or op <= 0:
+            if op is None or op <= 0 or op >= 100:
                 continue
             name = skills[oid]["name"]
             key = (name, op)
@@ -495,19 +498,11 @@ def apply_chain_chance_descs(
                     by_p[op].append(name)
             for op in sorted(by_p, reverse=True):
                 quoted = ", ".join(f"«{n}»" for n in sorted(by_p[op], key=str.lower))
-                bits.append(f"Шанс появления этого умения после {quoted}: {op}%.")
+                rows.append({"name": f"После {quoted}", "value": f"{op}%"})
 
-        if not bits:
-            continue
-        desc = skills[sid]["desc"]
-        extra = " ".join(bits)
-        if extra in (desc or ""):
-            continue
-        if desc and desc[-1] not in ".!?":
-            desc += "."
-        skills[sid]["desc"] = f"{desc} {extra}".strip()
-        n += 1
-    return n
+        if rows:
+            out[sid] = rows
+    return out
 
 
 def parse_skills_xml(xml: str) -> dict[str, tuple[int, str, dict[str, str]]]:
@@ -748,13 +743,14 @@ def build_skill_objects(
         stats["skill_id"] = rec["client_id"]
         name_key = fields.get("desc") or ""
         ru = strip_rank(strings.get(name_key) or rec["name"])
-        desc = skill_desc(rec["body"], fields, strings, by_name, stats)
+        desc = skill_desc(rec["body"], fields, strings, by_name)
         stigma = rec["stigma_display"] in ("1", "2")
         kind = infer_kind(fields, stigma, old_kinds.get(sid))
         cd = cd_from_fields(fields)
-        tags = [range_tag(fields, stats)]
-        if cd and cd not in ("нет", "мгновенно"):
-            tags.append(f"КД {cd}")
+        tags = []
+        tgt = range_tag(fields, stats)
+        if tgt:
+            tags.append(tgt)
         for cc in stats.get("cc") or []:
             tag = cc["name"].capitalize() if cc["name"] != "стан" else "Стан"
             if tag not in tags:
@@ -772,6 +768,7 @@ def build_skill_objects(
             "icon": fields.get("skillicon_name") or "",
             "client_id": rec["client_id"],
             "group": rec["group"],
+            "tpl": fields.get("desc_long") or fields.get("desc") or "",
         }
         if stigma:
             stigma_tier[sid] = "greater" if rec["stigma_display"] == "2" else "normal"
@@ -789,8 +786,47 @@ def build_skill_objects(
             "activation": fields.get("activation_attribute"),
             "icon": fields.get("skillicon_name"),
         }
-    n_chain = apply_chain_chance_descs(skills, assigned, skill_class)
-    print("chain-chance descs", n_chain)
+    chain_map = chain_chance_rows(skills, assigned, skill_class)
+    print("chain-chance rows", sum(len(v) for v in chain_map.values()), "skills", len(chain_map))
+    npcs = load_npc_by_name()
+    params_n = 0
+    hidden_n = 0
+    trap_n = 0
+    for sid, rec in assigned.items():
+        if sid not in skills:
+            continue
+        desc = strip_guaranteed_chances(skills[sid]["desc"])
+        skills[sid]["desc"] = desc
+        key = skills[sid].pop("tpl", "")
+        tpl = strings.get(key) or ""
+        stats = parse_block(rec["body"])
+        params = extract_client_params(rec["body"], desc, stats=stats)
+        hidden = extract_hidden(
+            rec["body"],
+            desc,
+            tpl,
+            stats=stats,
+            chain_rows=chain_map.get(sid),
+        )
+        trap = extract_trap(rec["body"], desc, by_name, npcs)
+        if params:
+            skills[sid]["params"] = params
+            params_n += 1
+        else:
+            skills[sid].pop("params", None)
+        if hidden:
+            skills[sid]["hidden"] = hidden
+            hidden_n += 1
+        else:
+            skills[sid].pop("hidden", None)
+        if trap:
+            skills[sid]["trap"] = trap
+            trap_n += 1
+        else:
+            skills[sid].pop("trap", None)
+    print("client-param tables", params_n)
+    print("hidden-stat tables", hidden_n)
+    print("trap-unit tables", trap_n)
     return skills, stigma_tier, skill_race, skill_class, chain_follow, catalog
 
 
@@ -814,6 +850,12 @@ def write_skills_js(
         lines.append(f"    kind: {js_str(s['kind'])},")
         lines.append(f"    tags: [{tags}],")
         lines.append(f"    desc: {js_str(s['desc'])},")
+        if s.get("params"):
+            lines.append(f"    params: {json.dumps(s['params'], ensure_ascii=False)},")
+        if s.get("hidden"):
+            lines.append(f"    hidden: {json.dumps(s['hidden'], ensure_ascii=False)},")
+        if s.get("trap"):
+            lines.append(f"    trap: {json.dumps(s['trap'], ensure_ascii=False)},")
         lines.append(f"    cd: {js_str(s['cd'])},")
         lines.append("  },")
     lines.append("};")

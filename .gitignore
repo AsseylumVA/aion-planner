@@ -1,8 +1,34 @@
-.cursor
-.vscode
-__pycache__
-*.pyc
+# Local planner state (Save button / /api/state)
 local-state.json
+
+# Client decrypt / unpack (skills.pak, XML, zips) — do not commit
 tools/encdec/
+
+# Scratch, temp UI dumps, scrape leftovers
+tools/tmp*
 tools/tmp_ui/
 tools/aidb_trees/
+tools/_forum513760/
+
+# Agent / IDE
+.serena/
+.cursor
+.vscode
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Secrets
+.env
+.env.*
