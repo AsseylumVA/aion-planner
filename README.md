@@ -27,7 +27,6 @@ python tools/serve.py
 
 Имена, статы и иконки умений взяты из клиента Origin (`skills.pak` и связанные пакеты). Регенерация `js/skills.js` — локально, через распаковку в `tools/encdec/` (этот каталог в репозиторий не кладут).
 
-Иконки в `img/` — ресурсы NCSoft. Репозиторий лучше оставлять закрытым.
 
 ---
 
@@ -53,4 +52,3 @@ Python 3. Serve the app files: `index.html`, `css/`, `js/`, `img/`.
 
 Skill names, combat stats, and icons come from the Origin client (`skills.pak` and related packs). Regenerating `js/skills.js` is a local step that unpacks into `tools/encdec/` (not committed).
 
-Icons under `img/` are NCSoft assets. Keep the repository private.
