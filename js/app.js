@@ -15,7 +15,7 @@ const STATE_API = "http://127.0.0.1:46462/api/state";
  * vertical 12-slot rail on the right of the whole center group.
  */
 const QB_SLOT_COUNT = 12;
-const QB_LAYERS = ["combat", "shift", "ctrl"];
+const QB_LAYERS = ["combat", "shift", "ctrl", "alt"];
 const QB_BARS = {
   main: { kind: "main", label: "Главная" },
   bar2: { kind: "stack", label: "Панель II", tag: "II" },
@@ -104,7 +104,7 @@ function unpackPackedRef(item) {
   if (typeof item !== "string") return null;
   const i = item.indexOf(":");
   if (i < 1) return null;
-  const layerOf = { c: "combat", s: "shift", t: "ctrl" };
+  const layerOf = { c: "combat", s: "shift", t: "ctrl", a: "alt" };
   const layer = layerOf[item[0]] || null;
   const key = item.slice(i + 1);
   if (!QB_LAYERS.includes(layer) || !key || isMove(key)) return null;
@@ -183,9 +183,15 @@ function qbSkill(bar, index) {
 
 function formatHudKey(layer, key) {
   const label = prettyKey(key);
-  if (key === "Wheel") return layer === "shift" ? "⇧MW" : layer === "ctrl" ? "Ctrl+MW" : "MW";
+  if (key === "Wheel") {
+    if (layer === "shift") return "⇧MW";
+    if (layer === "ctrl") return "Ctrl+MW";
+    if (layer === "alt") return "Alt+MW";
+    return "MW";
+  }
   if (layer === "shift") return `⇧${label}`;
   if (layer === "ctrl") return `Ctrl+${label}`;
+  if (layer === "alt") return `Alt+${label}`;
   return label;
 }
 
@@ -263,6 +269,7 @@ function loadState() {
       combat: { ...(incoming.combat || {}) },
       shift: { ...(incoming.shift || {}) },
       ctrl: { ...(incoming.ctrl || {}) },
+      alt: { ...(incoming.alt || {}) },
     };
     state.quickbar = padQuickbar(parsed.quickbar, state.binds);
     pruneBinds();
@@ -320,6 +327,7 @@ function persistClassSnapshot(cls) {
       combat: { ...state.binds.combat },
       shift: { ...state.binds.shift },
       ctrl: { ...state.binds.ctrl },
+      alt: { ...state.binds.alt },
     },
     quickbar: { bars: cloneQbBars(state.quickbar && state.quickbar.bars) },
   };
@@ -365,6 +373,7 @@ function applyRemote(data) {
     combat: { ...(incoming.combat || {}) },
     shift: { ...(incoming.shift || {}) },
     ctrl: { ...(incoming.ctrl || {}) },
+    alt: { ...(incoming.alt || {}) },
   };
   if (data.quickbar) {
     const next = padQuickbar(data.quickbar, state.binds);
@@ -419,6 +428,7 @@ function sharePayload() {
     c: state.binds.combat,
     s: state.binds.shift,
     t: state.binds.ctrl,
+    a: state.binds.alt,
     q: {
       em: [extra1.mode, extra2.mode],
       e: [
@@ -516,6 +526,7 @@ function applyShare(data) {
     combat: cleanBindMap(data.c),
     shift: cleanBindMap(data.s),
     ctrl: cleanBindMap(data.t),
+    alt: cleanBindMap(data.a),
   };
   state.quickbar = applyQuickbarShare(data.q);
   pruneBinds();
@@ -791,7 +802,7 @@ function usedMap() {
 
 function bindsBySkill() {
   const map = {};
-  for (const layer of ["combat", "shift", "ctrl"]) {
+  for (const layer of QB_LAYERS) {
     for (const [key, sid] of Object.entries(state.binds[layer] || {})) {
       if (!isVisibleSkill(sid)) continue;
       if (!map[sid]) map[sid] = [];
@@ -806,7 +817,9 @@ function formatLayerKey(layer, key) {
   if (layer === state.layer) return label;
   if (layer === "combat") return `Бой ${label}`;
   if (layer === "shift") return `⇧${label}`;
-  return `Ctrl+${label}`;
+  if (layer === "ctrl") return `Ctrl+${label}`;
+  if (layer === "alt") return `Alt+${label}`;
+  return label;
 }
 
 function assign(key, skillId) {
@@ -967,6 +980,7 @@ function setClass(cls) {
       combat: { ...(snap.binds.combat || {}) },
       shift: { ...(snap.binds.shift || {}) },
       ctrl: { ...(snap.binds.ctrl || {}) },
+      alt: { ...(snap.binds.alt || {}) },
     };
   } else {
     state.stigmas = emptyStigmas();
@@ -1188,7 +1202,6 @@ function showInspect(skillId, key, layer) {
     ${skillStatTables(s)}
     ${unbind}
   `;
-  el.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function renderCombos() {
@@ -1805,6 +1818,8 @@ function copyBinds() {
   dump("shift", "⇧");
   lines.push("", "Ctrl");
   dump("ctrl", "Ctrl+");
+  lines.push("", "Alt");
+  dump("alt", "Alt+");
   navigator.clipboard.writeText(lines.join("\n")).then(() => {
     toast("Скопировано");
   });

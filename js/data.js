@@ -435,7 +435,7 @@ const STIGMA_REQS = (() => {
 })();
 
 function emptyBinds() {
-  return { combat: {}, shift: {}, ctrl: {} };
+  return { combat: {}, shift: {}, ctrl: {}, alt: {} };
 }
 
 function emptyStigmas() {

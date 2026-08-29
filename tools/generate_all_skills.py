@@ -889,7 +889,7 @@ def generate_class_defaults(_assigned=None, _skills=None, _chain_follow=None) ->
     """Empty layouts only — do not ship invented binds or stigma loadouts."""
     return {
         cid: {
-            "learned": {"combat": {}, "shift": {}, "ctrl": {}},
+            "learned": {"combat": {}, "shift": {}, "ctrl": {}, "alt": {}},
             "racial": {"elyos": [], "asmo": []},
             "stigma": {},
             "defaultStigmas": {"normal": [], "greater": []},
@@ -910,7 +910,7 @@ def write_class_defaults(defaults: dict) -> None:
     for cid, layout in defaults.items():
         lines.append(f"  {cid}: {{")
         lines.append("    learned: {")
-        for layer in ("combat", "shift", "ctrl"):
+        for layer in ("combat", "shift", "ctrl", "alt"):
             pairs = ", ".join(
                 f"{k}: {js_str(v)}" for k, v in layout["learned"][layer].items()
             )

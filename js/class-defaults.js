@@ -15,6 +15,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -28,6 +29,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -41,6 +43,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -54,6 +57,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -67,6 +71,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -80,6 +85,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -93,6 +99,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],
@@ -106,6 +113,7 @@ const CLASS_DEFAULTS = {
       combat: {},
       shift: {},
       ctrl: {},
+      alt: {},
     },
     racial: {
       elyos: [],

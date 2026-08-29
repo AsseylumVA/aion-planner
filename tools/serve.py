@@ -75,7 +75,7 @@ def clean_qb_ref(ref):
         return None
     layer = ref.get("layer")
     key = ref.get("key")
-    if layer not in ("combat", "shift", "ctrl"):
+    if layer not in ("combat", "shift", "ctrl", "alt"):
         return None
     if not isinstance(key, str) or not key or key in ("KeyW", "KeyS"):
         return None
@@ -179,6 +179,7 @@ def normalize(data: dict) -> dict:
             "combat": dict(binds.get("combat") or {}),
             "shift": dict(binds.get("shift") or {}),
             "ctrl": dict(binds.get("ctrl") or {}),
+            "alt": dict(binds.get("alt") or {}),
         },
         "quickbar": pad_quickbar(data.get("quickbar")),
         "byClass": by_class,
@@ -228,7 +229,7 @@ def apply_patch(cur: dict, patch: dict) -> dict:
         if "greater" in src:
             data["stigmas"]["greater"] = pad_row(src["greater"], SLOTS["greater"])
     if "binds" in patch:
-        for layer in ("combat", "shift", "ctrl"):
+        for layer in ("combat", "shift", "ctrl", "alt"):
             if layer not in (patch["binds"] or {}):
                 continue
             layer_map = data["binds"].setdefault(layer, {})
@@ -257,7 +258,7 @@ def apply_patch(cur: dict, patch: dict) -> dict:
     if bind:
         layer = bind.get("layer")
         key = bind.get("key")
-        if layer not in ("combat", "shift", "ctrl") or not key:
+        if layer not in ("combat", "shift", "ctrl", "alt") or not key:
             raise ValueError("bad bind")
         sid = bind.get("id") or None
         layer_map = data["binds"].setdefault(layer, {})
