@@ -11,8 +11,10 @@ const STATE_API = "http://127.0.0.1:46462/api/state";
  * that key is unbound on the current class.
  * Bar III / II sit flush above the main 12-slot bar and
  * never rotate. Extra I/II sit above that stack; one rotate button cycles
- * 4 orientations independently (1×N, N×1, 2×N, N×2). Side is a static
- * vertical 12-slot rail on the right of the whole center group.
+ * 4 orientations independently (1×12, 12×1, 2×6, 6×2). The index and
+ * rotate tab stay on the right (horizontal) or bottom (vertical) and
+ * are not rotated with the cells. Side is a static vertical 12-slot
+ * rail on the right of the whole center group.
  */
 const QB_SLOT_COUNT = 12;
 const QB_LAYERS = ["combat", "shift", "ctrl", "alt"];
@@ -63,7 +65,7 @@ function readExtraMode(q, prefix) {
     if (n === 0 || n === 1 || n === 2 || n === 3) return n;
     return extraModeFromRotRows(q[prefix + "rot"], q[prefix + "rows"]);
   }
-  return extraLayout(2).mode;
+  return extraLayout(0).mode;
 }
 
 function setExtraMode(qb, modeKey, mode) {
@@ -78,12 +80,12 @@ function setExtraMode(qb, modeKey, mode) {
 
 function defaultQuickbar() {
   const next = {
-    extra1mode: 2,
-    extra2mode: 2,
+    extra1mode: 0,
+    extra2mode: 0,
     extra1rot: 0,
     extra2rot: 0,
-    extra1rows: 2,
-    extra2rows: 2,
+    extra1rows: 1,
+    extra2rows: 1,
     siderot: 90,
     siderows: 1,
     bars: {
@@ -95,8 +97,8 @@ function defaultQuickbar() {
       side: emptyBarSlots(),
     },
   };
-  setExtraMode(next, "extra1mode", 2);
-  setExtraMode(next, "extra2mode", 2);
+  setExtraMode(next, "extra1mode", 0);
+  setExtraMode(next, "extra2mode", 0);
   return next;
 }
 
@@ -409,11 +411,6 @@ function toast(msg) {
   toast._t = setTimeout(() => {
     t.style.display = "none";
   }, 1600);
-}
-
-async function saveToFile() {
-  save();
-  toast("Сохранено");
 }
 
 function sharePayload() {
@@ -930,6 +927,21 @@ function clearAllBinds() {
   state.pickBind = null;
   save();
   render();
+}
+
+function openResetBindsModal() {
+  const modal = document.getElementById("reset-binds-modal");
+  modal.hidden = false;
+  document.getElementById("reset-binds-cancel").focus();
+}
+
+function closeResetBindsModal() {
+  document.getElementById("reset-binds-modal").hidden = true;
+}
+
+function confirmResetBinds() {
+  closeResetBindsModal();
+  clearAllBinds();
 }
 
 function clearAllStigmas() {
@@ -1795,36 +1807,6 @@ function onStigmaSlot(tier, index) {
   render();
 }
 
-function copyBinds() {
-  const raceName = state.race === "elyos" ? "Элиос" : "Асмодианин";
-  const lines = [
-    `Aion 4.6 ${classNameOf(state.class)} — ${raceName}${state.multirace ? ", мультирасса" : ""}, W/S ход, A/D скиллы`,
-    "",
-    "Стигмы",
-    "Обычные: " + state.stigmas.normal.map((id) => (id ? SKILLS[id].name : "—")).join(", "),
-    "Великие: " + state.stigmas.greater.map((id) => (id ? SKILLS[id].name : "—")).join(", "),
-    "",
-    "Бой",
-  ];
-  const dump = (layer, prefix) => {
-    const entries = Object.entries(state.binds[layer]).filter(([, sid]) => isVisibleSkill(sid));
-    entries.sort((a, b) => prettyKey(a[0]).localeCompare(prettyKey(b[0]), "ru"));
-    for (const [key, sid] of entries) {
-      lines.push(`${prefix}${prettyKey(key)}  ${SKILLS[sid].name}`);
-    }
-  };
-  dump("combat", "");
-  lines.push("", "Shift");
-  dump("shift", "⇧");
-  lines.push("", "Ctrl");
-  dump("ctrl", "Ctrl+");
-  lines.push("", "Alt");
-  dump("alt", "Alt+");
-  navigator.clipboard.writeText(lines.join("\n")).then(() => {
-    toast("Скопировано");
-  });
-}
-
 let dnd = null;
 let ignoreClick = false;
 
@@ -2114,10 +2096,18 @@ document.querySelector(".race-switch").addEventListener("click", (e) => {
 document.getElementById("class-pick").addEventListener("change", (e) => {
   setClass(e.target.value);
 });
-document.getElementById("save-state").addEventListener("click", saveToFile);
 document.getElementById("share").addEventListener("click", copyShareLink);
-document.getElementById("copy").addEventListener("click", copyBinds);
-document.getElementById("reset-binds").addEventListener("click", clearAllBinds);
+document.getElementById("reset-binds").addEventListener("click", openResetBindsModal);
+document.getElementById("reset-binds-cancel").addEventListener("click", closeResetBindsModal);
+document.getElementById("reset-binds-confirm").addEventListener("click", confirmResetBinds);
+document.getElementById("reset-binds-modal").addEventListener("click", (e) => {
+  if (e.target.closest("[data-reset-cancel]")) closeResetBindsModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  const modal = document.getElementById("reset-binds-modal");
+  if (!modal.hidden) closeResetBindsModal();
+});
 document.getElementById("reset-stigmas").addEventListener("click", clearAllStigmas);
 document.getElementById("inspect").addEventListener("click", (e) => {
   const btn = e.target.closest("[data-unbind]");
