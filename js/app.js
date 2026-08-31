@@ -747,7 +747,7 @@ function bindAtLayer(layer, key) {
 }
 
 function skillIcon(id) {
-  return `img/skills/${id}.png?v=42`;
+  return `img/skills/${id}.png?v=43`;
 }
 
 function iconTag(id, cls) {
