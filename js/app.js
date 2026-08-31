@@ -1,6 +1,7 @@
 const STORE = "aion-binds-v11";
 const STORE_LEGACY = ["aion-binds-v10", "aion-binds-v9", "aion-binds-v8"];
 const STATE_API = "http://127.0.0.1:46462/api/state";
+const USE_STATE_API = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
 /*
  * Origin 4.6 HUD is a visual arrangement of keyboard binds, not a second bind table.
@@ -396,6 +397,7 @@ function save() {
   const payload = snapshot("ui");
   lastRemoteAt = payload.updatedAt;
   localStorage.setItem(STORE, JSON.stringify(payload));
+  if (!USE_STATE_API) return;
   fetch(STATE_API, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -589,6 +591,7 @@ async function openShareFromUrl() {
 }
 
 async function pullState() {
+  if (!USE_STATE_API) return;
   try {
     const res = await fetch(STATE_API, { cache: "no-store" });
     if (!res.ok) return;
@@ -1416,19 +1419,39 @@ function boundHudBinds() {
   return out;
 }
 
+function hudPlacedBindKeys() {
+  const out = new Set();
+  const bars = state.quickbar && state.quickbar.bars;
+  if (!bars) return out;
+  for (const bar of Object.keys(QB_BARS)) {
+    const slots = bars[bar];
+    if (!slots) continue;
+    for (let i = 0; i < QB_SLOT_COUNT; i += 1) {
+      const ref = slots[i];
+      if (ref && ref.layer && ref.key) out.add(`${ref.layer}:${ref.key}`);
+    }
+  }
+  return out;
+}
+
 function renderHudPalette() {
   const root = document.getElementById("skills");
   root.classList.add("hud-palette");
   const items = boundHudBinds();
+  const placed = hudPlacedBindKeys();
   root.innerHTML = items.length
     ? items
         .map((b) => {
           const picked = Boolean(
             state.pickBind && state.pickBind.layer === b.layer && state.pickBind.key === b.key
           );
+          const onBar = placed.has(`${b.layer}:${b.key}`);
           const name = SKILLS[b.skill].name;
-          const cls = ["hud-bind", picked ? "picked" : ""].filter(Boolean).join(" ");
-          return `<button type="button" class="${cls}" data-skill="${b.skill}" data-layer="${b.layer}" data-key="${b.key}" draggable="true" title="${name} · ${b.cap}">
+          const cls = ["hud-bind", onBar ? "placed" : "unplaced", picked ? "picked" : ""]
+            .filter(Boolean)
+            .join(" ");
+          const hint = onBar ? "на панели" : "не на панели";
+          return `<button type="button" class="${cls}" data-skill="${b.skill}" data-layer="${b.layer}" data-key="${b.key}" draggable="true" title="${name} · ${b.cap} · ${hint}">
             ${iconTag(b.skill, "icon")}
             <span class="hud-bind-cap">${b.cap}</span>
           </button>`;
@@ -2128,6 +2151,6 @@ fillClassPick();
 renderCombos();
 openShareFromUrl().finally(() => {
   render();
-  pullState();
+  if (USE_STATE_API) pullState();
 });
-setInterval(pullState, 800);
+if (USE_STATE_API) setInterval(pullState, 800);
