@@ -1,4 +1,4 @@
-# Aion Origin 4.6 — раскладка клавиш / keybind planner
+# Aion 4.6 — раскладка клавиш / keybind planner
 
 Статический планировщик клавиш и панелей для **Aion Origin 4.6** (уровень 65).  
 Static keybind and HUD planner for **Aion Origin 4.6** (level 65).
