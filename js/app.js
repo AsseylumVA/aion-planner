@@ -465,47 +465,459 @@ function save() {
   return true;
 }
 
-function toast(msg) {
+function toast(msg, ms) {
   const t = document.getElementById("toast");
   t.textContent = msg;
   t.style.display = "block";
   clearTimeout(toast._t);
   toast._t = setTimeout(() => {
     t.style.display = "none";
-  }, 1600);
+  }, ms || 1600);
+}
+
+const SHARE_KEY_SHORT = {
+  Digit0: "0",
+  Digit1: "1",
+  Digit2: "2",
+  Digit3: "3",
+  Digit4: "4",
+  Digit5: "5",
+  Digit6: "6",
+  Digit7: "7",
+  Digit8: "8",
+  Digit9: "9",
+  KeyA: "A",
+  KeyB: "B",
+  KeyC: "C",
+  KeyD: "D",
+  KeyE: "E",
+  KeyF: "F",
+  KeyG: "G",
+  KeyH: "H",
+  KeyI: "I",
+  KeyJ: "J",
+  KeyK: "K",
+  KeyL: "L",
+  KeyM: "M",
+  KeyN: "N",
+  KeyO: "O",
+  KeyP: "P",
+  KeyQ: "Q",
+  KeyR: "R",
+  KeyS: "S",
+  KeyT: "T",
+  KeyU: "U",
+  KeyV: "V",
+  KeyW: "W",
+  KeyX: "X",
+  KeyY: "Y",
+  KeyZ: "Z",
+  Mouse4: "m4",
+  Mouse5: "m5",
+  Wheel: "mw",
+  CapsLock: "cl",
+  Backquote: "`",
+  Minus: "-",
+  Equal: "=",
+  BracketLeft: "[",
+  BracketRight: "]",
+  Semicolon: ";",
+  Quote: "'",
+  Comma: ",",
+  Period: ".",
+  Slash: "/",
+  Escape: "esc",
+  Tab: "tab",
+  Backspace: "bs",
+  Enter: "ent",
+  Space: "sp",
+  ShiftLeft: "sl",
+  ShiftRight: "sr",
+  ControlLeft: "ctl",
+  ControlRight: "ctr",
+  AltLeft: "al",
+  AltRight: "ar",
+  MetaLeft: "win",
+};
+const SHARE_KEY_LONG = Object.fromEntries(
+  Object.entries(SHARE_KEY_SHORT).map(([long, short]) => [short, long])
+);
+const SHARE_LAYER_CODE = { combat: "c", shift: "s", ctrl: "t", alt: "a" };
+const SHARE_LAYER_NAME = { c: "combat", s: "shift", t: "ctrl", a: "alt" };
+const SHARE_QB_BARS = [
+  ["m", "main"],
+  ["a", "bar2"],
+  ["b", "bar3"],
+  ["x", "extra1"],
+  ["y", "extra2"],
+  ["z", "side"],
+];
+
+function shortShareKey(key) {
+  return SHARE_KEY_SHORT[key] || key;
+}
+
+function expandShareKey(short) {
+  if (!short) return "";
+  if (SHARE_KEY_LONG[short]) return SHARE_KEY_LONG[short];
+  if (/^Key[A-Z]$/.test(short) || /^Digit[0-9]$/.test(short)) return short;
+  if (/^[A-Z]$/.test(short)) return `Key${short}`;
+  if (/^[0-9]$/.test(short)) return `Digit${short}`;
+  return short;
+}
+
+function packShareNameSlots(list) {
+  const out = (list || []).map((id) => id || "");
+  while (out.length && !out[out.length - 1]) out.pop();
+  return out.length ? out : undefined;
+}
+
+function packShareBinds(map) {
+  const out = {};
+  if (!map) return undefined;
+  for (const [key, sid] of Object.entries(map)) {
+    if (!sid) continue;
+    out[shortShareKey(key)] = sid;
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+function packShareHud(slots) {
+  const parts = [];
+  (slots || []).forEach((ref, i) => {
+    const layer = ref && SHARE_LAYER_CODE[ref.layer];
+    if (!layer || !ref.key) return;
+    parts.push(`${i}${layer}${shortShareKey(ref.key)}`);
+  });
+  return parts.length ? parts.join(",") : undefined;
 }
 
 function sharePayload() {
   const extra1 = extraLayout(state.quickbar.extra1mode);
   const extra2 = extraLayout(state.quickbar.extra2mode);
-  return {
+  const q = {};
+  if (extra1.mode || extra2.mode) q.em = [extra1.mode, extra2.mode];
+  for (const [code, bar] of SHARE_QB_BARS) {
+    const packed = packShareHud(state.quickbar.bars[bar]);
+    if (packed) q[code] = packed;
+  }
+  const payload = {
     k: state.class,
-    r: state.race === "elyos" ? 1 : 0,
-    m: state.multirace ? 1 : 0,
-    n: state.stigmas.normal.map((id) => id || ""),
-    g: state.stigmas.greater.map((id) => id || ""),
-    c: state.binds.combat,
-    s: state.binds.shift,
-    t: state.binds.ctrl,
-    a: state.binds.alt,
-    q: {
-      em: [extra1.mode, extra2.mode],
-      e: [
-        extra1.rot === 90 ? 1 : 0,
-        extra2.rot === 90 ? 1 : 0,
-        extra1.rows === 2 ? 1 : 0,
-        extra2.rows === 2 ? 1 : 0,
-        state.quickbar.siderot === 90 ? 1 : 0,
-        state.quickbar.siderows === 2 ? 1 : 0,
-      ],
-      m: packQbSlots(state.quickbar.bars.main),
-      a: packQbSlots(state.quickbar.bars.bar2),
-      b: packQbSlots(state.quickbar.bars.bar3),
-      x: packQbSlots(state.quickbar.bars.extra1),
-      y: packQbSlots(state.quickbar.bars.extra2),
-      z: packQbSlots(state.quickbar.bars.side),
-    },
+    n: packShareNameSlots(state.stigmas.normal),
+    g: packShareNameSlots(state.stigmas.greater),
+    c: packShareBinds(state.binds.combat),
+    s: packShareBinds(state.binds.shift),
+    t: packShareBinds(state.binds.ctrl),
+    a: packShareBinds(state.binds.alt),
   };
+  if (state.race === "elyos") payload.r = 1;
+  if (state.multirace) payload.m = 1;
+  if (Object.keys(q).length) payload.q = q;
+  return payload;
+}
+
+function expandShareSlots(arr, ids) {
+  if (!Array.isArray(arr)) return [];
+  return arr.map((item) => {
+    if (item == null || item === "" || item === -1) return "";
+    if (typeof item === "number") return ids[item] || "";
+    return item;
+  });
+}
+
+function expandShareBinds(map, ids) {
+  const out = {};
+  if (!map || typeof map !== "object") return out;
+  for (const [k, v] of Object.entries(map)) {
+    const key = expandShareKey(k);
+    const sid = typeof v === "number" ? ids[v] : v;
+    if (key && sid) out[key] = sid;
+  }
+  return out;
+}
+
+function expandShareHudBar(packed) {
+  if (Array.isArray(packed)) {
+    return packed.map((item) => {
+      if (!item) return "";
+      if (typeof item !== "string") return "";
+      const colon = item.indexOf(":");
+      if (colon < 1) return item;
+      const layer = item[0];
+      const key = expandShareKey(item.slice(colon + 1));
+      return SHARE_LAYER_NAME[layer] ? `${layer}:${key}` : item;
+    });
+  }
+  const slots = Array(QB_SLOT_COUNT).fill("");
+  if (typeof packed !== "string" || !packed) return slots;
+  for (const part of packed.split(",")) {
+    const m = part.match(/^(\d{1,2})([csta])(.+)$/);
+    if (!m) continue;
+    const i = Number(m[1]);
+    if (i < 0 || i >= QB_SLOT_COUNT) continue;
+    const key = expandShareKey(m[3]);
+    if (key) slots[i] = `${m[2]}:${key}`;
+  }
+  return slots;
+}
+
+function expandShareHud(q) {
+  if (!q || typeof q !== "object") return q;
+  const next = { ...q };
+  for (const [code] of SHARE_QB_BARS) {
+    if (q[code] != null) next[code] = expandShareHudBar(q[code]);
+  }
+  return next;
+}
+
+function normalizeShare(data) {
+  if (!data || typeof data !== "object") throw new Error("payload");
+  const ids = Array.isArray(data.i) ? data.i : [];
+  return {
+    k: data.k,
+    r: data.r,
+    m: data.m,
+    n: expandShareSlots(data.n, ids),
+    g: expandShareSlots(data.g, ids),
+    c: expandShareBinds(data.c, ids),
+    s: expandShareBinds(data.s, ids),
+    t: expandShareBinds(data.t, ids),
+    a: expandShareBinds(data.a, ids),
+    q: expandShareHud(data.q),
+  };
+}
+
+const SHARE_KEYS = [
+  "Escape",
+  "F1",
+  "F2",
+  "F3",
+  "F4",
+  "F5",
+  "F6",
+  "F7",
+  "F8",
+  "F9",
+  "F10",
+  "F11",
+  "F12",
+  "Backquote",
+  "Digit1",
+  "Digit2",
+  "Digit3",
+  "Digit4",
+  "Digit5",
+  "Digit6",
+  "Digit7",
+  "Digit8",
+  "Digit9",
+  "Digit0",
+  "Minus",
+  "Equal",
+  "Backspace",
+  "Tab",
+  "KeyQ",
+  "KeyW",
+  "KeyE",
+  "KeyR",
+  "KeyT",
+  "KeyY",
+  "KeyU",
+  "KeyI",
+  "KeyO",
+  "KeyP",
+  "BracketLeft",
+  "BracketRight",
+  "CapsLock",
+  "KeyA",
+  "KeyS",
+  "KeyD",
+  "KeyF",
+  "KeyG",
+  "KeyH",
+  "KeyJ",
+  "KeyK",
+  "KeyL",
+  "Semicolon",
+  "Quote",
+  "Enter",
+  "ShiftLeft",
+  "KeyZ",
+  "KeyX",
+  "KeyC",
+  "KeyV",
+  "KeyB",
+  "KeyN",
+  "KeyM",
+  "Comma",
+  "Period",
+  "Slash",
+  "ShiftRight",
+  "ControlLeft",
+  "MetaLeft",
+  "AltLeft",
+  "Space",
+  "AltRight",
+  "ControlRight",
+  "Mouse4",
+  "Mouse5",
+  "Wheel",
+];
+const SHARE_KEY_INDEX = Object.fromEntries(SHARE_KEYS.map((key, i) => [key, i]));
+const SHARE_BIN_LAYERS = ["combat", "shift", "ctrl", "alt"];
+const SHARE_BIN_BARS = ["main", "bar2", "bar3", "extra1", "extra2", "side"];
+
+function shareClassIndex(id) {
+  if (typeof CLASSES === "undefined") return 2;
+  const i = CLASSES.findIndex((c) => c.id === id);
+  return i >= 0 ? i : 2;
+}
+
+function encodeShareBinary() {
+  const ids = [];
+  const idx = new Map();
+  const add = (id) => {
+    if (!id) return 255;
+    if (idx.has(id)) return idx.get(id);
+    const next = ids.length;
+    if (next >= 255) throw new Error("skills");
+    ids.push(id);
+    idx.set(id, next);
+    return next;
+  };
+  const keyId = (key) => {
+    const i = SHARE_KEY_INDEX[key];
+    if (i == null) throw new Error("key");
+    return i;
+  };
+  for (const id of state.stigmas.normal) add(id);
+  for (const id of state.stigmas.greater) add(id);
+  for (const layer of SHARE_BIN_LAYERS) {
+    for (const sid of Object.values(state.binds[layer] || {})) add(sid);
+  }
+  const out = [];
+  const push = (n) => out.push(n & 255);
+  push(1);
+  push((state.race === "elyos" ? 1 : 0) | (state.multirace ? 2 : 0) | (shareClassIndex(state.class) << 2));
+  const extra1 = extraLayout(state.quickbar.extra1mode).mode;
+  const extra2 = extraLayout(state.quickbar.extra2mode).mode;
+  push((extra1 & 15) | ((extra2 & 15) << 4));
+  push(ids.length);
+  const enc = new TextEncoder();
+  for (const id of ids) {
+    const bytes = enc.encode(id);
+    if (bytes.length > 255) throw new Error("id");
+    push(bytes.length);
+    for (let i = 0; i < bytes.length; i += 1) out.push(bytes[i]);
+  }
+  for (const tier of ["normal", "greater"]) {
+    for (let i = 0; i < 6; i += 1) push(add(state.stigmas[tier][i]));
+  }
+  for (const layer of SHARE_BIN_LAYERS) {
+    const entries = Object.entries(state.binds[layer] || {}).filter(([, sid]) => sid);
+    push(entries.length);
+    for (const [key, sid] of entries) {
+      push(keyId(key));
+      push(idx.get(sid));
+    }
+  }
+  for (const bar of SHARE_BIN_BARS) {
+    const slots = (state.quickbar.bars && state.quickbar.bars[bar]) || [];
+    const filled = [];
+    slots.forEach((ref, i) => {
+      if (!ref || !ref.layer || !ref.key) return;
+      const layer = SHARE_BIN_LAYERS.indexOf(ref.layer);
+      if (layer < 0) return;
+      filled.push([i, layer, keyId(ref.key)]);
+    });
+    push(filled.length);
+    for (const [slot, layer, key] of filled) {
+      push((slot & 15) | ((layer & 3) << 4));
+      push(key);
+    }
+  }
+  return new Uint8Array(out);
+}
+
+function decodeShareBinary(bytes) {
+  let p = 0;
+  const need = (n) => {
+    if (p + n > bytes.length) throw new Error("truncated");
+  };
+  const u8 = () => {
+    need(1);
+    const v = bytes[p];
+    p += 1;
+    return v;
+  };
+  if (u8() !== 1) throw new Error("binver");
+  const flags = u8();
+  const extra = u8();
+  const nSkills = u8();
+  const ids = [];
+  const dec = new TextDecoder();
+  for (let i = 0; i < nSkills; i += 1) {
+    const n = u8();
+    need(n);
+    ids.push(dec.decode(bytes.subarray(p, p + n)));
+    p += n;
+  }
+  const slotIds = () => {
+    const out = [];
+    for (let i = 0; i < 6; i += 1) {
+      const ix = u8();
+      out.push(ix === 255 ? "" : ids[ix] || "");
+    }
+    return out;
+  };
+  const n = slotIds();
+  const g = slotIds();
+  const binds = {};
+  for (const layer of SHARE_BIN_LAYERS) {
+    const count = u8();
+    const map = {};
+    for (let i = 0; i < count; i += 1) {
+      const key = SHARE_KEYS[u8()] || "";
+      const sid = ids[u8()] || "";
+      if (key && sid) map[key] = sid;
+    }
+    binds[layer] = map;
+  }
+  const q = { em: [extra & 15, extra >> 4] };
+  const codes = ["m", "a", "b", "x", "y", "z"];
+  for (let b = 0; b < SHARE_BIN_BARS.length; b += 1) {
+    const count = u8();
+    const slots = Array(QB_SLOT_COUNT).fill("");
+    for (let i = 0; i < count; i += 1) {
+      const packed = u8();
+      const key = SHARE_KEYS[u8()] || "";
+      const slot = packed & 15;
+      const layer = SHARE_BIN_LAYERS[(packed >> 4) & 3];
+      const code = SHARE_LAYER_CODE[layer];
+      if (slot < QB_SLOT_COUNT && code && key) slots[slot] = `${code}:${key}`;
+    }
+    q[codes[b]] = slots;
+  }
+  const cls = typeof CLASSES !== "undefined" ? (CLASSES[flags >> 2] || {}).id : "";
+  return {
+    k: cls || "assassin",
+    r: flags & 1 ? 1 : 0,
+    m: flags & 2 ? 1 : 0,
+    n,
+    g,
+    c: binds.combat,
+    s: binds.shift,
+    t: binds.ctrl,
+    a: binds.alt,
+    q,
+  };
+}
+
+function parseShareBytes(bytes) {
+  if (!bytes || !bytes.length) throw new Error("empty");
+  if (bytes[0] === 1) return decodeShareBinary(bytes);
+  const data = JSON.parse(new TextDecoder().decode(bytes));
+  return normalizeShare(data);
 }
 
 function bytesToB64url(bytes) {
@@ -531,32 +943,49 @@ async function transformBytes(bytes, stream) {
 }
 
 async function encodeShare(data) {
-  const raw = new TextEncoder().encode(JSON.stringify(data));
+  const candidates = [];
+  const jsonRaw = new TextEncoder().encode(JSON.stringify(data || sharePayload()));
+  candidates.push({ prefix: "j", packed: jsonRaw });
+  try {
+    const binRaw = encodeShareBinary();
+    candidates.push({ prefix: "b", packed: binRaw });
+  } catch {
+    /* fall back to json */
+  }
   if (typeof CompressionStream === "function") {
-    try {
-      const packed = await transformBytes(raw, new CompressionStream("gzip"));
-      if (packed.length < raw.length) return "z" + bytesToB64url(packed);
-    } catch {
-      /* fallback to json */
+    const sources = candidates.slice();
+    for (const src of sources) {
+      for (const [name, prefix] of [
+        ["deflate-raw", "d"],
+        ["gzip", "z"],
+      ]) {
+        try {
+          const packed = await transformBytes(src.packed, new CompressionStream(name));
+          if (packed.length < src.packed.length) candidates.push({ prefix, packed });
+        } catch {
+          /* codec missing */
+        }
+      }
     }
   }
-  return "j" + bytesToB64url(raw);
+  candidates.sort((a, b) => a.packed.length - b.packed.length);
+  const best = candidates[0];
+  return best.prefix + bytesToB64url(best.packed);
 }
 
 async function decodeShare(token) {
   if (!token || token.length < 2) throw new Error("empty");
   const kind = token[0];
   const bytes = b64urlToBytes(token.slice(1));
-  let jsonBytes = bytes;
-  if (kind === "z") {
-    if (typeof DecompressionStream !== "function") throw new Error("gzip");
-    jsonBytes = await transformBytes(bytes, new DecompressionStream("gzip"));
-  } else if (kind !== "j") {
+  let raw = bytes;
+  if (kind === "d" || kind === "z") {
+    const codec = kind === "d" ? "deflate-raw" : "gzip";
+    if (typeof DecompressionStream !== "function") throw new Error(codec);
+    raw = await transformBytes(bytes, new DecompressionStream(codec));
+  } else if (kind !== "j" && kind !== "b") {
     throw new Error("format");
   }
-  const data = JSON.parse(new TextDecoder().decode(jsonBytes));
-  if (!data || typeof data !== "object") throw new Error("payload");
-  return data;
+  return parseShareBytes(raw);
 }
 
 function cleanSkillId(id) {
@@ -654,7 +1083,8 @@ async function openShareFromUrl() {
     if (ok) clearShareFromLocation();
     if (!already) toast("Открыта раскладка по ссылке");
   } catch {
-    toast("Ссылка повреждена");
+    toast("Ссылка обрезана. Скопируйте её целиком из чата, не из адресной строки.", 4200);
+    clearShareFromLocation();
   }
 }
 
