@@ -989,7 +989,32 @@ header p.lead {
   font: inherit;
 }
 .hud-bind:hover { background: var(--card); box-shadow: var(--shadow-control-hover); }
+.hud-bind.unplaced {
+  box-shadow: 0 0 0 1px #d8c48a, 0 0 10px rgb(216 196 138 / .34), var(--shadow-control);
+}
+.hud-bind.unplaced:hover {
+  box-shadow: 0 0 0 1px #f3e6b4, 0 0 12px rgb(243 230 180 / .45), var(--shadow-control-hover);
+}
+.hud-bind.unplaced::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d8c48a;
+  box-shadow: 0 0 6px rgb(216 196 138 / .75);
+  pointer-events: none;
+}
+.hud-bind.placed { opacity: 0.58; }
+.hud-bind.placed:hover { opacity: 0.88; }
 .hud-bind.picked { background: var(--accent-tint); box-shadow: var(--shadow-control-selected); }
+.hud-bind.unplaced.picked {
+  opacity: 1;
+  box-shadow: 0 0 0 1px #d8c48a, var(--shadow-control-selected);
+}
+.hud-bind.placed.picked { opacity: 1; }
 .hud-bind .icon {
   width: 40px;
   height: 40px;
