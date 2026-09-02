@@ -766,6 +766,42 @@ const SHARE_KEYS = [
 const SHARE_KEY_INDEX = Object.fromEntries(SHARE_KEYS.map((key, i) => [key, i]));
 const SHARE_BIN_LAYERS = ["combat", "shift", "ctrl", "alt"];
 const SHARE_BIN_BARS = ["main", "bar2", "bar3", "extra1", "extra2", "side"];
+const SHARE_BIN_VER = 2;
+const SHARE_COMMON_SKILLS = new Set([
+  "autoAttack",
+  "weaponSwap",
+  "curePotion",
+  "recoverySerum",
+  "manaSerum",
+  "lifeSerum",
+  "fastReturn",
+]);
+const SHARE_CLASS_SKILL_LIST = {};
+const SHARE_CLASS_SKILL_INDEX = {};
+
+function shareClassSkills(cls) {
+  if (SHARE_CLASS_SKILL_LIST[cls]) return SHARE_CLASS_SKILL_LIST[cls];
+  const ids = [];
+  if (typeof SKILLS === "object" && SKILLS) {
+    for (const id of Object.keys(SKILLS)) {
+      if (SHARE_COMMON_SKILLS.has(id)) {
+        ids.push(id);
+        continue;
+      }
+      if (typeof BASIC_SKILLS !== "undefined" && BASIC_SKILLS.has(id)) {
+        ids.push(id);
+        continue;
+      }
+      const classes = typeof SKILL_CLASS !== "undefined" ? SKILL_CLASS[id] : null;
+      if (classes && classes.includes(cls)) ids.push(id);
+    }
+  }
+  SHARE_CLASS_SKILL_LIST[cls] = ids;
+  const map = new Map();
+  ids.forEach((id, i) => map.set(id, i));
+  SHARE_CLASS_SKILL_INDEX[cls] = map;
+  return ids;
+}
 
 function shareClassIndex(id) {
   if (typeof CLASSES === "undefined") return 2;
@@ -839,7 +875,83 @@ function encodeShareBinary() {
   return new Uint8Array(out);
 }
 
+function encodeShareBinaryV2() {
+  const cls = state.class;
+  shareClassSkills(cls);
+  const idx = SHARE_CLASS_SKILL_INDEX[cls];
+  const skillByte = (id) => {
+    if (!id) return 255;
+    const i = idx.get(id);
+    if (i == null) throw new Error("skill");
+    return i;
+  };
+  const keyId = (key) => {
+    const i = SHARE_KEY_INDEX[key];
+    if (i == null) throw new Error("key");
+    return i;
+  };
+  const out = [];
+  const push = (n) => out.push(n & 255);
+  push(SHARE_BIN_VER);
+  push((state.race === "elyos" ? 1 : 0) | (state.multirace ? 2 : 0) | (shareClassIndex(cls) << 2));
+  const extra1 = extraLayout(state.quickbar.extra1mode).mode & 3;
+  const extra2 = extraLayout(state.quickbar.extra2mode).mode & 3;
+  let layerMask = 0;
+  const layerBinds = SHARE_BIN_LAYERS.map((layer, li) => {
+    const entries = Object.entries(state.binds[layer] || {}).filter(([, sid]) => sid);
+    if (entries.length) layerMask |= 1 << li;
+    return entries;
+  });
+  push((extra1 & 3) | ((extra2 & 3) << 2) | (layerMask << 4));
+  let barMask = 0;
+  const barFilled = SHARE_BIN_BARS.map((bar, bi) => {
+    const slots = (state.quickbar.bars && state.quickbar.bars[bar]) || [];
+    const filled = [];
+    slots.forEach((ref, i) => {
+      if (!ref || !ref.layer || !ref.key) return;
+      const layer = SHARE_BIN_LAYERS.indexOf(ref.layer);
+      if (layer < 0) return;
+      filled.push([i, layer, keyId(ref.key)]);
+    });
+    if (filled.length) barMask |= 1 << bi;
+    return filled;
+  });
+  let stigmaMask = 0;
+  const stigmaIds = [];
+  ["normal", "greater"].forEach((tier, ti) => {
+    const slots = (state.stigmas && state.stigmas[tier]) || [];
+    for (let i = 0; i < 6; i += 1) {
+      const id = slots[i];
+      if (!id) continue;
+      stigmaMask |= 1 << (ti * 6 + i);
+      stigmaIds.push(skillByte(id));
+    }
+  });
+  push(barMask & 63);
+  push(stigmaMask & 255);
+  push((stigmaMask >> 8) & 15);
+  for (const si of stigmaIds) push(si);
+  layerBinds.forEach((entries, li) => {
+    if (!(layerMask & (1 << li))) return;
+    push(entries.length);
+    for (const [key, sid] of entries) {
+      push(keyId(key));
+      push(skillByte(sid));
+    }
+  });
+  barFilled.forEach((filled, bi) => {
+    if (!(barMask & (1 << bi))) return;
+    push(filled.length);
+    for (const [slot, layer, key] of filled) {
+      push((slot & 15) | ((layer & 3) << 4));
+      push(key);
+    }
+  });
+  return new Uint8Array(out);
+}
+
 function decodeShareBinary(bytes) {
+  if (bytes[0] === SHARE_BIN_VER) return decodeShareBinaryV2(bytes);
   let p = 0;
   const need = (n) => {
     if (p + n > bytes.length) throw new Error("truncated");
@@ -913,9 +1025,82 @@ function decodeShareBinary(bytes) {
   };
 }
 
+function decodeShareBinaryV2(bytes) {
+  let p = 0;
+  const need = (n) => {
+    if (p + n > bytes.length) throw new Error("truncated");
+  };
+  const u8 = () => {
+    need(1);
+    const v = bytes[p];
+    p += 1;
+    return v;
+  };
+  if (u8() !== SHARE_BIN_VER) throw new Error("binver");
+  const flags = u8();
+  const packed = u8();
+  const extra1 = packed & 3;
+  const extra2 = (packed >> 2) & 3;
+  const layerMask = packed >> 4;
+  const barMask = u8() & 63;
+  const stigmaLo = u8();
+  const stigmaHi = u8();
+  const stigmaMask = stigmaLo | ((stigmaHi & 15) << 8);
+  const cls = typeof CLASSES !== "undefined" ? (CLASSES[(flags >> 2) & 7] || {}).id : "";
+  const classId = cls || "assassin";
+  const ids = shareClassSkills(classId);
+  const n = Array(6).fill("");
+  const g = Array(6).fill("");
+  for (let bit = 0; bit < 12; bit += 1) {
+    if (!(stigmaMask & (1 << bit))) continue;
+    const sid = ids[u8()] || "";
+    if (bit < 6) n[bit] = sid;
+    else g[bit - 6] = sid;
+  }
+  const binds = { combat: {}, shift: {}, ctrl: {}, alt: {} };
+  SHARE_BIN_LAYERS.forEach((layer, li) => {
+    if (!(layerMask & (1 << li))) return;
+    const count = u8();
+    const map = binds[layer];
+    for (let i = 0; i < count; i += 1) {
+      const key = SHARE_KEYS[u8()] || "";
+      const sid = ids[u8()] || "";
+      if (key && sid) map[key] = sid;
+    }
+  });
+  const q = { em: [extra1, extra2] };
+  const codes = ["m", "a", "b", "x", "y", "z"];
+  SHARE_BIN_BARS.forEach((_bar, bi) => {
+    if (!(barMask & (1 << bi))) return;
+    const count = u8();
+    const slots = Array(QB_SLOT_COUNT).fill("");
+    for (let i = 0; i < count; i += 1) {
+      const packedSlot = u8();
+      const key = SHARE_KEYS[u8()] || "";
+      const slot = packedSlot & 15;
+      const layer = SHARE_BIN_LAYERS[(packedSlot >> 4) & 3];
+      const code = SHARE_LAYER_CODE[layer];
+      if (slot < QB_SLOT_COUNT && code && key) slots[slot] = `${code}:${key}`;
+    }
+    q[codes[bi]] = slots;
+  });
+  return {
+    k: classId,
+    r: flags & 1 ? 1 : 0,
+    m: flags & 2 ? 1 : 0,
+    n,
+    g,
+    c: binds.combat,
+    s: binds.shift,
+    t: binds.ctrl,
+    a: binds.alt,
+    q,
+  };
+}
+
 function parseShareBytes(bytes) {
   if (!bytes || !bytes.length) throw new Error("empty");
-  if (bytes[0] === 1) return decodeShareBinary(bytes);
+  if (bytes[0] === 1 || bytes[0] === SHARE_BIN_VER) return decodeShareBinary(bytes);
   const data = JSON.parse(new TextDecoder().decode(bytes));
   return normalizeShare(data);
 }
@@ -944,13 +1129,16 @@ async function transformBytes(bytes, stream) {
 
 async function encodeShare(data) {
   const candidates = [];
-  const jsonRaw = new TextEncoder().encode(JSON.stringify(data || sharePayload()));
-  candidates.push({ prefix: "j", packed: jsonRaw });
   try {
-    const binRaw = encodeShareBinary();
-    candidates.push({ prefix: "b", packed: binRaw });
+    candidates.push({ prefix: "b", packed: encodeShareBinaryV2() });
   } catch {
-    /* fall back to json */
+    const jsonRaw = new TextEncoder().encode(JSON.stringify(data || sharePayload()));
+    candidates.push({ prefix: "j", packed: jsonRaw });
+    try {
+      candidates.push({ prefix: "b", packed: encodeShareBinary() });
+    } catch {
+      /* fall back to json */
+    }
   }
   if (typeof CompressionStream === "function") {
     const sources = candidates.slice();
@@ -968,7 +1156,7 @@ async function encodeShare(data) {
       }
     }
   }
-  candidates.sort((a, b) => a.packed.length - b.packed.length);
+  candidates.sort((a, b) => a.packed.length - b.packed.length || (a.prefix === "d" ? -1 : b.prefix === "d" ? 1 : 0));
   const best = candidates[0];
   return best.prefix + bytesToB64url(best.packed);
 }
