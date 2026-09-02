@@ -38,13 +38,12 @@ const state = {
   binds: emptyBinds(),
   quickbar: defaultQuickbar(),
   byClass: {},
+  shareToken: null,
   pickSkill: null,
   pickKey: null,
   pickSlot: null,
   pickBind: null,
 };
-
-loadState();
 
 function emptyBarSlots() {
   return Array(QB_SLOT_COUNT).fill(null);
@@ -199,7 +198,8 @@ function formatHudKey(layer, key) {
 }
 
 function packQbSlots(slots) {
-  return (slots || []).map((ref) => (ref ? `${ref.layer[0]}:${ref.key}` : ""));
+  const codeOf = { combat: "c", shift: "s", ctrl: "t", alt: "a" };
+  return (slots || []).map((ref) => (ref && codeOf[ref.layer] ? `${codeOf[ref.layer]}:${ref.key}` : ""));
 }
 
 function unpackQbSlots(arr) {
@@ -252,6 +252,55 @@ function cleanClass(id) {
   return DEFAULT_CLASS;
 }
 
+function layoutWeight(binds, stigmas) {
+  let n = 0;
+  if (binds) {
+    for (const layer of ["combat", "shift", "ctrl", "alt"]) n += Object.keys(binds[layer] || {}).length;
+  }
+  if (stigmas) {
+    for (const tier of ["normal", "greater"]) n += (stigmas[tier] || []).filter(Boolean).length;
+  }
+  return n;
+}
+
+function restoreClassSnapshot(cls, snap) {
+  if (!snap || !snap.binds) return false;
+  state.class = cleanClass(cls);
+  state.stigmas = padStigmas(snap.stigmas);
+  state.binds = {
+    combat: { ...(snap.binds.combat || {}) },
+    shift: { ...(snap.binds.shift || {}) },
+    ctrl: { ...(snap.binds.ctrl || {}) },
+    alt: { ...(snap.binds.alt || {}) },
+  };
+  applyHudBars(snap.quickbar && snap.quickbar.bars, state.binds);
+  pruneStigmas();
+  pruneBinds();
+  return true;
+}
+
+function hydrateFromSnapshots() {
+  const live = layoutWeight(state.binds, state.stigmas);
+  const here = state.byClass && state.byClass[state.class];
+  if (here && layoutWeight(here.binds, here.stigmas) > live) {
+    restoreClassSnapshot(state.class, here);
+    return;
+  }
+  if (live > 0) return;
+  let bestCls = null;
+  let bestSnap = null;
+  let bestW = 0;
+  for (const [cls, snap] of Object.entries(state.byClass || {})) {
+    const w = layoutWeight(snap && snap.binds, snap && snap.stigmas);
+    if (w > bestW) {
+      bestW = w;
+      bestCls = cls;
+      bestSnap = snap;
+    }
+  }
+  if (bestSnap && bestW > 0) restoreClassSnapshot(bestCls, bestSnap);
+}
+
 function loadState() {
   const fallback = defaultState();
   try {
@@ -265,6 +314,7 @@ function loadState() {
     state.race = parsed.race === "elyos" ? "elyos" : "asmo";
     state.multirace = Boolean(parsed.multirace);
     state.byClass = parsed.byClass && typeof parsed.byClass === "object" ? parsed.byClass : {};
+    state.shareToken = typeof parsed.shareToken === "string" ? parsed.shareToken : null;
     state.stigmas = padStigmas(parsed.stigmas);
     pruneStigmas();
     const incoming = parsed.binds || {};
@@ -276,6 +326,8 @@ function loadState() {
     };
     state.quickbar = padQuickbar(parsed.quickbar, state.binds);
     pruneBinds();
+    lastRemoteAt = Number(parsed.updatedAt) || 0;
+    hydrateFromSnapshots();
   } catch {
     applyCore(fallback);
   }
@@ -341,6 +393,7 @@ function skillName(id) {
 }
 
 let lastRemoteAt = 0;
+let classPickSync = false;
 
 function snapshot(source) {
   normalizeQuickbar(state.binds);
@@ -357,6 +410,7 @@ function snapshot(source) {
     binds: state.binds,
     quickbar: state.quickbar,
     byClass: state.byClass,
+    shareToken: state.shareToken || null,
     updatedAt: Date.now(),
     source: source || "ui",
   };
@@ -396,13 +450,19 @@ function applyRemote(data) {
 function save() {
   const payload = snapshot("ui");
   lastRemoteAt = payload.updatedAt;
-  localStorage.setItem(STORE, JSON.stringify(payload));
-  if (!USE_STATE_API) return;
-  fetch(STATE_API, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  }).catch(() => {});
+  try {
+    localStorage.setItem(STORE, JSON.stringify(payload));
+  } catch {
+    return false;
+  }
+  if (USE_STATE_API) {
+    fetch(STATE_API, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+  }
+  return true;
 }
 
 function toast(msg) {
@@ -529,6 +589,7 @@ function applyShare(data) {
   };
   state.quickbar = applyQuickbarShare(data.q);
   pruneBinds();
+  persistClassSnapshot(state.class);
   state.pickSkill = null;
   state.pickKey = null;
   state.pickSlot = null;
@@ -549,9 +610,14 @@ function shareUrl(token) {
 }
 
 function clearShareFromLocation() {
-  const next = new URL(location.href);
-  next.searchParams.delete("s");
-  history.replaceState(null, "", next.pathname + next.search);
+  try {
+    const next = new URL(location.href);
+    next.searchParams.delete("s");
+    next.hash = "";
+    history.replaceState(null, "", next.pathname + next.search);
+  } catch {
+    /* ignore */
+  }
 }
 
 async function copyShareLink() {
@@ -577,14 +643,16 @@ async function openShareFromUrl() {
   if (!token) return;
   try {
     const data = await decodeShare(token);
-    if (!window.confirm("Открыть раскладку из ссылки? Текущие бинды и стигмы будут заменены.")) {
+    const already = state.shareToken === token;
+    if (!already && !window.confirm("Открыть раскладку из ссылки? Текущие бинды и стигмы будут заменены.")) {
       clearShareFromLocation();
       return;
     }
     applyShare(data);
-    save();
-    clearShareFromLocation();
-    toast("Открыта раскладка по ссылке");
+    state.shareToken = token;
+    const ok = save();
+    if (ok) clearShareFromLocation();
+    if (!already) toast("Открыта раскладка по ссылке");
   } catch {
     toast("Ссылка повреждена");
   }
@@ -1592,7 +1660,11 @@ function renderChrome() {
     multi.setAttribute("aria-pressed", state.multirace ? "true" : "false");
   }
   const pick = document.getElementById("class-pick");
-  if (pick && pick.value !== state.class) pick.value = state.class;
+  if (pick && pick.value !== state.class) {
+    classPickSync = true;
+    pick.value = state.class;
+    classPickSync = false;
+  }
   document.querySelectorAll("[data-layer]").forEach((b) => {
     b.classList.toggle("active", b.dataset.layer === state.layer);
   });
@@ -2117,6 +2189,7 @@ document.querySelector(".race-switch").addEventListener("click", (e) => {
   if (btn) setRace(btn.dataset.race);
 });
 document.getElementById("class-pick").addEventListener("change", (e) => {
+  if (classPickSync) return;
   setClass(e.target.value);
 });
 document.getElementById("share").addEventListener("click", copyShareLink);
@@ -2143,13 +2216,17 @@ document.getElementById("filter").addEventListener("input", () => {
 function fillClassPick() {
   const sel = document.getElementById("class-pick");
   if (!sel || typeof CLASSES === "undefined") return;
+  classPickSync = true;
   sel.innerHTML = CLASSES.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
   sel.value = state.class;
+  classPickSync = false;
 }
 
+loadState();
 fillClassPick();
 renderCombos();
 openShareFromUrl().finally(() => {
+  fillClassPick();
   render();
   if (USE_STATE_API) pullState();
 });
